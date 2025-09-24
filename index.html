@@ -436,19 +436,104 @@ Sylvain Schmitt
 <section>
 <section id="introduction" class="title-slide slide level1 center">
 <h1>Introduction</h1>
-
+<p>Nous allons aujourd’hui explorer l’utilisation de simulateurs forestiers en écologie, notamment à travers un modèle basé sur les agents :</p>
+<blockquote>
+<p>modèle permettant de simuler les actions et les interactions d’agents autonomes afin de comprendre le comportement d’un système et les facteurs qui déterminent ses résultats.</p>
+</blockquote>
 </section>
-<section id="packages" class="slide level2">
-<h2>Packages</h2>
-<p>Pendant ce TP, nous allons utiliser le modèle TROLL <span class="citation" data-cites="Marechaux2017">(<a href="#/références" role="doc-biblioref" onclick="">Maréchaux and Chave 2017</a>)</span>, avec le package <code>rcontroll</code> <span class="citation" data-cites="schmitt2023">(<a href="#/références" role="doc-biblioref" onclick="">Schmitt et al. 2023</a>)</span>. Nous utiliserons aussi les package <code>dplyr</code> <span class="citation" data-cites="dplyr">(<a href="#/références" role="doc-biblioref" onclick="">Wickham et al. 2023</a>)</span>, <code>tidyr</code> <span class="citation" data-cites="tidyr">(<a href="#/références" role="doc-biblioref" onclick="">Wickham, Vaughan, and Girlich 2024</a>)</span> et <code>ggplot2</code> <span class="citation" data-cites="ggplot2">(<a href="#/références" role="doc-biblioref" onclick="">Wickham 2016</a>)</span>.</p>
-<p>Pour télécharger les packages :</p>
+<section id="le-jeu-de-la-vie-j.-conway-1970" class="slide level2 smaller">
+<h2>Le jeu de la vie (J. Conway, 1970)</h2>
+<ul>
+<li>Chaque cellule ne peut se trouver que dans deux états : allumée (vivante) ou éteinte (morte)</li>
+<li>Une cellule allumée le reste uniquement si 2 ou 3 de ses 8 voisines sont allumées</li>
+<li>Une cellule éteinte s’allume uniquement si 3 de ses 8 voisines sont allumées</li>
+</ul>
+
+<img data-src="https://user-images.githubusercontent.com/9169414/36646548-4ac65af8-1a79-11e8-811d-da84549f7af3.gif" class="r-stretch"></section>
+<section id="boids-c.-w.-reynolds-1986" class="slide level2 smaller">
+<h2>Boids (C. W. Reynolds, 1986)</h2>
+<ul>
+<li>La cohésion : les boids se rapprochent les uns des autres</li>
+<li>La séparation : deux boids ne peuvent pas se trouver au même endroit au même moment</li>
+<li>L’alignement : les boids suivent leurs voisins</li>
+</ul>
+
+<img data-src="https://gameidea.org/wp-content/uploads/2024/03/2D-boids-simulation.gif" class="r-stretch"></section>
+<section id="levi2018" class="slide level2 smaller">
+<h2><span class="citation" data-cites="levi2018">Levi et al. (<a href="#/références" role="doc-biblioref" onclick="">2018</a>)</span></h2>
+<blockquote>
+<p><em>Tropical forests can maintain hyperdiversity because of enemies</em></p>
+</blockquote>
+<div class="columns">
+<div class="column">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="https://upload.wikimedia.org/wikipedia/commons/9/9d/Adaptation_du_mod%C3%A8le_de_l%27effet_Janzen-Connell_%281970%29.png"></p>
+</div>
+</div>
+</div><div class="column">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="https://www.pnas.org/cms/10.1073/pnas.1813211116/asset/7a01f42c-5dc2-44fc-a6ed-43658e9d145b/assets/graphic/pnas.1813211116fig01.jpeg"></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="levi2018-1" class="slide level2 smaller">
+<h2><span class="citation" data-cites="levi2018">Levi et al. (<a href="#/références" role="doc-biblioref" onclick="">2018</a>)</span></h2>
+<blockquote>
+<p><em>Tropical forests can maintain hyperdiversity because of enemies</em> par <span class="citation" data-cites="levi2018">Levi et al. (<a href="#/références" role="doc-biblioref" onclick="">2018</a>)</span></p>
+</blockquote>
+<div class="columns">
+<div class="column">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="https://www.pnas.org/cms/10.1073/pnas.1813211116/asset/69fe93cd-bdb3-4bb9-b666-b42834acabf9/assets/graphic/pnas.1813211116fig02.jpeg"></p>
+</div>
+</div>
+</div><div class="column">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="https://www.pnas.org/cms/10.1073/pnas.1813211116/asset/7a01f42c-5dc2-44fc-a6ed-43658e9d145b/assets/graphic/pnas.1813211116fig01.jpeg"></p>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="troll" class="title-slide slide level1 center">
+<h1>TROLL</h1>
+<blockquote>
+<p>An Individual-BasedForest Model to Jointly Simulate Carbon and Tree Diversity in Amazonia par <span class="citation" data-cites="Marechaux2017">Maréchaux and Chave (<a href="#/références" role="doc-biblioref" onclick="">2017</a>)</span></p>
+</blockquote>
+</section>
+<section id="quest-ce-que-cest" class="slide level2">
+<h2>Qu’est-ce que c’est ?</h2>
+<p>TROLL modélise chaque arbre individuellement dans un environnement spatialisé. Le modèle TROLL peut donc être défini comme un modèle de croissance forestière individuel, centré et spatialement explicite. Il simule le cycle de vie des arbres, depuis le recrutement à partir d’un diamètre à hauteur de poitrine (dbh) de 1 cm, jusqu’à la mort. Les arbres poussent dans un environnement lumineux dont les valeurs sont calculées dans des voxels de <span class="math inline">\(1 m^3\)</span>.</p>
+</section>
+<section id="représentation" class="slide level2">
+<h2>Représentation</h2>
+
+<img data-src="https://gmd.copernicus.org/articles/18/5143/2025/gmd-18-5143-2025-avatar-web.png" class="r-stretch"></section>
+<section id="représentation-1" class="slide level2">
+<h2>Représentation</h2>
+
+<img data-src="https://besjournals.onlinelibrary.wiley.com/cms/asset/c6ab93b7-9b2b-49f2-a1cd-abbb6de35318/mee314215-fig-0001-m.jpg" class="r-stretch"></section>
+<section id="fonctionnement" class="slide level2 smaller">
+<h2>Fonctionnement</h2>
+<p>Chaque arbre est défini par son âge, son diamètre à hauteur de poitrine (DBH), sa hauteur (H), le rayon de son houppier (CR), la profondeur de son houppier (CD) et sa surface foliaire (LA). La géométrie de l’arbre est calculée à l’aide d’équations allométriques et la surface foliaire varie dynamiquement au sein de chaque couronne en fonction de l’allocation de carbone. Un arbre peut occuper au maximum un pixel de 1 m sur 1 m. Chaque arbre appartient à une espèce héritée de son arbre parent. Pour chaque espèce, un certain nombre de paramètres sont connus : les valeurs des traits de cette espèce, qui ont été recueillies sur le terrain. L’assimilation du carbone est calculée sur une période de 30 minutes. L’allocation est ensuite calculée pour simuler la croissance des arbres. L’environnement est mis à jour chaque mois. Les juvéniles (arbres dont le diamètre à hauteur de poitrine est inférieur à 1 cm) ne sont pas simulés explicitement, mais comme un groupe. En outre, les processus souterrains, les plantes herbacées, les épiphytes et les lianes ne sont pas pris en compte dans TROLL.</p>
+</section>
+<section id="environnement-r" class="slide level2">
+<h2>Environnement R</h2>
+<p>Pendant ce TP, nous utiliserons le modèle TROLL <span class="citation" data-cites="Marechaux2017">(<a href="#/références" role="doc-biblioref" onclick="">Maréchaux and Chave 2017</a>)</span> avec le package rcontroll <span class="citation" data-cites="schmitt2023">(<a href="#/références" role="doc-biblioref" onclick="">Schmitt et al. 2023</a>)</span>. Nous utiliserons également les packages dplyr, tidyr et ggplot2 pour les manipulations de tables et la création de graphiques. Téléchargez-les (pré-requis !) :</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">install.packages</span>(<span class="st">"dplyr"</span>, <span class="st">"tidyr"</span>, <span class="st">"ggplot2"</span>, <span class="st">"rcontroll"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 
 </div>
-<p>Ensuite, vous pouvez charger les packages :</p>
+<p>Chargez les avec :</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb2-2"><a href="#cb2-2"></a><span class="fu">library</span>(tidyr)</span>
@@ -458,15 +543,6 @@ Sylvain Schmitt
 <div class="cell fragment">
 
 </div>
-</section>
-<section id="troll" class="slide level2 smaller">
-<h2>TROLL</h2>
-<p>TROLL modélise chaque arbre individuellement dans un environnement spatialisé. Le modèle TROLL peut donc être défini comme un modèle de croissance forestière <em>individu centré</em> et <em>spatialement explicite</em>. TROLL simule le cycle de vie des arbres depuis le recrutement à partir d’un diamètre à hauteur de poitrine (dbh) de 1cm, jusqu’à la mort. Les arbres poussent dans un environnement lumineux, les valeurs de lumière sont calculées dans des <em>voxels</em> de 1m3.</p>
-
-<img data-src="https://gmd.copernicus.org/articles/18/5143/2025/gmd-18-5143-2025-avatar-web.png" class="r-stretch"></section>
-<section id="troll-1" class="slide level2 smaller">
-<h2>TROLL</h2>
-<p>Chaque arbre est défini par son âge, son diamètre à hauteur de poitrine (<em>dbh</em>), sa hauteur (<em>h</em>), le rayon de son houppier (<em>CR</em>), la profondeur de son houppier (<em>CD</em>) et sa surface foliaire (<em>LA</em>). La géométrie de l’arbre est calculée à l’aide d’<em>équations allométriques</em>, et la surface foliaire varie dynamiquement au sein de chaque couronne en fonction des allocations de carbone. Au maximum un arbre peut s’installer dans chaque pixel de 1x1m. Chaque arbre appartient à une espèce, héritée de son arbre parent. Pour chaque espèce, un certain nombre de paramètres sont connus : les valeurs de traits de cette espèces, qui ont été récoltés sur le terrain. L’assimilation du carbone est calculée sur une période d’une demi-heure. L’allocation est ensuite calculée pour simuler la croissance des arbres. L’environnement est mis à jour chaque mois. Les juvéniles (arbres dont le dbh &lt; 1cm) ne sont pas simulés explicitement mais comme un groupe. En outre, les processus souterrains, les plantes herbacées, les épiphytes et les lianes ne sont pas simulés dans TROLL.</p>
 </section></section>
 <section>
 <section id="données" class="title-slide slide level1 center">
@@ -475,19 +551,19 @@ Sylvain Schmitt
 </section>
 <section id="espèces" class="slide level2">
 <h2>Espèces</h2>
-<p>Pour fonctionner, le modèle TROLL utilise une liste de traits fonctionnels. Vous pouvez charger les valeurs de trait pour un ensemble d’espèces de Guyane française, et explorer ces données :</p>
+<p>Pour fonctionner, le modèle TROLL utilise un certain nombre de données par espèce, dont une liste de traits fonctionnels. Vous pouvez charger les valeurs de ces traits pour un ensemble d’espèces de Guyane française et explorer ces données.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">data</span>(<span class="st">"TROLLv3_species"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 
 </div>
-<p><strong>Question 1</strong> : Combien de traits sont recensés dans ce tableau, et pour combien d’espèce?</p>
-<p><strong>Question 2</strong> : Quelles sont les espèces d’arbre de Guyane française que vous connaissez? Les valeurs de trait sont-elles présentes dans la table pour ces espèces?</p>
+<p><strong>Question 1</strong> : Combien de traits sont recensés dans ce tableau, et pour combien d’espèce ?</p>
+<p><strong>Question 2</strong> : Sélectionnez une espèce d’arbre de Guyane française pour ce TP. Quelles sont ses valeurs de traits et que comprenez-vous de ses caractéristiques ?</p>
 </section>
 <section id="espèces-1" class="slide level2">
 <h2>Espèces</h2>
-<p><strong>Question 1</strong> : Combien de traits sont recensés dans ce tableau, et pour combien d’espèce?</p>
+<p><strong>Question 1</strong> : Combien de traits sont recensés dans ce tableau, et pour combien d’espèce ?</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">dim</span>(TROLLv3_species)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -499,7 +575,7 @@ Sylvain Schmitt
 </section>
 <section id="espèces-2" class="slide level2 smaller">
 <h2>Espèces</h2>
-<p><strong>Question 2</strong> : Quelles sont les espèces d’arbre de Guyane française que vous connaissez? Les valeurs de trait sont-elles présentes dans la table pour ces espèces?</p>
+<p><strong>Question 2</strong> : Sélectionnez une espèce d’arbre de Guyane française pour ce TP. Quelles sont ses valeurs de traits et que comprenez-vous de ses caractéristiques ?</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">head</span>(TROLLv3_species)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -622,15 +698,15 @@ Sylvain Schmitt
 <ul>
 <li><p>le nombre de pas de temps par an <code>iterperyear</code></p></li>
 <li><p>le nombre de pas de temps total de la simulation <code>nbiter</code></p></li>
-<li><p>la taille de la parcelle simulée, grace aux nombres de colonnes <code>cols</code> et de lignes <code>rows</code></p></li>
-<li><p>le nombre de graines vennant de l’extérieur <code>seedrain</code></p></li>
+<li><p>la taille de la parcelle simulée, grace aux nombres de colonnes <code>cols</code> et de lignes <code>rows</code> (les parcelles sont rectangulaires)</p></li>
+<li><p>le nombre de graines vennant de l’extérieur <code>seedrain</code> (la pluie de graine correspond aux graines qui sont dispersée dans la parcelle simulée depuis l’exterieur)</p></li>
 </ul>
 </section>
 <section id="paramètres-1" class="slide level2 smaller">
 <h2>Paramètres</h2>
 <p>La fonction <code>generate_parameters</code> permet de créer un tableau avec les différents paramètres d’une simulation :</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">generate_parameters</span>(<span class="at">cols =</span> <span class="dv">250</span>, <span class="at">rows =</span> <span class="dv">250</span>, <span class="at">nbiter =</span> <span class="dv">12</span> <span class="sc">*</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">generate_parameters</span>(<span class="at">cols =</span> <span class="dv">250</span>, <span class="at">rows =</span> <span class="dv">250</span>, <span class="at">nbiter =</span> <span class="dv">12</span> <span class="sc">*</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb14-2"><a href="#cb14-2"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb14-3"><a href="#cb14-3"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -667,7 +743,7 @@ Sylvain Schmitt
 </tr>
 <tr class="odd">
 <td style="text-align: left;">nbiter</td>
-<td style="text-align: right;">12</td>
+<td style="text-align: right;">120</td>
 <td style="text-align: left;">/* total nb of timesteps */</td>
 </tr>
 <tr class="even">
@@ -686,15 +762,15 @@ Sylvain Schmitt
 <h1>Simulation</h1>
 
 </section>
-<section id="troll-2" class="slide level2">
+<section id="troll-1" class="slide level2 smaller">
 <h2><code>troll</code></h2>
 <p>Maintenant que vous avez les données nécessaires, vous pouvez réaliser une <strong>simulation</strong>. Pour réaliser une simulation, vous pouvez utiliser la fonction <code>troll()</code> :</p>
-<div class="cell" data-hash="index_cache/revealjs/troll_469d584df92878f3f38d204af05e4a10">
+<div class="cell" data-hash="index_cache/revealjs/troll_b6266aa25cab41a25cf346cb0c9f80be">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>sim <span class="ot">&lt;-</span> <span class="fu">troll</span>(</span>
 <span id="cb15-2"><a href="#cb15-2"></a>  <span class="at">name =</span> <span class="st">"test"</span>,</span>
 <span id="cb15-3"><a href="#cb15-3"></a>  <span class="at">global =</span> <span class="fu">generate_parameters</span>(</span>
 <span id="cb15-4"><a href="#cb15-4"></a>    <span class="at">cols =</span> <span class="dv">100</span>, <span class="at">rows =</span> <span class="dv">100</span>,</span>
-<span id="cb15-5"><a href="#cb15-5"></a>    <span class="at">iterperyear =</span> <span class="dv">12</span>, <span class="at">nbiter =</span> <span class="dv">12</span> <span class="sc">*</span> <span class="dv">1</span></span>
+<span id="cb15-5"><a href="#cb15-5"></a>    <span class="at">iterperyear =</span> <span class="dv">12</span>, <span class="at">nbiter =</span> <span class="dv">12</span> <span class="sc">*</span> <span class="dv">100</span></span>
 <span id="cb15-6"><a href="#cb15-6"></a>  ),</span>
 <span id="cb15-7"><a href="#cb15-7"></a>  <span class="at">species =</span> TROLLv3_species,</span>
 <span id="cb15-8"><a href="#cb15-8"></a>  <span class="at">climate =</span> TROLLv3_climatedaytime12,</span>
@@ -702,12 +778,13 @@ Sylvain Schmitt
 <span id="cb15-10"><a href="#cb15-10"></a>  <span class="at">verbose =</span> <span class="cn">TRUE</span></span>
 <span id="cb15-11"><a href="#cb15-11"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="index_cache/revealjs/troll_469d584df92878f3f38d204af05e4a10">
+<div class="cell fragment" data-hash="index_cache/revealjs/troll_b6266aa25cab41a25cf346cb0c9f80be">
 
 </div>
 <p><strong>Question 6</strong> : Comment s’appelle votre simulation? Quel est son format (dans R)?</p>
+<p><strong>⚠️</strong> la fonction <code>troll()</code> met un certain temps à s’exécuter, rappelez-vous que le modèle calcule l’assimilation du carbone pour chaque arbre modélisé sur une période d’une demi-heure.</p>
 </section>
-<section id="troll-3" class="slide level2">
+<section id="troll-2" class="slide level2">
 <h2><code>troll</code></h2>
 <p><strong>Question 6</strong> : Comment s’appelle votre simulation? Quel est son format (dans R)?</p>
 <div class="cell">
@@ -726,7 +803,7 @@ Random : FALSE
 
 2D discrete network: horizontal step =  1 m, one tree per 1 m^2 
 Number of sites      :  100 x 100 
-Number of iterations :  12 
+Number of iterations :  1200 
 Duration of timestep :  30.41667 days 
 Number of Species    :  45 </code></pre>
 </div>
@@ -753,43 +830,28 @@ Number of Species    :  45 </code></pre>
 <div class="cell fragment">
 
 </div>
-<p><strong>Question 7</strong> : Par binôme, choisissez une espèce, et remplissez le tableau avec votre numéro de binôme et le nom de l’espèce que vous avez choisie.</p>
-<p><strong>Question 8</strong> : Quels sont les indicateurs auxquels vous pouvez avoir accès avec la fonction <code>autoplot()</code>?</p>
-<p><strong>Question 9</strong> : Quelle est la surface terrière de cette espèce en début de simulation/ en fin de simulation? Comparez vos résultats avec ceux de vos camarades sur les autres espèces.</p>
+<p><strong>Question 7</strong> : Quels sont les indicateurs (ou variables) auxquels vous pouvez avoir accès avec la fonction <code>autoplot()</code>?</p>
+<p>Vous pouvez constater que la simulation a été réalisée à partir d’un sol nu (sans arbre).</p>
+<p><strong>Question 8</strong> Augmentez le nombre d’années de simulation et effectuez une simulation de 100 ans. Quelle est la surface terrière de cette espèce en début de simulation et en fin de simulation? Comparez vos résultats avec ceux de vos camarades sur les autres espèces.</p>
 </section>
-<section id="autoplot-1" class="slide level2 smaller">
+<section id="autoplot-1" class="slide level2">
 <h2><code>autoplot</code></h2>
-<p><strong>Question 7</strong> : Par binôme, choisissez une espèce, et remplissez le tableau avec votre numéro de binôme et le nom de l’espèce que vous avez choisie.</p>
+<p><strong>Question 7</strong> : Quels sont les indicateurs auxquels vous pouvez avoir accès avec la fonction <code>autoplot()</code>?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>rcontroll<span class="sc">::</span><span class="fu">autoplot</span>(sim,</span>
-<span id="cb19-2"><a href="#cb19-2"></a>  <span class="at">what =</span> <span class="st">"temporal"</span>,</span>
-<span id="cb19-3"><a href="#cb19-3"></a>  <span class="at">species =</span> <span class="st">"Eperua_grandiflora"</span>) <span class="sc">+</span></span>
-<span id="cb19-4"><a href="#cb19-4"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell fragment">
-<div class="cell-output-display">
-<p><img data-src="index_files/figure-revealjs/autoplot_sol-1.png" width="960"></p>
-</div>
-</div>
-</section>
-<section id="autoplot-2" class="slide level2">
-<h2><code>autoplot</code></h2>
-<p><strong>Question 8</strong> : Quels sont les indicateurs auxquels vous pouvez avoir accès avec la fonction <code>autoplot()</code>?</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>?rcontroll<span class="sc">::</span><span class="st">`</span><span class="at">autoplot,trollsim-method</span><span class="st">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>?rcontroll<span class="sc">::</span><span class="st">`</span><span class="at">autoplot,trollsim-method</span><span class="st">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 
 </div>
 </section>
-<section id="autoplot-3" class="slide level2 smaller">
+<section id="autoplot-2" class="slide level2 smaller">
 <h2><code>autoplot</code></h2>
-<p><strong>Question 9</strong> : Quelle est la surface terrière de cette espèce en début de simulation/ en fin de simulation? Comparez vos résultats avec ceux de vos camarades sur les autres espèces.</p>
+<p><strong>Question 8</strong> : Augmentez le nombre d’années de simulation et effectuez une simulation de 100 ans. Quelle est la surface terrière de cette espèce en début de simulation et en fin de simulation? Comparez vos résultats avec ceux de vos camarades sur les autres espèces.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>rcontroll<span class="sc">::</span><span class="fu">autoplot</span>(sim,</span>
-<span id="cb21-2"><a href="#cb21-2"></a>  <span class="at">what =</span> <span class="st">"temporal"</span>,</span>
-<span id="cb21-3"><a href="#cb21-3"></a>  <span class="at">species =</span> <span class="st">"Eperua_grandiflora"</span>) <span class="sc">+</span></span>
-<span id="cb21-4"><a href="#cb21-4"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>rcontroll<span class="sc">::</span><span class="fu">autoplot</span>(sim,</span>
+<span id="cb20-2"><a href="#cb20-2"></a>  <span class="at">what =</span> <span class="st">"temporal"</span>,</span>
+<span id="cb20-3"><a href="#cb20-3"></a>  <span class="at">species =</span> <span class="st">"Eperua_grandiflora"</span>) <span class="sc">+</span></span>
+<span id="cb20-4"><a href="#cb20-4"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 <div class="cell-output-display">
@@ -805,17 +867,17 @@ Number of Species    :  45 </code></pre>
 <section id="pluie-de-graine" class="slide level2">
 <h2>Pluie de graine</h2>
 <p>Pour comparer différentes simulations, il est possible de faire des simulations multiples, dont les jeux de paramètres peuvent être différents. Ici, nous allons réaliser des simulations en changeant la valeur de la pluie de graine.</p>
-<p><strong>Question 10</strong> : En changeant la pluie de graine, quel(s) processus de la dynamique forestières est/seront impacté(s) et pourquoi ?</p>
-<p><strong>Question 11</strong> : Comment se disperse l’espèce étudiée par votre binôme ?</p>
+<p><strong>Question 9</strong> : En changeant la pluie de graine, quel(s) processus de la dynamique forestières est/seront impacté(s) et pourquoi ?</p>
+<p><strong>Question 10</strong> : Comment se disperse l’espèce étudiée par votre binôme ?</p>
 </section>
 <section id="paramètres-multiples" class="slide level2">
 <h2>Paramètres multiples</h2>
 <p>Vous pouvez utiliser à nouveaux la fonction <code>generate_parameters()</code>, mais cette fois en précisans qu’il y aura deux simulations, auxquelles on donnera les noms <em>seed50000</em> et <em>seed500</em>. Ensuite, vous pouvez changer le paramètre de la pluie de graine de la simulation <em>seed500</em> pour que ce paramètre soit égale à 500 :</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>stack_parameters <span class="ot">&lt;-</span> <span class="fu">generate_parameters</span>( <span class="at">cols =</span> <span class="dv">100</span>, <span class="at">rows =</span> <span class="dv">100</span>, <span class="at">iterperyear =</span> <span class="dv">12</span>, <span class="at">nbiter =</span> <span class="dv">12</span> <span class="sc">*</span> <span class="dv">1</span> ) <span class="sc">%&gt;%</span> </span>
-<span id="cb22-2"><a href="#cb22-2"></a>  <span class="fu">mutate</span>(<span class="at">simulation =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">"seed50000"</span>, <span class="st">"seed500"</span>))) <span class="sc">%&gt;%</span> </span>
-<span id="cb22-3"><a href="#cb22-3"></a>  <span class="fu">unnest</span>(simulation)</span>
-<span id="cb22-4"><a href="#cb22-4"></a>stack_parameters[<span class="dv">62</span>, <span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="dv">500</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>stack_parameters <span class="ot">&lt;-</span> <span class="fu">generate_parameters</span>( <span class="at">cols =</span> <span class="dv">100</span>, <span class="at">rows =</span> <span class="dv">100</span>, <span class="at">iterperyear =</span> <span class="dv">12</span>, <span class="at">nbiter =</span> <span class="dv">12</span> <span class="sc">*</span> <span class="dv">50</span> ) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-2"><a href="#cb21-2"></a>  <span class="fu">mutate</span>(<span class="at">simulation =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="st">"seed50000"</span>, <span class="st">"seed500"</span>))) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-3"><a href="#cb21-3"></a>  <span class="fu">unnest</span>(simulation)</span>
+<span id="cb21-4"><a href="#cb21-4"></a>stack_parameters[<span class="dv">62</span>, <span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="dv">500</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 
@@ -824,20 +886,20 @@ Number of Species    :  45 </code></pre>
 <section id="stack" class="slide level2 smaller">
 <h2><code>stack</code></h2>
 <p>La fonction <code>stack()</code> permet des faire des simulations multiples, vous pouvez l’utiliser en précisant les paramètres des simulations avec l’argument <code>global</code>. Ici l’argument <code>verbose</code> prend la valeur <code>FALSE</code> pour éviter d’avoir les messages de TROLL, vous ne verrez donc qu’une barre de chargement pendant les simulations. Les autres arguments de la fonction <code>stack()</code> permettent entre autre de préciser le nombre de coeur utilisés (<code>cores</code>), et les itérations dont les résultats seront stockés (<code>thin</code>).</p>
-<div class="cell" data-hash="index_cache/revealjs/stack_1e167c178a93edb7f1f39c74700f221e">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>sim_stack <span class="ot">&lt;-</span> <span class="fu">stack</span>(</span>
-<span id="cb23-2"><a href="#cb23-2"></a>  <span class="at">name =</span> <span class="st">"teststack"</span>,</span>
-<span id="cb23-3"><a href="#cb23-3"></a>  <span class="at">simulations =</span> <span class="fu">c</span>(<span class="st">"seed50000"</span>, <span class="st">"seed500"</span>),</span>
-<span id="cb23-4"><a href="#cb23-4"></a>  <span class="at">global =</span> stack_parameters,</span>
-<span id="cb23-5"><a href="#cb23-5"></a>  <span class="at">species =</span> TROLLv3_species,</span>
-<span id="cb23-6"><a href="#cb23-6"></a>  <span class="at">climate =</span> TROLLv3_climatedaytime12,</span>
-<span id="cb23-7"><a href="#cb23-7"></a>  <span class="at">daily =</span> TROLLv3_daytimevar,</span>
-<span id="cb23-8"><a href="#cb23-8"></a>  <span class="at">verbose =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb23-9"><a href="#cb23-9"></a>  <span class="at">cores =</span> <span class="dv">2</span>,</span>
-<span id="cb23-10"><a href="#cb23-10"></a>  <span class="at">thin =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">10</span>)</span>
-<span id="cb23-11"><a href="#cb23-11"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="index_cache/revealjs/stack_70a6ed671c1d8f679fb364676bd399c0">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>sim_stack <span class="ot">&lt;-</span> <span class="fu">stack</span>(</span>
+<span id="cb22-2"><a href="#cb22-2"></a>  <span class="at">name =</span> <span class="st">"teststack"</span>,</span>
+<span id="cb22-3"><a href="#cb22-3"></a>  <span class="at">simulations =</span> <span class="fu">c</span>(<span class="st">"seed50000"</span>, <span class="st">"seed500"</span>),</span>
+<span id="cb22-4"><a href="#cb22-4"></a>  <span class="at">global =</span> stack_parameters,</span>
+<span id="cb22-5"><a href="#cb22-5"></a>  <span class="at">species =</span> TROLLv3_species,</span>
+<span id="cb22-6"><a href="#cb22-6"></a>  <span class="at">climate =</span> TROLLv3_climatedaytime12,</span>
+<span id="cb22-7"><a href="#cb22-7"></a>  <span class="at">daily =</span> TROLLv3_daytimevar,</span>
+<span id="cb22-8"><a href="#cb22-8"></a>  <span class="at">verbose =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb22-9"><a href="#cb22-9"></a>  <span class="at">cores =</span> <span class="dv">2</span>,</span>
+<span id="cb22-10"><a href="#cb22-10"></a>  <span class="at">thin =</span> (<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)<span class="sc">*</span><span class="dv">10</span></span>
+<span id="cb22-11"><a href="#cb22-11"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="index_cache/revealjs/stack_1e167c178a93edb7f1f39c74700f221e">
+<div class="cell fragment" data-hash="index_cache/revealjs/stack_70a6ed671c1d8f679fb364676bd399c0">
 <div class="cell-output cell-output-stdout">
 <pre><code>
   |                                                                            
@@ -851,17 +913,17 @@ Number of Species    :  45 </code></pre>
 <h2>Visualisation multiples</h2>
 <p>Vous pouvez ensuite utiliser la fonction <code>autoplot()</code> comme vous l’avez fait avec une simulation simple :</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>rcontroll<span class="sc">::</span><span class="fu">autoplot</span>(sim_stack,</span>
-<span id="cb25-2"><a href="#cb25-2"></a>  <span class="at">what =</span> <span class="st">"temporal"</span>,</span>
-<span id="cb25-3"><a href="#cb25-3"></a>  <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"ba"</span>, <span class="st">"agb"</span>)</span>
-<span id="cb25-4"><a href="#cb25-4"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>rcontroll<span class="sc">::</span><span class="fu">autoplot</span>(sim_stack,</span>
+<span id="cb24-2"><a href="#cb24-2"></a>  <span class="at">what =</span> <span class="st">"temporal"</span>,</span>
+<span id="cb24-3"><a href="#cb24-3"></a>  <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"ba"</span>, <span class="st">"agb"</span>)</span>
+<span id="cb24-4"><a href="#cb24-4"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 <div class="cell-output-display">
 <p><img data-src="index_files/figure-revealjs/autoplot_stack-1.png" width="960"></p>
 </div>
 </div>
-<p><strong>Question 13</strong> : Comment se comporte votre espèce? par rapport aux autres? Etait-ce attendu? A votre avis, quel(s) processus est/sont être responsable(s) de ce que vous observez?</p>
+<p><strong>Question 12</strong> : Comment se comporte votre espèce? par rapport aux autres? Etait-ce attendu? A votre avis, quel(s) processus est/sont être responsable(s) de ce que vous observez?</p>
 </section></section>
 <section id="questions-bonus-exploratoire" class="title-slide slide level1 center">
 <h1>Questions bonus exploratoire</h1>
@@ -876,22 +938,22 @@ Number of Species    :  45 </code></pre>
 <section id="code" class="slide level2">
 <h2>Code</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">data</span>(<span class="st">"TROLLv3_output"</span>)</span>
-<span id="cb26-2"><a href="#cb26-2"></a></span>
-<span id="cb26-3"><a href="#cb26-3"></a>gifs <span class="ot">&lt;-</span> <span class="fu">autogif</span>(</span>
-<span id="cb26-4"><a href="#cb26-4"></a>  <span class="at">name =</span> <span class="st">"dynamic"</span>,</span>
-<span id="cb26-5"><a href="#cb26-5"></a>  <span class="at">variables =</span> <span class="st">"height_ct"</span>,</span>
-<span id="cb26-6"><a href="#cb26-6"></a>  <span class="at">global =</span> <span class="fu">update_parameters</span>(TROLLv3_output,</span>
-<span id="cb26-7"><a href="#cb26-7"></a>    <span class="at">nbiter =</span> <span class="dv">12</span> <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb26-8"><a href="#cb26-8"></a>    <span class="at">extent_visual =</span> <span class="dv">100</span></span>
-<span id="cb26-9"><a href="#cb26-9"></a>  ),</span>
-<span id="cb26-10"><a href="#cb26-10"></a>  <span class="at">species =</span> TROLLv3_output<span class="sc">@</span>inputs<span class="sc">$</span>species,</span>
-<span id="cb26-11"><a href="#cb26-11"></a>  <span class="at">climate =</span> TROLLv3_output<span class="sc">@</span>inputs<span class="sc">$</span>climate,</span>
-<span id="cb26-12"><a href="#cb26-12"></a>  <span class="at">daily =</span> TROLLv3_output<span class="sc">@</span>inputs<span class="sc">$</span>daily,</span>
-<span id="cb26-13"><a href="#cb26-13"></a>  <span class="at">forest =</span> <span class="fu">get_forest</span>(TROLLv3_output),</span>
-<span id="cb26-14"><a href="#cb26-14"></a>  <span class="at">verbose =</span> <span class="cn">FALSE</span></span>
-<span id="cb26-15"><a href="#cb26-15"></a>)</span>
-<span id="cb26-16"><a href="#cb26-16"></a>gifs<span class="sc">$</span>height_ct</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">data</span>(<span class="st">"TROLLv3_output"</span>)</span>
+<span id="cb25-2"><a href="#cb25-2"></a></span>
+<span id="cb25-3"><a href="#cb25-3"></a>gifs <span class="ot">&lt;-</span> <span class="fu">autogif</span>(</span>
+<span id="cb25-4"><a href="#cb25-4"></a>  <span class="at">name =</span> <span class="st">"dynamic"</span>,</span>
+<span id="cb25-5"><a href="#cb25-5"></a>  <span class="at">variables =</span> <span class="st">"height_ct"</span>,</span>
+<span id="cb25-6"><a href="#cb25-6"></a>  <span class="at">global =</span> <span class="fu">update_parameters</span>(TROLLv3_output,</span>
+<span id="cb25-7"><a href="#cb25-7"></a>    <span class="at">nbiter =</span> <span class="dv">12</span> <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb25-8"><a href="#cb25-8"></a>    <span class="at">extent_visual =</span> <span class="dv">100</span></span>
+<span id="cb25-9"><a href="#cb25-9"></a>  ),</span>
+<span id="cb25-10"><a href="#cb25-10"></a>  <span class="at">species =</span> TROLLv3_output<span class="sc">@</span>inputs<span class="sc">$</span>species,</span>
+<span id="cb25-11"><a href="#cb25-11"></a>  <span class="at">climate =</span> TROLLv3_output<span class="sc">@</span>inputs<span class="sc">$</span>climate,</span>
+<span id="cb25-12"><a href="#cb25-12"></a>  <span class="at">daily =</span> TROLLv3_output<span class="sc">@</span>inputs<span class="sc">$</span>daily,</span>
+<span id="cb25-13"><a href="#cb25-13"></a>  <span class="at">forest =</span> <span class="fu">get_forest</span>(TROLLv3_output),</span>
+<span id="cb25-14"><a href="#cb25-14"></a>  <span class="at">verbose =</span> <span class="cn">FALSE</span></span>
+<span id="cb25-15"><a href="#cb25-15"></a>)</span>
+<span id="cb25-16"><a href="#cb25-16"></a>gifs<span class="sc">$</span>height_ct</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 
@@ -917,20 +979,14 @@ Number of Species    :  45 </code></pre>
 
 </div>
 <div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-levi2018" class="csl-entry" role="listitem">
+Levi, Taal, Michael Barfield, Shane Barrantes, Christopher Sullivan, Robert D. Holt, and John Terborgh. 2018. <span>“Tropical Forests Can Maintain Hyperdiversity Because of Enemies.”</span> <em>Proceedings of the National Academy of Sciences</em> 116 (2): 581–86. <a href="https://doi.org/10.1073/pnas.1813211116">https://doi.org/10.1073/pnas.1813211116</a>.
+</div>
 <div id="ref-Marechaux2017" class="csl-entry" role="listitem">
 Maréchaux, Isabelle, and Jérôme Chave. 2017. <span>“An Individual-Based Forest Model to Jointly Simulate Carbon and Tree Diversity in Amazonia: Description and Applications.”</span> <em>Ecological Monographs</em> 87: 632–64. <a href="https://doi.org/10.1002/ecm.1271">https://doi.org/10.1002/ecm.1271</a>.
 </div>
 <div id="ref-schmitt2023" class="csl-entry" role="listitem">
 Schmitt, Sylvain, Guillaume Salzet, Fabian Jörg Fischer, Isabelle Maréchaux, and Jerome Chave. 2023. <span>“Rcontroll: An r Interface for the Individual-Based Forest Dynamics Simulator TROLL.”</span> <em>Methods in Ecology and Evolution</em> 14 (11): 2749–57. <a href="https://doi.org/10.1111/2041-210X.14215">https://doi.org/10.1111/2041-210X.14215</a>.
-</div>
-<div id="ref-ggplot2" class="csl-entry" role="listitem">
-Wickham, Hadley. 2016. <em>Ggplot2: Elegant Graphics for Data Analysis</em>. Springer-Verlag New York. <a href="https://ggplot2.tidyverse.org">https://ggplot2.tidyverse.org</a>.
-</div>
-<div id="ref-dplyr" class="csl-entry" role="listitem">
-Wickham, Hadley, Romain François, Lionel Henry, Kirill Müller, and Davis Vaughan. 2023. <em>Dplyr: A Grammar of Data Manipulation</em>. <a href="https://dplyr.tidyverse.org">https://dplyr.tidyverse.org</a>.
-</div>
-<div id="ref-tidyr" class="csl-entry" role="listitem">
-Wickham, Hadley, Davis Vaughan, and Maximilian Girlich. 2024. <em>Tidyr: Tidy Messy Data</em>. <a href="https://tidyr.tidyverse.org">https://tidyr.tidyverse.org</a>.
 </div>
 </div>
 </section></section>
