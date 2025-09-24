@@ -1,5 +1,8 @@
-.Rproj.user
-.Rhistory
-.RData
-.Ruserdata
-index_cache
+*
+!.gitignore
+!tp.qmd
+!NEWS.md
+!rcontroll_tp.Rproj
+!README.md
+!README.qmd
+!references.bib
