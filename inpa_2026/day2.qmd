@@ -1,0 +1,30 @@
+---
+title: "Travaux Pratiques `rcontroll` Day 2"
+subtitle: "Hands-on TROLL 4 discovery with `rcontroll`"
+author: "Sylvain Schmitt"
+institute: CIRAD
+date: 2025/10/28
+date-format: medium
+format: 
+  revealjs:
+    theme: dark
+    output-location: fragment
+    slide-number: true
+    logo: figs/logo_ucl.png
+    transition: fade
+    preview-links: true
+    chalkboard: true
+bibliography: references.bib
+include-in-header:
+  - text: |
+      <style>
+      .reveal .slide-logo {
+        max-height: unset;
+        height: 100px;
+      }
+      </style>
+---
+
+# Introduction
+
+## Références
