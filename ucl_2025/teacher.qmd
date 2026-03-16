@@ -1,0 +1,422 @@
+---
+title: "Travaux Pratiques `rcontroll`"
+subtitle: "Une interface R pour le simulateur de dynamique forestière basé sur les individus TROLL"
+author: "Sylvain Schmitt"
+institute: CIRAD
+date: 2025/10/28
+date-format: medium
+format: 
+  revealjs:
+    theme: dark
+    output-location: fragment
+    slide-number: true
+    logo: figs/logo_ucl.png
+    transition: fade
+    preview-links: true
+    chalkboard: true
+bibliography: references.bib
+include-in-header:
+  - text: |
+      <style>
+      .reveal .slide-logo {
+        max-height: unset;
+        height: 100px;
+      }
+      </style>
+---
+
+```{r set}
+#| include: false
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(rcontroll)
+knitr::opts_chunk$set(echo = TRUE)
+set.seed(42)
+```
+
+# Introduction
+
+Nous allons aujourd'hui explorer l'utilisation de simulateurs forestiers en écologie, notamment à travers un modèle basé sur les agents :
+
+> modèle permettant de simuler les actions et les interactions d'agents autonomes afin de comprendre le comportement d'un système et les facteurs qui déterminent ses résultats.
+
+## Le jeu de la vie (J. Conway, 1970) {.smaller}
+
+-   Chaque cellule ne peut se trouver que dans deux états : allumée (vivante) ou éteinte (morte)
+-   Une cellule allumée le reste uniquement si 2 ou 3 de ses 8 voisines sont allumées
+-   Une cellule éteinte s’allume uniquement si 3 de ses 8 voisines sont allumées
+
+```{r}
+#| echo: false
+knitr::include_graphics("https://user-images.githubusercontent.com/9169414/36646548-4ac65af8-1a79-11e8-811d-da84549f7af3.gif")
+```
+
+## Boids (C. W. Reynolds, 1986) {.smaller}
+
+-   La cohésion : les boids se rapprochent les uns des autres
+-   La séparation : deux boids ne peuvent pas se trouver au même endroit au même moment
+-   L’alignement : les boids suivent leurs voisins
+
+```{r}
+#| echo: false
+knitr::include_graphics("https://gameidea.org/wp-content/uploads/2024/03/2D-boids-simulation.gif")
+```
+
+## @levi2018 {.smaller}
+
+> *Tropical forests can maintain hyperdiversity because of enemies*
+
+::::: columns
+::: column
+```{r}
+#| echo: false
+knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/9/9d/Adaptation_du_mod%C3%A8le_de_l%27effet_Janzen-Connell_%281970%29.png")
+```
+:::
+
+::: column
+```{r}
+#| echo: false
+knitr::include_graphics("https://www.pnas.org/cms/10.1073/pnas.1813211116/asset/7a01f42c-5dc2-44fc-a6ed-43658e9d145b/assets/graphic/pnas.1813211116fig01.jpeg")
+```
+:::
+:::::
+
+## @levi2018 {.smaller}
+
+> *Tropical forests can maintain hyperdiversity because of enemies* par @levi2018
+
+::::: columns
+::: column
+```{r}
+#| echo: false
+knitr::include_graphics("https://www.pnas.org/cms/10.1073/pnas.1813211116/asset/69fe93cd-bdb3-4bb9-b666-b42834acabf9/assets/graphic/pnas.1813211116fig02.jpeg")
+```
+:::
+
+::: column
+```{r}
+#| echo: false
+knitr::include_graphics("https://www.pnas.org/cms/10.1073/pnas.1813211116/asset/7a01f42c-5dc2-44fc-a6ed-43658e9d145b/assets/graphic/pnas.1813211116fig01.jpeg")
+```
+:::
+:::::
+
+# TROLL
+
+> An Individual-BasedForest Model to Jointly Simulate Carbon and Tree Diversity in Amazonia par @Marechaux2017
+
+## Qu'est-ce que c'est ?
+
+TROLL modélise chaque arbre individuellement dans un environnement spatialisé. Le modèle TROLL peut donc être défini comme un modèle de croissance forestière individuel, centré et spatialement explicite. Il simule le cycle de vie des arbres, depuis le recrutement à partir d'un diamètre à hauteur de poitrine (dbh) de 1 cm, jusqu'à la mort. Les arbres poussent dans un environnement lumineux dont les valeurs sont calculées dans des voxels de $1 m^3$.
+
+## Représentation
+
+```{r }
+#| echo: false
+knitr::include_graphics("https://gmd.copernicus.org/articles/18/5143/2025/gmd-18-5143-2025-avatar-web.png")
+```
+
+## Représentation
+
+```{r }
+#| echo: false
+knitr::include_graphics("https://besjournals.onlinelibrary.wiley.com/cms/asset/c6ab93b7-9b2b-49f2-a1cd-abbb6de35318/mee314215-fig-0001-m.jpg")
+```
+
+## Fonctionnement {.smaller}
+
+Chaque arbre est défini par son âge, son diamètre à hauteur de poitrine (DBH), sa hauteur (H), le rayon de son houppier (CR), la profondeur de son houppier (CD) et sa surface foliaire (LA). La géométrie de l'arbre est calculée à l'aide d'équations allométriques et la surface foliaire varie dynamiquement au sein de chaque couronne en fonction de l'allocation de carbone. Un arbre peut occuper au maximum un pixel de 1 m sur 1 m. Chaque arbre appartient à une espèce héritée de son arbre parent. Pour chaque espèce, un certain nombre de paramètres sont connus : les valeurs des traits de cette espèce, qui ont été recueillies sur le terrain. L'assimilation du carbone est calculée sur une période de 30 minutes. L'allocation est ensuite calculée pour simuler la croissance des arbres. L'environnement est mis à jour chaque mois. Les juvéniles (arbres dont le diamètre à hauteur de poitrine est inférieur à 1 cm) ne sont pas simulés explicitement, mais comme un groupe. En outre, les processus souterrains, les plantes herbacées, les épiphytes et les lianes ne sont pas pris en compte dans TROLL.
+
+## Environnement R
+
+Pendant ce TP, nous utiliserons le modèle TROLL [@Marechaux2017] avec le package rcontroll [@schmitt2023]. Nous utiliserons également les packages dplyr, tidyr et ggplot2 pour les manipulations de tables et la création de graphiques. Téléchargez-les (pré-requis !) :
+
+```{r dl_pkg}
+#| eval: false
+install.packages("dplyr", "tidyr", "ggplot2", "rcontroll")
+```
+
+Chargez les avec :
+
+```{r pkg}
+#| message: false
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(rcontroll)
+```
+
+# Données
+
+## Espèces
+
+Pour fonctionner, le modèle TROLL utilise un certain nombre de données par espèce, dont une liste de traits fonctionnels. Vous pouvez charger les valeurs de ces traits pour un ensemble d'espèces de Guyane française et explorer ces données.
+
+```{r sp}
+data("TROLLv3_species")
+```
+
+**Question 1** : Combien de traits sont recensés dans ce tableau, et pour combien d'espèce ?
+
+**Question 2** : Sélectionnez une espèce d'arbre de Guyane française pour ce TP. Quelles sont ses valeurs de traits et que comprenez-vous de ses caractéristiques ?
+
+## Espèces
+
+**Question 1** : Combien de traits sont recensés dans ce tableau, et pour combien d'espèce ?
+
+```{r sp_dim}
+dim(TROLLv3_species)
+```
+
+## Espèces {.smaller}
+
+**Question 2** : Sélectionnez une espèce d'arbre de Guyane française pour ce TP. Quelles sont ses valeurs de traits et que comprenez-vous de ses caractéristiques ?
+
+```{r sp_head}
+head(TROLLv3_species)
+```
+
+::: notes
+Espèces dont la dynamique est particulièrement intéressante : *Cecropia obtusa*, *Vouacapoua americana*
+:::
+
+## Climat
+
+Les équations qui décrivent les processus de la dynamique forestière dans le modèle TROLL font intervenir des variables climatiques, ces données sont réunies dans un tableau que vous pouvez charger et explorer :
+
+```{r clim}
+data("TROLLv3_climatedaytime12") 
+```
+
+**Question 3** : Quelles sont les variables climatiques qui sont utilisées pour modéliser la dynamique forestière dans TROLL?
+
+**Question 4** : Quelles sont les valeurs moyennes de ces variables en Guyane française? Ces valeurs sont-elles cohérentes avec ce que vous savez des conditions d'existence des forêts tropicales?
+
+## Climat
+
+**Question 3** : Quelles sont les variables climatiques qui sont utilisées pour modéliser la dynamique forestière dans TROLL?
+
+```{r clim_head}
+head(TROLLv3_climatedaytime12)
+```
+
+## Climat {.smaller}
+
+**Question 4** : Quelles sont les valeurs moyennes de ces variables en Guyane française? Ces valeurs sont-elles cohérentes avec ce que vous savez des conditions d'existence des forêts tropicales?
+
+```{r clim_sum}
+summary(TROLLv3_climatedaytime12)
+```
+
+## Variation diurne
+
+Dans le modèle TROLL, les processus d'assimilation du carbone par les plantes sont calculés sur un pas d'une demi-heure. Les données climatiques sont donc recalculées sur ce pas de temps, pour cela, vous aurez besoin de charger un troisième tableau, qui correspond aux variances des variables pour chaque pas de temps de la journée :
+
+```{r daily}
+data("TROLLv3_daytimevar") 
+```
+
+## Paramètres
+
+Il vous faut maintenant définir les paramètres de votre simulation :
+
+-   le nombre de pas de temps par an `iterperyear`
+
+-   le nombre de pas de temps total de la simulation `nbiter`
+
+-   la taille de la parcelle simulée, grace aux nombres de colonnes `cols` et de lignes `rows` (les parcelles sont rectangulaires)
+
+-   le nombre de graines vennant de l'extérieur `seedrain` (la pluie de graine correspond aux graines qui sont dispersée dans la parcelle simulée depuis l'exterieur)
+
+## Paramètres {.smaller}
+
+La fonction `generate_parameters` permet de créer un tableau avec les différents paramètres d'une simulation :
+
+```{r generate_parameters}
+generate_parameters(cols = 250, rows = 250, nbiter = 12 * 10) %>%
+  head() %>%
+  knitr::kable()
+```
+
+**Question 5** : Si vous utilisez le code précédent, quelle est la durée de votre simulation?
+
+# Simulation
+
+## `troll` {.smaller}
+
+Maintenant que vous avez les données nécessaires, vous pouvez réaliser une **simulation**. Pour réaliser une simulation, vous pouvez utiliser la fonction `troll()` :
+
+```{r troll}
+#| cache: true
+#| message: false
+#| warning: false
+sim <- troll(
+  name = "test",
+  global = generate_parameters(
+    cols = 100, rows = 100,
+    iterperyear = 12, nbiter = 12 * 100
+  ),
+  species = TROLLv3_species,
+  climate = TROLLv3_climatedaytime12,
+  daily = TROLLv3_daytimevar,
+  verbose = TRUE
+)
+```
+
+**Question 6** : Comment s'appelle votre simulation? Quel est son format (dans R)?
+
+**⚠️** la fonction `troll()` met un certain temps à s'exécuter, rappelez-vous que le modèle calcule l'assimilation du carbone pour chaque arbre modélisé sur une période d'une demi-heure.
+
+## `troll`
+
+**Question 6** : Comment s'appelle votre simulation? Quel est son format (dans R)?
+
+```{r sim_obj}
+sim
+```
+
+# Visualisation
+
+## `autoplot` {.smaller}
+
+Vous pouvez utiliser la fonction `autoplot()` pour visualiser les résultats de votre simulation, pour cela vous devez choisir les arguments :
+
+-   `what` doit valoir soit `"temporal"`, soit `"spatial"`, soit `"distribution"`
+-   `species` doit être le nom de l'espèce à laquelle vous vous intéressez (entre guillemets)
+
+```{r autoplot}
+#| eval: false
+rcontroll::autoplot(sim,
+  what = ,
+  species = ) +
+  theme(legend.position = "bottom")
+```
+
+**Question 7** : Quels sont les indicateurs (ou variables) auxquels vous pouvez avoir accès avec la fonction `autoplot()`?
+
+Vous pouvez constater que la simulation a été réalisée à partir d'un sol nu (sans arbre).
+
+**Question 8** Augmentez le nombre d'années de simulation et effectuez une simulation de 100 ans. Quelle est la surface terrière de cette espèce en début de simulation et en fin de simulation? Comparez vos résultats avec ceux de vos camarades sur les autres espèces.
+
+## `autoplot`
+
+**Question 7** : Quels sont les indicateurs auxquels vous pouvez avoir accès avec la fonction `autoplot()`?
+
+```{r autoplot_sol2}
+?rcontroll::`autoplot,trollsim-method`
+```
+
+## `autoplot` {.smaller}
+
+**Question 8** : Augmentez le nombre d'années de simulation et effectuez une simulation de 100 ans. Quelle est la surface terrière de cette espèce en début de simulation et en fin de simulation? Comparez vos résultats avec ceux de vos camarades sur les autres espèces.
+
+```{r autoplot_sol3}
+rcontroll::autoplot(sim,
+  what = "temporal",
+  species = "Eperua_grandiflora") +
+  theme(legend.position = "bottom")
+```
+
+# Multiples simulations
+
+## Pluie de graine
+
+Pour comparer différentes simulations, il est possible de faire des simulations multiples, dont les jeux de paramètres peuvent être différents. Ici, nous allons réaliser des simulations en changeant la valeur de la pluie de graine.
+
+**Question 9** : En changeant la pluie de graine, quel(s) processus de la dynamique forestières est/seront impacté(s) et pourquoi ?
+
+**Question 10** : Comment se disperse l'espèce étudiée par votre binôme ?
+
+## Paramètres multiples
+
+Vous pouvez utiliser à nouveaux la fonction `generate_parameters()`, mais cette fois en précisans qu'il y aura deux simulations, auxquelles on donnera les noms *seed50000* et *seed500*. Ensuite, vous pouvez changer le paramètre de la pluie de graine de la simulation *seed500* pour que ce paramètre soit égale à 500 :
+
+```{r data_stack}
+stack_parameters <- generate_parameters( cols = 100, rows = 100, iterperyear = 12, nbiter = 12 * 50 ) %>% 
+  mutate(simulation = list(c("seed50000", "seed500"))) %>% 
+  unnest(simulation)
+stack_parameters[62, 2] <- 500
+```
+
+## `stack` {.smaller}
+
+La fonction `stack()` permet des faire des simulations multiples, vous pouvez l'utiliser en précisant les paramètres des simulations avec l'argument `global`. Ici l'argument `verbose` prend la valeur `FALSE` pour éviter d'avoir les messages de TROLL, vous ne verrez donc qu'une barre de chargement pendant les simulations. Les autres arguments de la fonction `stack()` permettent entre autre de préciser le nombre de coeur utilisés (`cores`), et les itérations dont les résultats seront stockés (`thin`).
+
+```{r stack}
+#| cache: true
+sim_stack <- stack(
+  name = "teststack",
+  simulations = c("seed50000", "seed500"),
+  global = stack_parameters,
+  species = TROLLv3_species,
+  climate = TROLLv3_climatedaytime12,
+  daily = TROLLv3_daytimevar,
+  verbose = FALSE,
+  cores = 2,
+  thin = (1:10)*10
+)
+```
+
+## Visualisation multiples {.smaller}
+
+Vous pouvez ensuite utiliser la fonction `autoplot()` comme vous l'avez fait avec une simulation simple :
+
+```{r autoplot_stack}
+rcontroll::autoplot(sim_stack,
+  what = "temporal",
+  variables = c("ba", "agb")
+)
+```
+
+**Question 12** : Comment se comporte votre espèce? par rapport aux autres? Etait-ce attendu? A votre avis, quel(s) processus est/sont être responsable(s) de ce que vous observez?
+
+# Questions bonus exploratoire
+
+A partir de simulations réalisées avec le modèle TROLL, à quelle question en écologie des forêts pouvez-vous répondre ?
+
+# Bonus
+
+Visualisation dynamique
+
+## Code
+
+```{r bonu_code}
+#| eval: false
+data("TROLLv3_output")
+
+gifs <- autogif(
+  name = "dynamic",
+  variables = "height_ct",
+  global = update_parameters(TROLLv3_output,
+    nbiter = 12 * 100,
+    extent_visual = 100
+  ),
+  species = TROLLv3_output@inputs$species,
+  climate = TROLLv3_output@inputs$climate,
+  daily = TROLLv3_output@inputs$daily,
+  forest = get_forest(TROLLv3_output),
+  verbose = FALSE
+)
+gifs$height_ct
+```
+
+## Result
+
+```{r bonus_gif}
+#| echo: false
+knitr::include_graphics("https://raw.githubusercontent.com/sylvainschmitt/rcontroll/main/inst/figures/troll.gif")
+```
+
+# Conclusion
+
+Félicitations 👏 , vous êtes désormais des pros de `rcontroll` !
+
+Plus sérieusement, je serais ravis de répondre à toutes vos questions. N'hésitez pas à consulter [GitHub](https://sylvainschmitt.github.io/rcontroll/) si vous avez besoin d'aide plus tard.
+
+::: footer
+*Sylvain Schmitt (sylvain.schmitt\@cirad.fr)*
+:::
+
+## Références

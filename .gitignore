@@ -1,8 +1,2 @@
-*
-!.gitignore
-!tp.qmd
-!NEWS.md
-!rcontroll_tp.Rproj
-!README.md
-!README.qmd
-!references.bib
+.Rproj.user
+*_cache
