@@ -1,16 +1,16 @@
 ---
-title: "Travaux Pratiques `rcontroll` Day 3"
+title: "`rcontroll` practical work - Day 1"
 subtitle: "Hands-on TROLL advanced usage"
 author: "Sylvain Schmitt"
 institute: CIRAD
-date: 2025/10/28
+date: 2026/04/08
 date-format: medium
 format: 
   revealjs:
     theme: dark
     output-location: fragment
     slide-number: true
-    logo: figs/logo_ucl.png
+    logo: figs/logo.png
     transition: fade
     preview-links: true
     chalkboard: true
@@ -25,6 +25,31 @@ include-in-header:
       </style>
 ---
 
+## Menu
+
+```{r}
+#| echo: false
+knitr::include_graphics("figs/troll_model_cheatsheet.svg")
+```
+
 # Introduction
 
-## Références
+<!-- In reality a lot to do before simulations and experiments -->
+
+# Prepare Species
+
+# Prepare Climate
+
+# Prepare Soil
+
+# LIDAR simulation
+
+# Model evaluation
+
+# Sensitivity analysis
+
+# Calibration analysis
+
+# Schmitt et al. 2020
+
+# References

@@ -1,16 +1,16 @@
 ---
-title: "Travaux Pratiques `rcontroll` Day 1"
+title: "`rcontroll` practical work - Day 1"
 subtitle: "Hands-on TROLL 3 discovery with `rcontroll`"
 author: "Sylvain Schmitt"
 institute: CIRAD
-date: 2025/10/28
+date: 2026/04/06
 date-format: medium
 format: 
   revealjs:
     theme: dark
     output-location: fragment
     slide-number: true
-    logo: figs/logo_ucl.png
+    logo: figs/logo.png
     transition: fade
     preview-links: true
     chalkboard: true
@@ -25,6 +25,141 @@ include-in-header:
       </style>
 ---
 
+
+```{r set}
+#| include: false
+library(tidyverse)
+library(rcontroll)
+knitr::opts_chunk$set(echo = TRUE)
+set.seed(42)
+```
+
+## Menu
+
+```{r}
+#| echo: false
+knitr::include_graphics("figs/troll_model_cheatsheet.svg")
+```
+
 # Introduction
 
-## Références
+Today we will explore the use of forest simulators in ecology, specifically through an agent-based model:
+
+> a model that simulates the actions and interactions of autonomous agents in order to understand the behaviour of a system and the factors that determine its outcomes.
+
+## The Game of Life (J. Conway, 1970) {.smaller}
+
+-   Each cell can only be in one of two states: on (alive) or off (dead)
+-   An on cell remains on only if 2 or 3 of its 8 neighbours are on
+-   An off cell turns on only if 3 of its 8 neighbours are on
+
+```{r}
+#| echo: false
+knitr::include_graphics("https://user-images.githubusercontent.com/9169414/36646548-4ac65af8-1a79-11e8-811d-da84549f7af3.gif")
+```
+
+## Boids (C. W. Reynolds, 1986) {.smaller}
+
+-   Cohesion: the boids move closer to one another
+-   Separation: two boids cannot be in the same place at the same time
+-   Alignment: the boids follow their neighbours
+
+```{r}
+#| echo: false
+knitr::include_graphics("https://gameidea.org/wp-content/uploads/2024/03/2D-boids-simulation.gif")
+```
+
+## @levi2018 {.smaller}
+
+> *Tropical forests can maintain hyperdiversity because of enemies* by @levi2018
+
+::::: columns
+::: column
+```{r}
+#| echo: false
+knitr::include_graphics("https://www.pnas.org/cms/10.1073/pnas.1813211116/asset/7a01f42c-5dc2-44fc-a6ed-43658e9d145b/assets/graphic/pnas.1813211116fig01.jpeg")
+```
+:::
+::: column
+```{r}
+#| echo: false
+knitr::include_graphics("https://www.pnas.org/cms/10.1073/pnas.1813211116/asset/69fe93cd-bdb3-4bb9-b666-b42834acabf9/assets/graphic/pnas.1813211116fig02.jpeg")
+```
+:::
+:::::
+
+
+# TROLL
+
+> An Individual-Based Forest Model to Jointly Simulate Carbon and Tree Diversity in Amazonia by @Marechaux2017
+
+## What is it?
+
+TROLL models each tree individually within a spatially explicit environment. The TROLL model can therefore be defined as an individual, centred and spatially explicit forest growth model. It simulates the life cycle of trees, from recruitment at a diameter at breast height (dbh) of 1 cm, through to death. Trees grow in a light environment where values are calculated within $1 m^3$ voxels.
+
+## Scheme
+
+```{r }
+#| echo: false
+knitr::include_graphics("https://gmd.copernicus.org/articles/18/5143/2025/gmd-18-5143-2025-avatar-web.png")
+```
+
+## Scheme
+
+```{r }
+#| echo: false
+knitr::include_graphics("https://besjournals.onlinelibrary.wiley.com/cms/asset/c6ab93b7-9b2b-49f2-a1cd-abbb6de35318/mee314215-fig-0001-m.jpg")
+```
+
+## Scheme
+
+![](https://raw.githubusercontent.com/sylvainschmitt/rcontroll/main/inst/figures/troll.gif)
+
+## How it works {.smaller}
+
+Each tree is defined by its age, diameter at breast height (DBH), height (H), crown radius (CR), crown depth (CD) and leaf area (LA). The tree’s geometry is calculated using allometric equations, and the leaf area varies dynamically within each crown depending on carbon allocation. A tree can occupy a maximum of one 1 m by 1 m pixel. Each tree belongs to a species inherited from its parent tree. For each species, a number of parameters are known: the trait values for that species, which have been collected in the field. Carbon assimilation is calculated over a 30-minute period. Allocation is then calculated to simulate tree growth. The environment is updated monthly. Juveniles (trees with a diameter at breast height of less than 1 cm) are not simulated explicitly, but as a group. Furthermore, underground processes, herbaceous plants, epiphytes and lianas are not taken into account in TROLL.
+
+## R Environment
+
+During this practical session, we will use the TROLL model [@Marechaux2017] with the rcontrol package [@schmitt2023]. We will also use the tidyverse packages for table manipulation and graph creation. Download them (prerequisite!):
+
+```{r dl_pkg}
+#| eval: false
+install.packages("tidyverse", "rcontroll")
+```
+
+Load them with:
+
+```{r pkg}
+#| message: false
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(rcontroll)
+```
+
+# Inputs - Species
+
+# Inputs - Climate
+
+# Inputs - Parameters
+
+# Modelling - `troll`
+
+# Outputs - `TROLLsim()`
+
+# Outputs - Files
+
+# Outputs - Temporal
+
+# Outputs - Spatial
+
+# Outputs - Distribution
+
+# Modelling - `stack`
+
+# Modelling - From forest
+
+# Dynamic visualisation
+
+# References

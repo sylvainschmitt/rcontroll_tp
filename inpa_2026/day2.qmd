@@ -1,16 +1,16 @@
 ---
-title: "Travaux Pratiques `rcontroll` Day 2"
+title: "`rcontroll` practical work - Day 2"
 subtitle: "Hands-on TROLL 4 discovery with `rcontroll`"
 author: "Sylvain Schmitt"
 institute: CIRAD
-date: 2025/10/28
+date: 2026/04/07
 date-format: medium
 format: 
   revealjs:
     theme: dark
     output-location: fragment
     slide-number: true
-    logo: figs/logo_ucl.png
+    logo: figs/logo.png
     transition: fade
     preview-links: true
     chalkboard: true
@@ -25,6 +25,29 @@ include-in-header:
       </style>
 ---
 
+## Menu
+
+```{r}
+#| echo: false
+knitr::include_graphics("figs/troll_model_cheatsheet.svg")
+```
+
 # Introduction
 
-## Références
+<!-- New features -->
+
+# Inputs - Species
+
+# Inputs - Climate
+
+# Inputs - Soil
+
+# Inputs - Parameters
+
+# Outputs - Files
+
+# Outputs - Water balance
+
+# Outputs - Soil water
+
+# References
