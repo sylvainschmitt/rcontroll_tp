@@ -521,13 +521,11 @@ Sylvain Schmitt
 
 </div>
 <p>Load them with:</p>
-<div class="cell" data-hash="day1_cache/revealjs/pkg_893142249362331944347785f8144486">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="fu">library</span>(rcontroll)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="day1_cache/revealjs/pkg_fa3c8fe245471a517583cc044d1e1fc7">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">library</span>(rcontroll)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/pkg_893142249362331944347785f8144486">
+<div class="cell fragment" data-hash="day1_cache/revealjs/pkg_fa3c8fe245471a517583cc044d1e1fc7">
 
 </div>
 </section></section>
@@ -818,8 +816,8 @@ J_{max}  = min\begin{cases}
 <p>klight: Light attenuation in the canopy following a Beer-Lambert law</p>
 </blockquote>
 <p><span class="math display">\[PPFD = PPFD \times exp(-k_{light}\times LAI)\]</span></p>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-16_6345284078977492d54e5fcf0887df1b">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>g <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">"data/lai/R1_0_LAI.txt"</span>) <span class="sc">%&gt;%</span> </span>
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-16_c87bc0534c6502ad53c2fc48474cbddc">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>g <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">"data/day1/R1_0_LAI.txt"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb13-2"><a href="#cb13-2"></a>  <span class="fu">group_by</span>(h) <span class="sc">%&gt;%</span> </span>
 <span id="cb13-3"><a href="#cb13-3"></a>  <span class="fu">summarise</span>(<span class="at">lai =</span> <span class="fu">mean</span>(LAI3D)) <span class="sc">%&gt;%</span> </span>
 <span id="cb13-4"><a href="#cb13-4"></a>  <span class="fu">mutate</span>(<span class="at">light =</span> <span class="dv">400</span><span class="sc">*</span><span class="fu">exp</span>(<span class="sc">-</span><span class="fl">0.63</span><span class="sc">*</span>lai)<span class="sc">/</span><span class="dv">100</span>) <span class="sc">%&gt;%</span> </span>
@@ -829,7 +827,7 @@ J_{max}  = min\begin{cases}
 <span id="cb13-8"><a href="#cb13-8"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
 <span id="cb13-9"><a href="#cb13-9"></a>  <span class="fu">coord_flip</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-16_6345284078977492d54e5fcf0887df1b">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-16_c87bc0534c6502ad53c2fc48474cbddc">
 
 </div>
 </section>
@@ -2715,23 +2713,17 @@ End of simulation.</code></pre>
 </section>
 <section id="files" class="slide level2">
 <h2>Files</h2>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-31_ceacb186d53e083069d1c3e09005351a">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a>fs<span class="sc">::</span><span class="fu">dir_ls</span>(<span class="st">"day1_out/test1/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-31_202f7ee9b69f781b3067531654398909">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="fu">list.files</span>(<span class="st">"day1_out/test1/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-31_ceacb186d53e083069d1c3e09005351a">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-31_202f7ee9b69f781b3067531654398909">
 <div class="cell-output cell-output-stdout">
-<pre><code>day1_out/test1/test1_0_death.txt
-day1_out/test1/test1_0_death_snapshots.txt
-day1_out/test1/test1_0_deathrate.txt
-day1_out/test1/test1_0_final_pattern.txt
-day1_out/test1/test1_0_initial_pattern.txt
-day1_out/test1/test1_0_sumstats.txt
-day1_out/test1/test1_0_sumstats_species.txt
-day1_out/test1/test1_input_climate.txt
-day1_out/test1/test1_input_daily.txt
-day1_out/test1/test1_input_global.txt
-day1_out/test1/test1_input_species.txt
-day1_out/test1/test1_log.txt</code></pre>
+<pre><code> [1] "test1_0_death_snapshots.txt"  "test1_0_death.txt"           
+ [3] "test1_0_deathrate.txt"        "test1_0_final_pattern.txt"   
+ [5] "test1_0_initial_pattern.txt"  "test1_0_sumstats_species.txt"
+ [7] "test1_0_sumstats.txt"         "test1_input_climate.txt"     
+ [9] "test1_input_daily.txt"        "test1_input_global.txt"      
+[11] "test1_input_species.txt"      "test1_log.txt"               </code></pre>
 </div>
 </div>
 </section>

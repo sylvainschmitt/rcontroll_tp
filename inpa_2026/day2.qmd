@@ -23,6 +23,9 @@ include-in-header:
         height: 100px;
       }
       </style>
+execute: 
+  echo: true
+  cache: true
 ---
 
 ## Menu
@@ -34,20 +37,424 @@ knitr::include_graphics("figs/troll_model_cheatsheet.svg")
 
 # Introduction
 
-<!-- New features -->
+> TROLL 4.0: representing water and carbon fluxes, leaf phenology, and intraspecific trait variation in a mixed-species individual-based forest dynamics model [@maréchaux2025]
 
-# Inputs - Species
+## R Environment
 
-# Inputs - Climate
+During this practical session, we will use the TROLL model 4.0 with raw files from a simulation output. We will also use the tidyverse packages for table manipulation and graph creation. Download them (prerequisite!):
 
-# Inputs - Soil
+```{r dl_pkg}
+#| eval: false
+install.packages("tidyverse")
+```
 
-# Inputs - Parameters
+Load them with:
 
-# Outputs - Files
+```{r pkg}
+#| message: false
+library(tidyverse)
+```
 
-# Outputs - Water balance
+# Inputs
 
-# Outputs - Soil water
+> Raw simulations inputs and outputs are shared in `data/day2/`.
+
+## Files
+
+```{r}
+list.files("data/day2/", pattern = "input")
+```
+
+## Species
+
+TROLL 4 relies on two new following functional traits:
+
+-   LA: leaf area (LA, cm2)
+-   TLP: leaf water potential at turgor loss point (MPa)
+
+## Species
+
+```{r}
+read_tsv("data/day2/R1_input_species.txt") %>% 
+  select(s_name, s_leafarea, s_tlp) %>% 
+  ggplot(aes(s_leafarea, s_tlp)) +
+  geom_point() + theme_bw() +
+  scale_x_log10() + xlab("LA [cm2]") + ylab("TLP [MPa]")
+```
+
+## Climate
+
+TROLL 4 relies now solely on half-hourly values of the 5 climate variables:
+
+-   Temperature (degree C)
+-   Rainfall (cm)
+-   WindSpeed (m/s)
+-   VaporPressureDeficit (hPa)
+-   Iradiance (W/m2)
+
+> NB : rcontroll include a function to help prepare climate data (day 3 session).
+
+## Climate
+
+```{r}
+read_tsv("data/day2/R1_input_daily.txt")
+```
+
+## Climate
+
+```{r}
+read_tsv("data/day2/R1_input_climate.txt")
+```
+
+## Climate
+
+```{r}
+g <- read_tsv("data/day2/R1_input_daily.txt") %>% 
+  select(-time_numeric) %>% 
+  group_by(DayJulian) %>% 
+  summarise_all(mean) %>% 
+  bind_cols(read_tsv("data/day2/R1_input_climate.txt")) %>% 
+  gather(variable, value, -DayJulian) %>% 
+  ggplot(aes(DayJulian, value)) +
+  geom_line() +
+  facet_wrap(~ variable, scales = "free_y") +
+  theme_bw() + xlab("") + ylab("")
+```
+
+
+## Climate
+
+```{r}
+g
+```
+
+## Climate
+
+```{r}
+g <- read_tsv("data/day2/R1_input_climate.txt") %>% 
+  mutate(date = as_date("1999-01-01") + 1:n()) %>% 
+  group_by(pentad = floor_date(date, "5 days")) %>% 
+  summarise(pr = sum(Rainfall)) %>% 
+  ggplot(aes(yday(pentad), pr)) +
+  geom_line(aes(group = year(pentad))) +
+  theme_bw() +
+  geom_smooth() + xlab("") + ylab("5-days rainfall [mm]")
+```
+
+## Climate
+
+```{r}
+g 
+```
+
+## Parameters {.smaller}
+
+TROLL 4 includes new ecosystem parameters controlling phenology,
+new intraspecific parameters controlling LA and TLP variations,
+and new macros controlling woil layer weights and water retnetion curve equations:
+
+* pheno_a0: threshold for change in old leaf shedding rate, in proportion of TLP
+* pheno_b0: threshold for change in old leaf shedding rate, in proportion of tree height
+* pheno_delta: amplitude of change in old leaf shedding rate
+* sigma_LA: intraspecific variation in LA (lognormal)
+* sigma_TLP: intraspecific variation in TLP (normal)
+* SOIL_LAYER_WEIGHT: soil layer weights: relative biomass, conductance, max transpiration
+* WATER_RETENTION_CURVE: water retention curve (Brooks&Corey or Van Genuchten Mualem)
+
+## Soil {.smaller}
+
+TROLL 4 relies on multiple soil information to parametrize the water retention curves with Brooks&Corey or Van Genuchten Mualem:
+
+* number of layers
+* layer thicness (m)
+* proportion of silt (%)
+* proportion of clay (%)
+* proportion of sand (%)
+* soil organic content (g\kg)
+* dry bulk density (kg\dm3)
+* pH
+* cation exchange capacity (cmolC\kg)
+
+## Soil
+
+```{r}
+read_tsv("data/day2/R1_input_pedology.txt")
+```
+
+## Soil
+
+```{r}
+#| fig-height: 4
+read_tsv("data/day2/R1_input_pedology.txt") %>% 
+  mutate(depth = cumsum(layer_thickness)) %>% 
+  gather(variable, value, -depth) %>% 
+  ggplot(aes(depth, value)) + geom_line() + geom_point() +
+  facet_wrap(~ variable, scales = "free_x") + coord_flip() +
+  scale_x_reverse() + theme_bw() + xlab("") + ylab("")
+```
+
+# Outputs
+
+> Daily carbon and water fluxes in atmopshere and soil.
+
+## Files
+
+```{r}
+list.files("data/day2/")
+```
+
+## Forest dynamics
+
+```{r}
+read_tsv("data/day2/R1_0_sumstats.txt") %>% 
+  mutate(date = as_date("1999-01-01") + iter) %>% 
+  ggplot(aes(date, agb/10^3)) +
+  geom_line() +
+  theme_bw() + xlab("") + ylab("AGB [t/ha]")
+```
+
+## GPP: Gross Primary Productivity
+
+```{r}
+read_tsv("data/day2/R1_0_sumstats.txt") %>% 
+  mutate(date = as_date("1999-01-01") + iter) %>% 
+  ggplot(aes(date, gpp*10^2*365/10^3)) +
+  geom_line() +
+  theme_bw() + xlab("") + ylab("GPP [kgC/m2/yr]")
+```
+
+## GPP - Seasonality
+
+```{r}
+read_tsv("data/day2/R1_0_sumstats.txt") %>% 
+  mutate(date = as_date("1999-01-01") + iter) %>% 
+  ggplot(aes(yday(date), gpp*10^2*365/10^3)) +
+  geom_line(aes(group = year(date))) +
+  theme_bw() + geom_smooth() + xlab("Day") + ylab("GPP [kgC/m2/yr]")
+```
+
+## GPP - Drivers
+
+```{r}
+par <- read_tsv("data/day2/R1_input_daily.txt") %>% 
+  group_by(DayJulian) %>% 
+  mutate(par = Snet*2.27*60*30/10^3/10^3/4) %>% 
+  summarise(par = sum(par))
+g <- read_tsv("data/day2/R1_0_sumstats.txt") %>% 
+  mutate(date = as_date("1999-01-01") + iter) %>% 
+  mutate(par = par$par) %>% 
+  ggplot(aes(par, gpp*10^2*365/10^3)) +
+  geom_point() +
+  theme_bw() +
+  geom_smooth() + xlab("PAR [mol/m2/day]") + ylab("GPP [kgC/m2/yr]")
+```
+
+## GPP - Drivers
+
+```{r}
+g
+```
+
+## LAI: Leaf Area Index
+
+```{r}
+read_tsv("data/day2/R1_0_LAIdynamics.txt") %>%
+  mutate(date = as_date("1999-01-01") + iter) %>% 
+  ggplot(aes(date, LAI)) +
+  geom_line() + theme_bw() + xlab("") + ylab("LAI [m2/m2]")
+```
+
+## LAI age
+
+```{r}
+g <- list(
+  young = read_tsv("data/day2/R1_0_LAIyoung.txt", col_types = "d"),
+  mature = read_tsv("data/day2/R1_0_LAImature.txt", col_types = "d"),
+  old = read_tsv("data/day2/R1_0_LAIold.txt", col_types = "d")
+) %>% bind_rows(.id = "age") %>% 
+  gather(height, lai, -age, -iter) %>% 
+  group_by(iter, age) %>% 
+  summarise(lai = sum(lai)) %>% 
+  mutate(date = as_date("1999-01-01") + iter) %>% 
+  ggplot(aes(date, lai, col = age)) +
+  geom_line() +
+  theme_bw() + xlab("") + ylab("LAI [m2/m2]")
+```
+
+## LAI age
+
+```{r}
+g
+```
+
+## Litterfall
+
+```{r}
+read_tsv("data/day2/R1_0_sumstats.txt") %>% 
+  mutate(date = as_date("1999-01-01") + iter) %>% 
+  ggplot(aes(date, litterfall*365)) +
+  geom_line() +
+  theme_bw() + xlab("") + ylab("Litterfall [MgC/ha/yr]")
+```
+
+## Water balance
+
+```{r}
+#| echo: false
+knitr::include_graphics("https://gmd.copernicus.org/articles/18/5143/2025/gmd-18-5143-2025-avatar-web.png")
+```
+
+## Water balance
+
+$$\Delta SWC = P-I-Q-E-T-L$$
+
+```{r}
+#| echo: false
+knitr::include_graphics("https://main--altpages.netlify.app/troll_files/figure-html/swc-1.png")
+```
+
+## Water balance
+
+```{r}
+g <- read_tsv("data/day2/R1_0_water_balance.txt") %>%
+  mutate(date = as_date("1999-01-01") + iter) %>%
+  mutate(precipitation = precipitation/10^3) %>% 
+  select(date, precipitation, interception, 
+         transpitation_0, transpitation_1, transpitation_2,
+         transpitation_3, transpitation_4,
+         leak, evaporation, runoff) %>% 
+  gather(component, value, -date) %>% 
+  mutate(value = value*1000) %>% 
+  filter(value >= 1) %>% 
+  ggplot(aes(date, value, col = component)) +
+  geom_line() +
+  theme_bw() +
+  scale_y_log10() + xlab("") + ylab("[mm]")
+```
+
+## Water balance
+
+```{r}
+g
+```
+
+## Water balance
+
+```{r}
+g <- read_tsv("data/day2/R1_0_water_balance.txt") %>%
+  mutate(date = as_date("1999-01-01") + iter) %>%
+  mutate(transpiration = (transpitation_0 + transpitation_1 + transpitation_2 + 
+                          transpitation_3 + transpitation_4)*1000,
+         "soil evaporation" = evaporation*1000,
+         "canopy evaporation" = (precipitation/1000-throughfall)*1000) %>% 
+  select(date, transpiration, "soil evaporation", "canopy evaporation") %>% 
+  gather(component, value, -date) %>% 
+  ggplot(aes(date, value)) +
+  geom_line() +
+  facet_wrap(~ component, nrow = 3) +
+  theme_bw() + xlab("") + ylab("[mm]")
+```
+
+## Water balance
+
+```{r}
+g
+```
+
+## ET : Evapotranspiration
+
+```{r}
+#| fig-height: 4
+read_tsv("data/day2/R1_0_water_balance.txt") %>%
+  mutate(date = as_date("1999-01-01") + iter) %>%
+  mutate(et = (transpitation_0 + transpitation_1 + transpitation_2 + 
+                 transpitation_3 + transpitation_4 + evaporation + 
+                 (precipitation/1000-throughfall))*1000) %>% 
+  ggplot(aes(date, et)) +
+  geom_line() +   theme_bw() + xlab("") + ylab("ET [mm]")
+```
+
+## SWC: Soil Water Content
+
+```{r}
+#| fig-height: 4
+read_tsv("data/day2/R1_0_water_balance.txt") %>%
+  mutate(date = as_date("1999-01-01") + iter) %>%
+  select(date, starts_with("SWC")) %>% 
+  gather(depth, swc, -date) %>% 
+  separate(depth, c("x", "depth")) %>% 
+  ggplot(aes(date, swc, col = depth)) +
+  geom_line() + theme_bw() + xlab("") + ylab("SWC [m3/m3]")
+```
+
+## Soil water content {.smaller}
+
+```{r}
+resolution <- 0.1
+layers_depths <- c(0.1, 0.5, 1.5, 4, 16.1)
+dry_months <- 10:11
+wet_months <- 6:7
+depths <- tibble(depth = layers_depths) %>%
+  mutate(depth_max = cumsum(depth)) %>% 
+  mutate(depth_min = lag(depth_max)) %>% 
+  mutate(depth_min = ifelse(is.na(depth_min), 0, depth_min))
+data <- read_tsv("data/day2/R1_0_water_balance.txt") %>% 
+  mutate(date = as_date("1999/01/01") + iter) %>% 
+  select(date, starts_with("SWC"), starts_with("SWP")) %>% 
+  gather(variable, value, -date) %>% 
+  separate(variable, c("variable", "layer"), convert = TRUE) %>% 
+  mutate(depth_max = depths$depth_max[layer+1]) %>% 
+  mutate(depth_min = depths$depth_min[layer+1]) %>% 
+  select(date, depth_min, depth_max, variable, value)
+raster <- data %>% 
+  mutate(depth_min = round(depth_min, 1),
+         depth_max = round(depth_max, 1)) %>% 
+  rowwise() %>% 
+  mutate(depth = list(seq(depth_min, 
+                          depth_max, 
+                          by = resolution))) %>% 
+  unnest(depth)
+```
+
+## Soil water content
+
+```{r}
+#| fig-height: 4
+raster %>% 
+  filter(variable == "SWC") %>% 
+  ggplot(aes(date, depth, fill = value)) +
+  geom_raster(vjust = 0) + theme_bw() +
+  scale_y_reverse() + xlab("") + ylab("Depth [ m ]") +
+  scale_fill_viridis_c(expression("SWC ["~m^3~m^3~"]"),
+                       direction = -1)
+```
+
+## Soil water profiles
+
+```{r}
+g <- data %>% 
+  filter(variable == "SWC") %>% 
+  filter(month(date) %in% c(dry_months, wet_months)) %>% 
+  mutate(season = ifelse(month(date) %in% dry_months, "dry", "wet")) %>% 
+  group_by(variable, depth_min, depth_max, season) %>% 
+  summarise(m = median(value), 
+            ll = quantile(value, .05), 
+            hh = quantile(value, .95)) %>% 
+  mutate(depth = (depth_min + depth_max)/2) %>% 
+  ggplot(aes(depth, m, col = season)) +
+  geom_smooth(se = FALSE) +
+  geom_linerange(aes(ymin = ll, ymax = hh)) +
+  geom_point() +
+  theme_bw() +
+  coord_flip() +
+  scale_x_reverse("Depth [ m ]") +
+  ylab(expression("SWC ["~m^3~m^3~"]"))
+```
+
+## Soil water profiles
+
+```{r}
+g
+```
 
 # References

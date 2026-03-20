@@ -134,9 +134,7 @@ Load them with:
 
 ```{r pkg}
 #| message: false
-library(dplyr)
-library(tidyr)
-library(ggplot2)
+library(tidyverse)
 library(rcontroll)
 ```
 
@@ -360,7 +358,7 @@ expand_grid(col = 1:100, row = 1:100) %>%
 $$PPFD = PPFD \times exp(-k_{light}\times LAI)$$
 
 ```{r}
-g <- read_tsv("data/lai/R1_0_LAI.txt") %>% 
+g <- read_tsv("data/day1/R1_0_LAI.txt") %>% 
   group_by(h) %>% 
   summarise(lai = mean(LAI3D)) %>% 
   mutate(light = 400*exp(-0.63*lai)/100) %>% 
@@ -560,7 +558,7 @@ cat(sim@log)
 ## Files
 
 ```{r}
-fs::dir_ls("day1_out/test1/")
+list.files("day1_out/test1/")
 ```
 
 ## Files
