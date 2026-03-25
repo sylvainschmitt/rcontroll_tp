@@ -523,6 +523,6 @@ rcontroll::autoplot(stack, what = "temporal", var = "agb") +
 
 ## Link
 
-[PDF](data/day3/SI4_disturbance.docx.pdf%22)
+[PDF](https://github.com/sylvainschmitt/rcontroll_tp/blob/master/inpa_2026/data/day3/SI4_disturbance.docx.pdf)
 
 # References
