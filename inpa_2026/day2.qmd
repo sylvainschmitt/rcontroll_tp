@@ -69,7 +69,7 @@ list.files("data/day2/", pattern = "input")
 
 TROLL 4 relies on two new following functional traits:
 
--   LA: leaf area (LA, cm2)
+-   LA: leaf area (cm2)
 -   TLP: leaf water potential at turgor loss point (MPa)
 
 ## Species

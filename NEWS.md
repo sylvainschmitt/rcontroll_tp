@@ -1,3 +1,4 @@
+* rcontroll_tp 0.1.0.9008: inpa_2026 day3 1st draft
 * rcontroll_tp 0.1.0.9007: inpa_2026 day2 1st draft
 * rcontroll_tp 0.1.0.9006: inpa_2026 day1 1st draft
 * rcontroll_tp 0.1.0.9005: inpa_2026 qmd structure
