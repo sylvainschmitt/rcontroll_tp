@@ -1,0 +1,715 @@
+---
+title: "Trabalho prático com `rcontroll` - Dia 1"
+subtitle: "Introdução prática ao TROLL 3 com `rcontroll`"
+author: "Sylvain Schmitt"
+institute: CIRAD
+date: 2026/04/06
+date-format: medium
+format: 
+  revealjs:
+    theme: dark
+    output-location: fragment
+    slide-number: true
+    logo: figs/logo.png
+    transition: fade
+    preview-links: true
+    chalkboard: true
+bibliography: references.bib
+include-in-header:
+  - text: |
+      <style>
+      .reveal .slide-logo {
+        max-height: unset;
+        height: 100px;
+      }
+      </style>
+execute: 
+  cache: true
+  echo: true
+---
+
+```{r set}
+#| include: false
+library(tidyverse)
+library(rcontroll)
+knitr::opts_chunk$set(echo = TRUE)
+set.seed(42)
+```
+
+## Menu
+
+```{r}
+#| echo: false
+knitr::include_graphics("figs/troll_model_cheatsheet.svg")
+```
+
+# Introdução
+
+Hoje vamos explorar o uso de simuladores florestais em ecologia, especificamente por meio de um modelo baseado em agentes:
+
+> um modelo que simula as ações e interações de agentes autônomos a fim de compreender o comportamento de um sistema e os fatores que determinam seus resultados.
+
+## O Jogo da Vida (J. Conway, 1970) {.smaller}
+
+-   Cada célula pode estar em apenas um de dois estados: ligada (viva) ou desligada (morta)
+-   Uma célula ligada permanece ligada somente se 2 ou 3 de seus 8 vizinhos estiverem ligados
+-   Uma célula desligada se liga somente se 3 de seus 8 vizinhos estiverem ligados
+
+```{r}
+#| echo: false
+knitr::include_graphics("https://user-images.githubusercontent.com/9169414/36646548-4ac65af8-1a79-11e8-811d-da84549f7af3.gif")
+```
+
+## Boids (C. W. Reynolds, 1986) {.smaller}
+
+-   Coesão: os boids se aproximam uns dos outros
+-   Separação: dois boids não podem ocupar o mesmo lugar ao mesmo tempo
+-   Alinhamento: os boids seguem seus vizinhos
+
+```{r}
+#| echo: false
+knitr::include_graphics("https://gameidea.org/wp-content/uploads/2024/03/2D-boids-simulation.gif")
+```
+
+## @levi2018 {.smaller}
+
+> *Tropical forests can maintain hyperdiversity because of enemies* por @levi2018
+
+::::: columns
+::: column
+```{r}
+#| echo: false
+knitr::include_graphics("https://www.pnas.org/cms/10.1073/pnas.1813211116/asset/7a01f42c-5dc2-44fc-a6ed-43658e9d145b/assets/graphic/pnas.1813211116fig01.jpeg")
+```
+:::
+
+::: column
+```{r}
+#| echo: false
+knitr::include_graphics("https://www.pnas.org/cms/10.1073/pnas.1813211116/asset/69fe93cd-bdb3-4bb9-b666-b42834acabf9/assets/graphic/pnas.1813211116fig02.jpeg")
+```
+:::
+:::::
+
+# TROLL
+
+> Um Modelo Florestal Baseado em Indivíduos para Simular Conjuntamente o Carbono e a Diversidade de Árvores na Amazônia por @Marechaux2017
+
+## O que é?
+
+O TROLL modela cada árvore individualmente dentro de um ambiente espacialmente explícito. O modelo TROLL pode, portanto, ser definido como um modelo de crescimento florestal individual, centrado e espacialmente explícito. Ele simula o ciclo de vida das árvores, desde o recrutamento com diâmetro à altura do peito (DAP) de 1 cm até a morte. As árvores crescem em um ambiente luminoso cujos valores são calculados em voxels de $1 m^3$.
+
+## Esquema
+
+```{r }
+#| echo: false
+knitr::include_graphics("https://gmd.copernicus.org/articles/18/5143/2025/gmd-18-5143-2025-avatar-web.png")
+```
+
+## Esquema
+
+```{r }
+#| echo: false
+knitr::include_graphics("https://besjournals.onlinelibrary.wiley.com/cms/asset/c6ab93b7-9b2b-49f2-a1cd-abbb6de35318/mee314215-fig-0001-m.jpg")
+```
+
+## Esquema
+
+![](https://raw.githubusercontent.com/sylvainschmitt/rcontroll/main/inst/figures/troll.gif)
+
+## Como funciona {.smaller}
+
+Cada árvore é definida pela sua idade, diâmetro à altura do peito (DAP), altura (H), raio da copa (RC), profundidade da copa (PC) e área foliar (AF). A geometria da árvore é calculada por meio de equações alométricas, e a área foliar varia dinamicamente dentro de cada copa conforme a alocação de carbono. Uma árvore pode ocupar no máximo um pixel de 1 m por 1 m. Cada árvore pertence a uma espécie herdada de sua árvore-mãe. Para cada espécie, uma série de parâmetros é conhecida: os valores de traços funcionais coletados em campo. A assimilação de carbono é calculada em intervalos de 30 minutos. A alocação é então calculada para simular o crescimento da árvore. O ambiente é atualizado mensalmente. Juvenis (árvores com DAP inferior a 1 cm) não são simulados individualmente, mas como grupo. Além disso, processos subterrâneos, plantas herbáceas, epífitas e lianas não são considerados no TROLL.
+
+## Ambiente R
+
+Durante esta sessão prática, utilizaremos o modelo TROLL [@Marechaux2017] com o pacote rcontroll [@schmitt2023]. Também usaremos os pacotes tidyverse para manipulação de tabelas e criação de gráficos. Faça o download deles (pré-requisito!):
+
+```{r dl_pkg}
+#| eval: false
+install.packages("tidyverse", "rcontroll")
+```
+
+Carregue-os com:
+
+```{r pkg}
+#| message: false
+library(tidyverse)
+library(rcontroll)
+```
+
+# Entradas - Espécies
+
+> O comportamento das espécies no TROLL é determinado por seus traços funcionais e parâmetros de escalonamento.
+
+## Traços funcionais
+
+O TROLL 3 utiliza os seguintes traços funcionais:
+
+-   LMA: massa foliar por área (LMA, g m−2)
+-   N: conteúdo de nitrogênio foliar por massa seca (N, g g−1)
+-   P: conteúdo de fósforo foliar por massa seca (P, g g−1)
+-   WSG: densidade da madeira (wsg, g cm−3)
+
+## Exemplo de relação
+
+Por exemplo, a taxa máxima potencial de transporte de elétrons Jmax varia entre espécies no TROLL de acordo com a seguinte equação segundo @domingues2010:
+
+$$
+J_{max}  = min\begin{cases}
+-1.50+0.41 \times log_{10}(N)+0.45 \times log_{10}(SLA) \\
+-0.74+0.44 \times log_{10}(P)+0.32 \times log_{10}(SLA)
+\end{cases}
+$$
+
+## Parâmetros alométricos
+
+O TROLL utiliza 3 parâmetros de escalonamento para representar o tamanho das árvores entre espécies:
+
+-   dbh_thres: diâmetro máximo à altura do peito da espécie (cm)
+-   h_lim: altura assintótica (m)
+-   a_h: parâmetro de escalonamento entre diâmetro e altura
+
+## Michaelis Menten
+
+h_lim e a_h definem a trajetória de crescimento em altura para cada espécie em função do seu diâmetro como $h = \frac{h_{lim} \times dbh}{a_h+dbh}$.
+
+```{r}
+#| echo: false
+tibble(dbh = 1:200) %>% 
+  mutate(h = (30*dbh)/(30+dbh)) %>% 
+  ggplot(aes(dbh, h)) +
+  annotate("text", 5, 29, label = "hlim") +
+  annotate("text", 35, 1, label = "a_h") +
+  geom_hline(yintercept = 30, linetype = "dashed") +
+  geom_vline(xintercept = 30, linetype = "dashed") +
+  geom_line() +
+  theme_bw()
+```
+
+## Espécies em `rcontroll`
+
+`rcontroll` inclui dados de 45 espécies da Guiana Francesa
+
+```{r}
+head(TROLLv3_species)
+```
+
+## Espécies em `rcontroll` {.smaller}
+
+Por exemplo, para trajetórias de altura:
+
+```{r}
+#| fig-height: 4
+head(TROLLv3_species) %>% 
+  mutate(dbh = list((1:200)/100)) %>% 
+  unnest(dbh) %>% 
+  mutate(h = (s_hmax*dbh)/(s_ah+dbh)) %>% 
+  ggplot(aes(dbh, h, col = s_name)) +
+  geom_line() +
+  theme_bw()
+```
+
+# Entradas - Clima
+
+> O TROLL 3 utiliza um dia representativo por mês, incorporando variação diurna a cada meia hora.
+
+## Clima mensal
+
+O TROLL 3 utiliza diversas variáveis derivadas de 5 variáveis climáticas:
+
+-   Temperatura (°C)
+-   Precipitação (cm)
+-   Velocidade do vento (m/s)
+-   Déficit de Pressão de Vapor (hPa)
+-   Irradiância (W/m2)
+
+## Clima mensal (1/2) {.smaller}
+
+A partir delas, 12 variáveis são derivadas:
+
+-   Temperature: média mensal da temperatura (°C)
+-   DaytimeMeanTemperature: média mensal da temperatura diurna (°C, 7h–19h)
+-   NightTemperature: média mensal da temperatura noturna (°C, 20h–6h)
+-   Rainfall: média mensal da precipitação acumulada (cm)
+-   WindSpeed: média mensal da velocidade do vento (m/s)
+-   DaytimeMeanIrradiance: média mensal da irradiância solar acumulada média por dia (W/m2, 7h–19h)
+-   MeanIrradiance: média mensal da irradiância solar acumulada em 24 horas (W/m2)
+
+## Clima mensal (2/2) {.smaller}
+
+A partir delas, 12 variáveis são derivadas:
+
+-   SaturatedVapourPressure: média mensal da pressão de vapor de saturação (hPa)
+-   VapourPressure: média mensal da pressão de vapor (hPa)
+-   VaporPressureDeficit: média mensal do déficit de pressão de vapor (DPV, hPa)
+-   DayTimeVapourPressureDeficitVPDbasic: média mensal do déficit de pressão de vapor diurno (7h–19h) pela fórmula básica (hPa)
+-   DaytimeMeanVapourPressureDeficit: média mensal do déficit de pressão de vapor diurno (7h–19h) pela fórmula avançada (hPa)
+
+## Clima mensal
+
+> OBS: No TROLL 4, as entradas climáticas foram simplificadas para 5 (sessão do dia 2).
+
+> OBS: rcontroll inclui uma função para ajudar na preparação dos dados climáticos (sessão do dia 3).
+
+## Clima mensal em `rcontroll`
+
+`rcontroll` inclui dados de 1 ano (12 meses) de variação climática em Paracou a partir do ERA5-Land [@muñoz-sabater2021]:
+
+```{r}
+TROLLv3_climatedaytime12 %>% 
+  head()
+```
+
+## Clima mensal em `rcontroll` {.smaller}
+
+`rcontroll` inclui dados de 1 ano (12 meses) de variação climática em Paracou a partir do ERA5-Land [@muñoz-sabater2021]:
+
+```{r}
+#| fig-height: 4
+TROLLv3_climatedaytime12 %>% 
+  mutate(month = 1:12) %>% 
+  gather(variable, value, -month) %>% 
+  ggplot(aes(month, value)) +
+  geom_line() +
+  facet_wrap(~ variable, scales = "free") +
+  theme_bw() + xlab("") + ylab("")
+```
+
+## Variação a cada meia hora {.smaller}
+
+O carbono assimilado por uma árvore em um dia é a soma dos fluxos de carbono no nível foliar ao longo dos 24 períodos de meia hora de luz do dia:
+
+* vardaytime_light: variação diária da irradiância em relação ao valor médio do dia
+* vardaytime_vpd: variação diária do déficit de pressão de vapor em relação ao valor médio do dia
+* vardaytime_T: variação diária da temperatura em relação ao valor médio do dia
+
+> OBS: rcontroll inclui uma função para ajudar na preparação dos dados de variação a cada meia hora (sessão do dia 3).
+
+## Variação a cada meia hora em `rcontroll`
+
+`rcontroll` inclui dados de variação a cada meia hora em Paracou a partir do ERA5-Land [@muñoz-sabater2021]:
+
+```{r}
+TROLLv3_daytimevar %>% 
+  head()
+```
+
+## Variação a cada meia hora em `rcontroll` {.smaller}
+
+`rcontroll` inclui dados de variação a cada meia hora em Paracou a partir do ERA5-Land [@muñoz-sabater2021]:
+
+```{r}
+#| fig-height: 4
+TROLLv3_daytimevar %>% 
+  gather(variable, value, -starttime, -endtime) %>% 
+  ggplot(aes(starttime, value)) +
+  geom_line() +
+  facet_wrap(~ variable, scales = "free") +
+  theme_bw() + xlab("") + ylab("")
+```
+
+# Entradas - Parâmetros
+
+> Parâmetros globais da simulação.
+
+## Tipos de parâmetros {.smaller}
+
+O TROLL inclui numerosos parâmetros (veja a [documentação do rcontroll](https://sylvainschmitt.github.io/rcontroll/reference/generate_parameters.html) ou o [apêndice do artigo GMD](https://gmd.copernicus.org/articles/18/5205/2025/#section6&gid=1&pid=1)). Eles podem ser agrupados em vários tipos:
+
+* Parâmetros de simulação: definição das características da simulação (tamanho, duração, ...)
+* Parâmetros físicos: definição do comportamento do ambiente físico
+* Parâmetros de ecossistema: definição do comportamento das árvores em nível comunitário
+* Parâmetros intraespecíficos: definição da variação de traços funcionais dentro das espécies
+* Macros do modelo: definição do comportamento e dos processos do modelo
+
+## Parâmetros de simulação
+
+> Definição das características da simulação (tamanho, duração, ...)
+
+* cols: Número de colunas (m)
+* rows: Número de linhas (m)
+* HEIGHT: Extensão vertical da simulação (m)
+* nbiter: Número total de passos de tempo (meses)
+
+## Simulação - exemplo
+
+```{r}
+expand_grid(col = 1:100, row = 1:100) %>% 
+  ggplot(aes(col, row)) +
+  geom_tile(fill = NA, colour = "black") +
+  theme_bw() + coord_equal()
+```
+
+## Parâmetros físicos
+
+> Definição do comportamento do ambiente físico
+
+* SWtoPPFD: Converte irradiância de onda curta em fótons PAR
+* p_nonvert: Parâmetro de incidência de luz (diferença através de meio túrbido)
+* klight: Atenuação da luz no dossel seguindo a lei de Beer-Lambert
+* phi: Rendimento quântico (em micromol C/micromol fóton)
+* absorptance_leaves: Absortância de folhas individuais
+
+## Exemplo físico
+
+> klight: Atenuação da luz no dossel seguindo a lei de Beer-Lambert
+
+$$PPFD = PPFD \times exp(-k_{light}\times LAI)$$
+
+```{r}
+g <- read_tsv("data/day1/R1_0_LAI.txt") %>% 
+  group_by(h) %>% 
+  summarise(lai = mean(LAI3D)) %>% 
+  mutate(light = 400*exp(-0.63*lai)/100) %>% 
+  gather(variable, value, -h) %>% 
+  ggplot(aes(h, value, col = variable)) +
+  geom_line() +
+  theme_bw() +
+  coord_flip()
+```
+
+## Exemplo físico
+
+```{r}
+g
+```
+
+## Parâmetros de ecossistema (1/2) {.smaller}
+
+> Definição do comportamento das árvores em nível comunitário
+
+* theta: Parâmetro do modelo de Farquhar
+* g1: Parâmetro g1 do modelo de condutância estomática de Medlyn et al.
+* vC: Variância do momento de flexão
+* CR_a: Intercepto logarítmico do raio da copa ou crescimento inicial de Michaelis Menten
+* CR_b: Inclinação logarítmica do raio da copa ou RC assintótico de Michaelis Menten
+* CD_a: Intercepto da profundidade da copa (valor absoluto)
+* CD_b: Inclinação da profundidade da copa (como fração da altura da árvore)
+* shape_crown: Parâmetro de forma da copa
+
+## Parâmetros de ecossistema (2/2) {.smaller}
+
+* fallocwood: Fração da biomassa alocada para madeira acima do solo (renovação de galhos + caule)
+* falloccanopy: Fração da biomassa alocada para o dossel (folhas + órgãos reprodutivos + galhinhos)
+* Cseedrain: Constante usada para escalar a chuva total de sementes por hectare entre espécies
+* nbs0: Número de sementes produzidas e dispersas por cada árvore madura
+* leafdem_resolution: Resolução do modelo de demografia foliar
+* p_tfsecondary: Probabilidade de queda secundária de árvore
+* hurt_decay: Parâmetro que determina como os danos às árvores são reparados
+* crown_gap_fraction: Fração de lacunas na copa
+* m: Taxa mínima de mortalidade
+
+## Exemplo de ecossistema {.smaller}
+
+> CR_a e CR_b: Intercepto e inclinação logarítmicos do raio da copa com $CR = CR_a\times dbh^{CR_b}$
+
+```{r}
+#| fig-height: 4
+tibble(dbh = (1:200)/100) %>% 
+  mutate(cr = 2.13*dbh^0.63) %>% 
+  ggplot(aes(dbh, cr)) +
+  geom_line() +
+  theme_bw()
+```
+
+    
+## Parâmetros intraespecíficos (1/2) {.smaller}
+
+> Definição da variação de traços funcionais dentro das espécies
+
+* sigma_height: Variação intraespecífica na altura da árvore (lognormal)
+* sigma_CR: Variação intraespecífica no raio da copa (lognormal)
+* sigma_CD: Variação intraespecífica na profundidade da copa (lognormal)
+* sigma_P: Variação intraespecífica no fósforo foliar (lognormal)
+* sigma_N: Variação intraespecífica no nitrogênio foliar (lognormal)
+* sigma_LMA: Variação intraespecífica na massa foliar por área (lognormal)
+* sigma_wsg: Variação intraespecífica na densidade da madeira
+* sigma_dbhmax: Variação intraespecífica no diâmetro máximo
+
+## Parâmetros intraespecíficos (2/2)
+
+> Definição da variação de traços funcionais dentro das espécies
+
+* corr_CR_height: Coeficiente de correlação entre raio da copa e altura da árvore
+* corr_N_P: Coeficiente de correlação entre nitrogênio foliar e fósforo foliar
+* corr_N_LMA: Coeficiente de correlação entre nitrogênio foliar e massa foliar por área
+* corr_P_LMA: Coeficiente de correlação entre fósforo foliar e massa foliar por área
+
+## Exemplo intraespecífico
+
+> sigma_wsg: Variação intraespecífica na densidade da madeira
+
+```{r}
+#| fig-height: 4
+tibble(wsg = rnorm(100, TROLLv3_species$s_wsg[1], 0.06)) %>% 
+  ggplot(aes(wsg)) + geom_histogram() + theme_bw()
+```
+
+## Macros do modelo {.smaller}
+
+> Definição do comportamento e dos processos do modelo
+
+* LL_parameterization: parametrizações do tempo de vida da folha: empírica de Reich, modelo de Kikuzawa e modelo de Kikuzawa com plasticidade foliar
+* LA_regulation: regulação dinâmica da área foliar
+* sapwood: parametrizações do alburno: espessura constante (0,04), percentual de Fyllas, limite inferior de Fyllas
+* seedsadditional: excesso de biomassa em sementes após maturação (0,1)
+* NONRANDOM: simulações aleatórias ou não
+* GPPcrown: opção para calcular apenas o GPP a partir do valor mais alto de PPFD e GPP
+* BASICTREEFALL: a queda de árvores é uma fonte de mortalidade
+* SEEDTRADEOFF: o número de sementes produzidas é determinado pelo NPP alocado para reprodução e massa de sementes; caso contrário, o número de sementes é fixo
+* CROWN_MM: alometria de Michaelis Menten para copas em vez de lei de potência
+
+## Parâmetros em `rcontroll`
+
+Uma única função para gerá-los todos:
+
+```{r}
+generate_parameters(cols = 100, rows = 100, nbiter = 12 * 1) %>%
+  head(n = 10)
+```
+
+# Modelagem - `troll`
+
+> Vamos finalmente usar o TROLL!
+
+## Preparar entradas
+
+Preparamos os parâmetros globais, dados de espécies, dados climáticos e variação diária.
+
+```{r}
+global  <- generate_parameters(cols = 100, rows = 100, nbiter = 12*100)
+species <- TROLLv3_species
+climate <- TROLLv3_climatedaytime12
+daily <- TROLLv3_daytimevar
+```
+
+## Executar
+
+```{r}
+#| eval: false
+sim <- troll(
+  name = "test1",
+  global = global,
+  species = species,
+  climate = climate,
+  daily = daily,
+  verbose = TRUE,
+  path = "day1_out/"
+)
+```
+
+> Você pode executar uma simulação em memória sem a opção path, mas é recomendável usar o path para gravar arquivos e ter acesso às saídas da simulação posteriormente.
+
+## Simulação
+
+Simulação resultante:
+
+```{r}
+#| echo: false
+sim <- load_output("test1", "day1_out/test1")
+```
+
+```{r}
+sim
+```
+
+## Abrir a partir de arquivos
+
+```{r}
+sim <- load_output("test1", "day1_out/test1")
+sim
+```
+
+# Saídas
+
+> Vamos explorar todas as saídas do modelo.
+
+## `TROLLsim()`
+
+```{r}
+lapply(attributes(sim), class)
+```
+
+## Trajetória do ecossistema
+
+```{r}
+sim@ecosystem
+```
+
+## Trajetória das espécies
+
+```{r}
+sim@species
+```
+
+## Estado final da floresta
+
+```{r}
+sim@forest
+```
+
+## Log {.smaller}
+
+```{r}
+cat(sim@log)
+```
+
+## Arquivos
+
+```{r}
+list.files("day1_out/test1/")
+```
+
+## Arquivos
+
+```{r}
+read_tsv("day1_out/test1/test1_0_sumstats.txt")
+```
+
+# Gráficos
+
+> Vamos dar uma olhada nas saídas da nossa simulação.
+
+## Temporal
+
+```{r}
+rcontroll::autoplot(sim, what = "temporal")
+```
+
+## Temporal
+
+```{r}
+rcontroll::autoplot(
+  sim, what = "temporal", 
+  species = c("Dicorynia_guianensis", "Eperua_grandiflora")
+) + theme(legend.position = "bottom")
+```
+
+## Espacial
+
+```{r}
+rcontroll::autoplot(sim, what = "spatial")
+```
+
+## Distribuição
+
+```{r}
+rcontroll::autoplot(sim, what = "distribution", variables = c("dbh", "height"))
+```
+
+# Modelagem - `stack`
+
+> Um conjunto de simulações ao mesmo tempo para experimentos virtuais.
+
+## Preparar entrada
+
+```{r}
+stack_parameters <- generate_parameters(
+  cols = 100, rows = 100,
+  iterperyear = 12, nbiter = 12 * 1
+) %>%
+  mutate(simulation = list(c("seed50000", "seed500"))) %>%
+  unnest(simulation)
+stack_parameters[62, 2] <- 500 # Cseedrain
+```
+
+
+## Preparar entrada
+
+```{r}
+stack_parameters
+```
+
+## Executar stack
+
+```{r}
+sim_stack <- stack(
+  name = "teststack",
+  simulations = c("seed50000", "seed500"),
+  global = stack_parameters,
+  species = species,
+  climate = climate,
+  daily = daily,
+  verbose = FALSE,
+  cores = 2
+)
+```
+
+## Saída do stack
+
+```{r}
+sim_stack
+```
+
+## Saída do stack
+
+```{r}
+rcontroll::autoplot(sim_stack, what = "temporal", variables = c("ba", "agb"))
+```
+
+# Modelagem - A partir da floresta
+
+> Retomando a partir de uma floresta simulada anteriormente.
+
+## Extrair floresta
+
+```{r}
+forest <- get_forest(sim)
+forest
+```
+
+## Reiniciar simulação
+
+```{r}
+sim2 <- troll(
+  name = "test",
+  global = update_parameters(sim, nbiter = 12 * 10),
+  species = species,
+  climate = climate,
+  daily = daily,
+  forest = forest,
+  verbose = FALSE
+)
+```
+
+## Saída
+
+```{r}
+sim2
+```
+
+## Saída
+
+```{r}
+rcontroll::autoplot(sim2)
+```
+
+# Visualização dinâmica
+
+> Visualização dinâmica como GIF.
+
+## Criar gif
+
+```{r}
+#| eval: false
+gifs <- autogif(
+  name = "dynamic",
+  variables = "height_ct",
+  global = update_parameters(sim, nbiter = 12 * 100, extent_visual = 100),
+  species = species,
+  climate = climate,
+  daily = daily,
+  forest = forest,
+  verbose = FALSE
+)
+gifs$height_ct
+```
+
+## Resultado
+
+```{r}
+knitr::include_graphics("https://raw.githubusercontent.com/sylvainschmitt/rcontroll/main/inst/figures/troll.gif")
+```
+
+# Referências

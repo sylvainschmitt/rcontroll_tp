@@ -1,0 +1,460 @@
+---
+title: "Trabalho prático com `rcontroll` - Dia 2"
+subtitle: "Introdução prática ao TROLL 4 com `rcontroll`"
+author: "Sylvain Schmitt"
+institute: CIRAD
+date: 2026/04/07
+date-format: medium
+format: 
+  revealjs:
+    theme: dark
+    output-location: fragment
+    slide-number: true
+    logo: figs/logo.png
+    transition: fade
+    preview-links: true
+    chalkboard: true
+bibliography: references.bib
+include-in-header:
+  - text: |
+      <style>
+      .reveal .slide-logo {
+        max-height: unset;
+        height: 100px;
+      }
+      </style>
+execute: 
+  echo: true
+  cache: true
+---
+
+## Menu
+
+```{r}
+#| echo: false
+knitr::include_graphics("figs/troll_model_cheatsheet.svg")
+```
+
+# Introdução
+
+> TROLL 4.0: representando fluxos de água e carbono, fenologia foliar e variação intraespecífica de traços em um modelo de dinâmica florestal baseado em indivíduos de espécies mistas [@maréchaux2025]
+
+## Ambiente R
+
+Durante esta sessão prática, utilizaremos o modelo TROLL 4.0 com arquivos brutos de uma saída de simulação. Também usaremos os pacotes tidyverse para manipulação de tabelas e criação de gráficos. Faça o download deles (pré-requisito!):
+
+```{r dl_pkg}
+#| eval: false
+install.packages("tidyverse")
+```
+
+Carregue-os com:
+
+```{r pkg}
+#| message: false
+library(tidyverse)
+```
+
+# Entradas
+
+> As entradas e saídas brutas das simulações estão disponíveis em `data/day2/`.
+
+## Arquivos
+
+```{r}
+list.files("data/day2/", pattern = "input")
+```
+
+## Espécies
+
+O TROLL 4 introduz dois novos traços funcionais:
+
+-   LA: área foliar (cm2)
+-   TLP: potencial hídrico foliar no ponto de perda de turgor (MPa)
+
+## Espécies
+
+```{r}
+read_tsv("data/day2/R1_input_species.txt") %>% 
+  select(s_name, s_leafarea, s_tlp) %>% 
+  ggplot(aes(s_leafarea, s_tlp)) +
+  geom_point() + theme_bw() +
+  scale_x_log10() + xlab("LA [cm2]") + ylab("TLP [MPa]")
+```
+
+## Clima
+
+O TROLL 4 agora utiliza exclusivamente valores a cada meia hora das 5 variáveis climáticas:
+
+-   Temperature (°C)
+-   Rainfall (cm)
+-   WindSpeed (m/s)
+-   VaporPressureDeficit (hPa)
+-   Iradiance (W/m2)
+
+> OBS: rcontroll inclui uma função para ajudar na preparação dos dados climáticos (sessão do dia 3).
+
+## Clima
+
+```{r}
+read_tsv("data/day2/R1_input_daily.txt")
+```
+
+## Clima
+
+```{r}
+read_tsv("data/day2/R1_input_climate.txt")
+```
+
+## Clima
+
+```{r}
+g <- read_tsv("data/day2/R1_input_daily.txt") %>% 
+  select(-time_numeric) %>% 
+  group_by(DayJulian) %>% 
+  summarise_all(mean) %>% 
+  bind_cols(read_tsv("data/day2/R1_input_climate.txt")) %>% 
+  gather(variable, value, -DayJulian) %>% 
+  ggplot(aes(DayJulian, value)) +
+  geom_line() +
+  facet_wrap(~ variable, scales = "free_y") +
+  theme_bw() + xlab("") + ylab("")
+```
+
+
+## Clima
+
+```{r}
+g
+```
+
+## Clima
+
+```{r}
+g <- read_tsv("data/day2/R1_input_climate.txt") %>% 
+  mutate(date = as_date("1999-01-01") + 1:n()) %>% 
+  group_by(pentad = floor_date(date, "5 days")) %>% 
+  summarise(pr = sum(Rainfall)) %>% 
+  ggplot(aes(yday(pentad), pr)) +
+  geom_line(aes(group = year(pentad))) +
+  theme_bw() +
+  geom_smooth() + xlab("") + ylab("Precipitação em 5 dias [mm]")
+```
+
+## Clima
+
+```{r}
+g 
+```
+
+## Parâmetros {.smaller}
+
+O TROLL 4 inclui novos parâmetros de ecossistema que controlam a fenologia,
+novos parâmetros intraespecíficos que controlam as variações de LA e TLP,
+e novas macros que controlam os pesos das camadas de solo e as equações da curva de retenção de água:
+
+* pheno_a0: limiar para mudança na taxa de queda de folhas velhas, em proporção do TLP
+* pheno_b0: limiar para mudança na taxa de queda de folhas velhas, em proporção da altura da árvore
+* pheno_delta: amplitude da mudança na taxa de queda de folhas velhas
+* sigma_LA: variação intraespecífica em LA (lognormal)
+* sigma_TLP: variação intraespecífica em TLP (normal)
+* SOIL_LAYER_WEIGHT: pesos das camadas de solo: biomassa relativa, condutância, transpiração máxima
+* WATER_RETENTION_CURVE: curva de retenção de água (Brooks & Corey ou Van Genuchten Mualem)
+
+## Solo {.smaller}
+
+O TROLL 4 utiliza múltiplas informações de solo para parametrizar as curvas de retenção de água com Brooks & Corey ou Van Genuchten Mualem:
+
+* número de camadas
+* espessura da camada (m)
+* proporção de silte (%)
+* proporção de argila (%)
+* proporção de areia (%)
+* conteúdo orgânico do solo (g\kg)
+* densidade aparente seca (kg\dm3)
+* pH
+* capacidade de troca catiônica (cmolC\kg)
+
+## Solo
+
+```{r}
+read_tsv("data/day2/R1_input_pedology.txt")
+```
+
+## Solo
+
+```{r}
+#| fig-height: 4
+read_tsv("data/day2/R1_input_pedology.txt") %>% 
+  mutate(depth = cumsum(layer_thickness)) %>% 
+  gather(variable, value, -depth) %>% 
+  ggplot(aes(depth, value)) + geom_line() + geom_point() +
+  facet_wrap(~ variable, scales = "free_x") + coord_flip() +
+  scale_x_reverse() + theme_bw() + xlab("") + ylab("")
+```
+
+# Saídas
+
+> Fluxos diários de carbono e água na atmosfera e no solo.
+
+## Arquivos
+
+```{r}
+list.files("data/day2/")
+```
+
+## Dinâmica florestal
+
+```{r}
+read_tsv("data/day2/R1_0_sumstats.txt") %>% 
+  mutate(date = as_date("1999-01-01") + iter) %>% 
+  ggplot(aes(date, agb/10^3)) +
+  geom_line() +
+  theme_bw() + xlab("") + ylab("AGB [t/ha]")
+```
+
+## GPP: Produtividade Primária Bruta
+
+```{r}
+read_tsv("data/day2/R1_0_sumstats.txt") %>% 
+  mutate(date = as_date("1999-01-01") + iter) %>% 
+  ggplot(aes(date, gpp*10^2*365/10^3)) +
+  geom_line() +
+  theme_bw() + xlab("") + ylab("GPP [kgC/m2/yr]")
+```
+
+## GPP - Sazonalidade
+
+```{r}
+read_tsv("data/day2/R1_0_sumstats.txt") %>% 
+  mutate(date = as_date("1999-01-01") + iter) %>% 
+  ggplot(aes(yday(date), gpp*10^2*365/10^3)) +
+  geom_line(aes(group = year(date))) +
+  theme_bw() + geom_smooth() + xlab("Dia") + ylab("GPP [kgC/m2/yr]")
+```
+
+## GPP - Fatores determinantes
+
+```{r}
+par <- read_tsv("data/day2/R1_input_daily.txt") %>% 
+  group_by(DayJulian) %>% 
+  mutate(par = Snet*2.27*60*30/10^3/10^3/4) %>% 
+  summarise(par = sum(par))
+g <- read_tsv("data/day2/R1_0_sumstats.txt") %>% 
+  mutate(date = as_date("1999-01-01") + iter) %>% 
+  mutate(par = par$par) %>% 
+  ggplot(aes(par, gpp*10^2*365/10^3)) +
+  geom_point() +
+  theme_bw() +
+  geom_smooth() + xlab("PAR [mol/m2/day]") + ylab("GPP [kgC/m2/yr]")
+```
+
+## GPP - Fatores determinantes
+
+```{r}
+g
+```
+
+## LAI: Índice de Área Foliar
+
+```{r}
+read_tsv("data/day2/R1_0_LAIdynamics.txt") %>%
+  mutate(date = as_date("1999-01-01") + iter) %>% 
+  ggplot(aes(date, LAI)) +
+  geom_line() + theme_bw() + xlab("") + ylab("LAI [m2/m2]")
+```
+
+## LAI por idade foliar
+
+```{r}
+g <- list(
+  young = read_tsv("data/day2/R1_0_LAIyoung.txt", col_types = "d"),
+  mature = read_tsv("data/day2/R1_0_LAImature.txt", col_types = "d"),
+  old = read_tsv("data/day2/R1_0_LAIold.txt", col_types = "d")
+) %>% bind_rows(.id = "age") %>% 
+  gather(height, lai, -age, -iter) %>% 
+  group_by(iter, age) %>% 
+  summarise(lai = sum(lai)) %>% 
+  mutate(date = as_date("1999-01-01") + iter) %>% 
+  ggplot(aes(date, lai, col = age)) +
+  geom_line() +
+  theme_bw() + xlab("") + ylab("LAI [m2/m2]")
+```
+
+## LAI por idade foliar
+
+```{r}
+g
+```
+
+## Serapilheira
+
+```{r}
+read_tsv("data/day2/R1_0_sumstats.txt") %>% 
+  mutate(date = as_date("1999-01-01") + iter) %>% 
+  ggplot(aes(date, litterfall*365)) +
+  geom_line() +
+  theme_bw() + xlab("") + ylab("Serapilheira [MgC/ha/yr]")
+```
+
+## Balanço hídrico
+
+```{r}
+#| echo: false
+knitr::include_graphics("https://gmd.copernicus.org/articles/18/5143/2025/gmd-18-5143-2025-avatar-web.png")
+```
+
+## Balanço hídrico
+
+$$\Delta SWC = P-I-Q-E-T-L$$
+
+```{r}
+#| echo: false
+knitr::include_graphics("https://main--altpages.netlify.app/troll_files/figure-html/swc-1.png")
+```
+
+## Balanço hídrico
+
+```{r}
+g <- read_tsv("data/day2/R1_0_water_balance.txt") %>%
+  mutate(date = as_date("1999-01-01") + iter) %>%
+  mutate(precipitation = precipitation/10^3) %>% 
+  select(date, precipitation, interception, 
+         transpitation_0, transpitation_1, transpitation_2,
+         transpitation_3, transpitation_4,
+         leak, evaporation, runoff) %>% 
+  gather(component, value, -date) %>% 
+  mutate(value = value*1000) %>% 
+  filter(value >= 1) %>% 
+  ggplot(aes(date, value, col = component)) +
+  geom_line() +
+  theme_bw() +
+  scale_y_log10() + xlab("") + ylab("[mm]")
+```
+
+## Balanço hídrico
+
+```{r}
+g
+```
+
+## Balanço hídrico
+
+```{r}
+g <- read_tsv("data/day2/R1_0_water_balance.txt") %>%
+  mutate(date = as_date("1999-01-01") + iter) %>%
+  mutate(transpiration = (transpitation_0 + transpitation_1 + transpitation_2 + 
+                          transpitation_3 + transpitation_4)*1000,
+         "soil evaporation" = evaporation*1000,
+         "canopy evaporation" = (precipitation/1000-throughfall)*1000) %>% 
+  select(date, transpiration, "soil evaporation", "canopy evaporation") %>% 
+  gather(component, value, -date) %>% 
+  ggplot(aes(date, value)) +
+  geom_line() +
+  facet_wrap(~ component, nrow = 3) +
+  theme_bw() + xlab("") + ylab("[mm]")
+```
+
+## Balanço hídrico
+
+```{r}
+g
+```
+
+## ET: Evapotranspiração
+
+```{r}
+#| fig-height: 4
+read_tsv("data/day2/R1_0_water_balance.txt") %>%
+  mutate(date = as_date("1999-01-01") + iter) %>%
+  mutate(et = (transpitation_0 + transpitation_1 + transpitation_2 + 
+                 transpitation_3 + transpitation_4 + evaporation + 
+                 (precipitation/1000-throughfall))*1000) %>% 
+  ggplot(aes(date, et)) +
+  geom_line() +   theme_bw() + xlab("") + ylab("ET [mm]")
+```
+
+## SWC: Conteúdo de Água no Solo
+
+```{r}
+#| fig-height: 4
+read_tsv("data/day2/R1_0_water_balance.txt") %>%
+  mutate(date = as_date("1999-01-01") + iter) %>%
+  select(date, starts_with("SWC")) %>% 
+  gather(depth, swc, -date) %>% 
+  separate(depth, c("x", "depth")) %>% 
+  ggplot(aes(date, swc, col = depth)) +
+  geom_line() + theme_bw() + xlab("") + ylab("SWC [m3/m3]")
+```
+
+## Conteúdo de água no solo {.smaller}
+
+```{r}
+resolution <- 0.1
+layers_depths <- c(0.1, 0.5, 1.5, 4, 16.1)
+dry_months <- 10:11
+wet_months <- 6:7
+depths <- tibble(depth = layers_depths) %>%
+  mutate(depth_max = cumsum(depth)) %>% 
+  mutate(depth_min = lag(depth_max)) %>% 
+  mutate(depth_min = ifelse(is.na(depth_min), 0, depth_min))
+data <- read_tsv("data/day2/R1_0_water_balance.txt") %>% 
+  mutate(date = as_date("1999/01/01") + iter) %>% 
+  select(date, starts_with("SWC"), starts_with("SWP")) %>% 
+  gather(variable, value, -date) %>% 
+  separate(variable, c("variable", "layer"), convert = TRUE) %>% 
+  mutate(depth_max = depths$depth_max[layer+1]) %>% 
+  mutate(depth_min = depths$depth_min[layer+1]) %>% 
+  select(date, depth_min, depth_max, variable, value)
+raster <- data %>% 
+  mutate(depth_min = round(depth_min, 1),
+         depth_max = round(depth_max, 1)) %>% 
+  rowwise() %>% 
+  mutate(depth = list(seq(depth_min, 
+                          depth_max, 
+                          by = resolution))) %>% 
+  unnest(depth)
+```
+
+## Conteúdo de água no solo
+
+```{r}
+#| fig-height: 4
+raster %>% 
+  filter(variable == "SWC") %>% 
+  ggplot(aes(date, depth, fill = value)) +
+  geom_raster(vjust = 0) + theme_bw() +
+  scale_y_reverse() + xlab("") + ylab("Profundidade [ m ]") +
+  scale_fill_viridis_c(expression("SWC ["~m^3~m^3~"]"),
+                       direction = -1)
+```
+
+## Perfis de água no solo
+
+```{r}
+g <- data %>% 
+  filter(variable == "SWC") %>% 
+  filter(month(date) %in% c(dry_months, wet_months)) %>% 
+  mutate(season = ifelse(month(date) %in% dry_months, "dry", "wet")) %>% 
+  group_by(variable, depth_min, depth_max, season) %>% 
+  summarise(m = median(value), 
+            ll = quantile(value, .05), 
+            hh = quantile(value, .95)) %>% 
+  mutate(depth = (depth_min + depth_max)/2) %>% 
+  ggplot(aes(depth, m, col = season)) +
+  geom_smooth(se = FALSE) +
+  geom_linerange(aes(ymin = ll, ymax = hh)) +
+  geom_point() +
+  theme_bw() +
+  coord_flip() +
+  scale_x_reverse("Profundidade [ m ]") +
+  ylab(expression("SWC ["~m^3~m^3~"]"))
+```
+
+## Perfis de água no solo
+
+```{r}
+g
+```
+
+# Referências

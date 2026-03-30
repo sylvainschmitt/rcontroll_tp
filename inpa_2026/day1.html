@@ -561,7 +561,7 @@ J_{max}  = min\begin{cases}
 <p>TROLL relies on 3 scaling parameters to represent tree size across species:</p>
 <ul>
 <li>dbh_thres: species maximum diameter at breast height (cm)</li>
-<li>hlim: asymptotic height (m)</li>
+<li>h_lim: asymptotic height (m)</li>
 <li>a_h: scaling parameter between diameter and height</li>
 </ul>
 </section>
@@ -622,9 +622,9 @@ J_{max}  = min\begin{cases}
 <ul>
 <li>Temperature (degree C)</li>
 <li>Rainfall (cm)</li>
-<li>WindSpeed (m/s)</li>
-<li>VaporPressureDeficit (hPa)</li>
-<li>Iradiance (W/m2)</li>
+<li>Wind speed (m/s)</li>
+<li>Vapor Pressure Deficit (hPa)</li>
+<li>Irradiance (W/m2)</li>
 </ul>
 </section>
 <section id="monthly-climate-12" class="slide level2 smaller">
@@ -762,7 +762,7 @@ J_{max}  = min\begin{cases}
 </section>
 <section id="parameters-types" class="slide level2 smaller">
 <h2>Parameters types</h2>
-<p>TROLL includes numerous parameters (see <a href="https://sylvainschmitt.github.io/rcontroll/reference/generate_parameters.html">rcontroll documentation</a> or the <a href="https://gmd.copernicus.org/articles/18/5205/2025/#section6&amp;gid=1&amp;pid=1">GMD paper appedix</a>). They might be regrouped in several types:</p>
+<p>TROLL includes numerous parameters (see <a href="https://sylvainschmitt.github.io/rcontroll/reference/generate_parameters.html">rcontroll documentation</a> or the <a href="https://gmd.copernicus.org/articles/18/5205/2025/#section6&amp;gid=1&amp;pid=1">GMD paper appendix</a>). They might be regrouped in several types:</p>
 <ul>
 <li>Simulation parameters: definition of simulation characteristic (size, duration, …)</li>
 <li>Physical parameters: definition of physical environment behaviour</li>
@@ -952,7 +952,7 @@ J_{max}  = min\begin{cases}
 </section>
 <section id="parameters-in-rcontroll" class="slide level2">
 <h2>Parameters in <code>rcontroll</code></h2>
-<p>A single function to generate them:</p>
+<p>A single function to generate them all:</p>
 <div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-20_6fbeeba1bcd69b069ea350695a37ab12">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">generate_parameters</span>(<span class="at">cols =</span> <span class="dv">100</span>, <span class="at">rows =</span> <span class="dv">100</span>, <span class="at">nbiter =</span> <span class="dv">12</span> <span class="sc">*</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb17-2"><a href="#cb17-2"></a>  <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

@@ -151,7 +151,7 @@ g
 
 TROLL 4 includes new ecosystem parameters controlling phenology,
 new intraspecific parameters controlling LA and TLP variations,
-and new macros controlling woil layer weights and water retnetion curve equations:
+and new macros controlling soil layer weights and water retention curve equations:
 
 * pheno_a0: threshold for change in old leaf shedding rate, in proportion of TLP
 * pheno_b0: threshold for change in old leaf shedding rate, in proportion of tree height

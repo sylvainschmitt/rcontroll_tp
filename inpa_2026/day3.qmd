@@ -478,7 +478,7 @@ agb <- stack@forest %>% group_by(simulation) %>% summarise(agb = sum(AGB))
 sensitivity::pcc(data.frame(m = unname(m), intercept = 0), agb$agb) 
 ```
 
-## Point of attention
+## Points of attention
 
 -   Equifinality
 
@@ -507,11 +507,13 @@ rcontroll::autoplot(stack, what = "temporal", var = "agb") +
   geom_hline(yintercept = 2*c(197.5, 221.5)*10^3, col = "red", linetype = "dashed") 
 ```
 
-## Point of attention
+## Points of attention
 
 -   Equifinality
 
 -   Parameters links
+
+-   Space exploration (grid, ABC, ...)
 
 # Schmitt et al. 2020
 

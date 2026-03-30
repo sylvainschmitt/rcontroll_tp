@@ -167,7 +167,7 @@ $$
 TROLL relies on 3 scaling parameters to represent tree size across species:
 
 -   dbh_thres: species maximum diameter at breast height (cm)
--   hlim: asymptotic height (m)
+-   h_lim: asymptotic height (m)
 -   a_h: scaling parameter between diameter and height
 
 ## Michaelis Menten
@@ -220,9 +220,9 @@ TROLL 3 uses a lot of variables all derived from 5 climate variables:
 
 -   Temperature (degree C)
 -   Rainfall (cm)
--   WindSpeed (m/s)
--   VaporPressureDeficit (hPa)
--   Iradiance (W/m2)
+-   Wind speed (m/s)
+-   Vapor Pressure Deficit (hPa)
+-   Irradiance (W/m2)
 
 ## Monthly climate (1/2) {.smaller}
 
@@ -315,7 +315,7 @@ TROLLv3_daytimevar %>%
 
 ## Parameters types {.smaller}
 
-TROLL includes numerous parameters (see [rcontroll documentation](https://sylvainschmitt.github.io/rcontroll/reference/generate_parameters.html) or the [GMD paper appedix](https://gmd.copernicus.org/articles/18/5205/2025/#section6&gid=1&pid=1)). They might be regrouped in several types:
+TROLL includes numerous parameters (see [rcontroll documentation](https://sylvainschmitt.github.io/rcontroll/reference/generate_parameters.html) or the [GMD paper appendix](https://gmd.copernicus.org/articles/18/5205/2025/#section6&gid=1&pid=1)). They might be regrouped in several types:
 
 * Simulation parameters: definition of simulation characteristic (size, duration, ...)
 * Physical parameters: definition of physical environment behaviour 
@@ -462,7 +462,7 @@ tibble(wsg = rnorm(100, TROLLv3_species$s_wsg[1], 0.06)) %>%
 
 ## Parameters in `rcontroll`
 
-A single function to generate them:
+A single function to generate them all:
 
 ```{r}
 generate_parameters(cols = 100, rows = 100, nbiter = 12 * 1) %>%

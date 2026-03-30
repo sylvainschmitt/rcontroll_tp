@@ -1,0 +1,530 @@
+---
+title: "Trabalho prático com `rcontroll` - Dia 3"
+subtitle: "Uso avançado do TROLL com `rcontroll`"
+author: "Sylvain Schmitt"
+institute: CIRAD
+date: 2026/04/08
+date-format: medium
+format: 
+  revealjs:
+    theme: dark
+    output-location: fragment
+    slide-number: true
+    logo: figs/logo.png
+    transition: fade
+    preview-links: true
+    chalkboard: true
+bibliography: references.bib
+include-in-header:
+  - text: |
+      <style>
+      .reveal .slide-logo {
+        max-height: unset;
+        height: 100px;
+      }
+      </style>
+execute: 
+  echo: true
+  cache: true
+---
+
+## Menu
+
+```{r}
+#| echo: false
+knitr::include_graphics("figs/troll_model_cheatsheet.svg")
+```
+
+# Introdução
+
+> Normalmente, a execução de simulações no TROLL começa bem antes de abrir o TROLL ou o rcontroll, envolvendo diversas etapas de coleta e preparação de dados, e se estende muito além de uma única execução do modelo. Pode também incluir avaliação, análise de sensibilidade, calibração ou esquemas complexos de simulação de experimentos virtuais.
+
+## Ambiente R
+
+Durante esta sessão prática, utilizaremos o modelo TROLL [@Marechaux2017] com o pacote rcontroll [@schmitt2023]. Também usaremos os pacotes tidyverse para manipulação de tabelas e criação de gráficos. Faça o download deles (pré-requisito!):
+
+```{r dl_pkg}
+#| eval: false
+install.packages("tidyverse", "rcontroll")
+```
+
+Carregue-os com:
+
+```{r pkg}
+#| message: false
+library(tidyverse)
+library(rcontroll)
+library(ggfortify)
+```
+
+# Preparar Espécies
+
+> Talvez a tarefa mais trabalhosa seja reunir todas as informações sobre as espécies.
+
+## Dados de traços funcionais
+
+Possíveis fontes:
+
+-   local / sítio de estudo
+-   novas medições
+-   regional / sítios próximos
+-   conjuntos de dados públicos de artigos
+-   banco de dados público / TRY [@kattge2019]
+
+## Exemplo [@vleminckx2021]
+
+```{r}
+ft <- readxl::read_xlsx("data/day3/oik13191-sup-0002-appendixs2.xlsx",
+                        "App.S6-ok", skip = 3) %>%
+  rename(s_name = Species, s_wsg = WSG) %>% 
+  mutate(s_LMA = 1/SLA*1000, s_Nmass = N/100, s_Pmass = P/10^6) %>% 
+  filter(s_LMA < 200) %>% 
+  select(s_name, s_LMA, s_Nmass, s_Pmass, s_wsg)
+```
+
+## Exemplo [@vleminckx2021]
+
+```{r}
+autoplot(princomp(select(ft, -s_name), cor = TRUE),
+         alpha = 0.25, col = "lightgrey", loadings.label.size = 6,
+         loadings.label.colour = 'red', loadings.label.vjust = 1.1,
+         loadings.label.repel   = TRUE,
+         loadings = T, loadings.label = T, loadings.colour = 'red') + theme_bw()
+```
+
+## Dados de escalonamento de espécies
+
+Possíveis fontes:
+
+-   inventários locais / do sítio de estudo de diâmetro e altura
+-   novas medições de campo ou dados de lidar
+-   inventários regionais / de sítios próximos de diâmetro e altura
+-   conjuntos de dados públicos de artigos
+-   banco de dados público / TALLO [@jucker2022]
+
+## Exemplo [@jucker2022]
+
+```{r}
+tallo <- read_tsv('data/day3/tallo_amazonia.tsv') %>% 
+  filter(longitude <= -39 & longitude >= -79 & latitude >= -18 & latitude <= 10) %>% 
+  filter(!is.na(species)) %>% 
+  select(species, stem_diameter_cm, height_m)
+```
+
+## Exemplo [@jucker2022]
+
+```{r}
+tallo
+```
+
+## Exemplo [@jucker2022]
+
+```{r}
+tallo %>% group_by(species) %>% filter(n() > 30) %>% 
+  summarise(s_dbhmax = quantile(stem_diameter_cm, .95)) %>% 
+  ggplot(aes(s_dbhmax)) + geom_histogram() + theme_bw()
+```
+
+## Exemplo [@jucker2022]
+
+```{r}
+ggplot(tallo, aes(stem_diameter_cm, height_m)) +
+  geom_point(aes(col = species), alpha = 0.25) +
+  theme_bw() + geom_smooth() + scale_color_discrete(guide = "none")
+```
+
+## Exemplo [@jucker2022]
+
+Em seguida, precisamos inferir o modelo de Michaelis Menten:
+
+$$
+\begin{array}{c} 
+log(height) \sim N [ log(h_{max,s} \times \frac{dbh}{a_{h,s}+dbh^2}), \sigma^2] \\
+h_{max,s} \sim N (h_{max}, \sigma_h^2) \\
+a_{h,s} \sim N (a_{h}, \sigma_a^2)
+\end{array}
+$$
+
+## Exemplo [@jucker2022]
+
+Por exemplo, usando `brms`:
+
+```{r}
+#| eval: false
+fit <- brm(bf(log(h) ~ log(hmax * (d/ (ah + d))), 
+              hmax ~ 1 + 1|species,
+              ah ~ 1 + 1|species,
+              nl = TRUE), 
+           prior = c(
+             prior(normal(40, 10), lb = 10, nlpar = "hmax"),
+             prior(normal(0.5, 0.5), lb = 0, nlpar = "ah")
+             ),
+           data = mdata, chains = 2, cores = 2, threads = 10)
+```
+
+## Imputação {.smaller}
+
+Frequentemente, dados de algumas espécies estão ausentes. O TROLL não suporta dados faltantes, o que exige a remoção das espécies ou a imputação dos dados. Sugiro buscar um equilíbrio entre manter a diversidade de espécies e uma diversidade de estratégias funcionais representadas (por exemplo, incluindo pioneiras), ao mesmo tempo que se limita a quantidade de "dados falsos" imputados. Tecnicamente, podemos usar informações adicionais de outros traços correlacionados ou distâncias filogenéticas, caso se espere conservatismo filogenético. Em termos de métodos e ferramentas, costumava me basear na imputação multivariada por equações encadeadas do pacote `mice` do R. No entanto, atualmente utilizo aprendizado de máquina com floresta aleatória para imputação por meio do `missForest`.
+
+# Preparar Clima
+
+> Dados climáticos extensos também são necessários.
+
+## Fontes
+
+Precisamos de variações a cada meia hora e, portanto, requeremos dados com alta resolução temporal. As possíveis fontes incluem:
+
+-   estação meteorológica local e/ou torre de fluxo (mas atenção, pois não são necessariamente padronizadas)
+-   estação meteorológica e/ou torre de fluxo próxima
+-   conjuntos de dados globais, por ex. FLUXNET2015 [@pastorello2020]
+-   reanálises globais, como ERA5-Land [@muñoz-sabater2021]
+
+> Ou melhor ainda, uma combinação para avaliação e correção de viés de produtos globais de alta resolução em relação a dados locais.
+
+## Fontes {.smaller}
+
+-   Estações meteorológicas locais requerem contatos ou podem ser dados públicos como os do MeteoFrance
+-   Conjuntos de dados globais e reanálises podem ser acessados online pelo Google Earth Engine ou pelo Climate Data Store
+-   `rcontroll` inclui uma vinheta e funções para obter dados do ERA5-Land e formatá-los para uso no TROLL: <https://sylvainschmitt.github.io/rcontroll/articles/climate.html>
+
+> Para ERA5-Land, tanto para o TROLL 3 quanto para o TROLL 4, desenvolvi um script Python para coleta eficiente de dados em uma determinada área: <https://github.com/sylvainschmitt/troll_fg/blob/main/data/raw_data/era/get_era_ee.py>
+
+## Exemplo ERA5-Land
+
+```{r}
+system.file("extdata",
+    "ERA5land_mth_Nouragues_2021_2022.nc",
+    package = "rcontroll"
+) %>% terra::rast()
+```
+
+## Exemplo ERA5-Land
+
+```{r}
+climate <- generate_climate(
+  x = -52.75468,
+  y = 4.060414,
+  tz = "America/Cayenne",
+  era5land_hour = system.file("extdata", "ERA5land_hr_Nouragues_2022.nc",
+    package = "rcontroll"
+  ),
+  era5land_month = system.file("extdata", "ERA5land_mth_Nouragues_2021_2022.nc",
+    package = "rcontroll"
+  )
+)
+```
+
+## Exemplo ERA5-Land
+
+```{r}
+climate$climatedaytime12
+```
+
+## Exemplo ERA5-Land
+
+```{r}
+climate$daytimevar
+```
+
+# Preparar Solo
+
+> Os dados de solo precisam ser informados no TROLL 4.
+
+## Fontes
+
+Precisamos pelo menos das texturas e, se possível, de COT, DBD, CEC e pH:
+
+-   análises de solo locais ou próximas
+-   conjuntos de dados globais, por ex. SoilGrids [@poggio2021]
+
+> Dependendo da região, não tenho muita confiança no SoilGrids, por exemplo, na Guiana Francesa, onde há apenas algumas amostras de áreas alagadas superextrapretadas.
+
+## Exemplo [@schmitt2025] {.smaller}
+
+Coletado por J. Lischtein para dois sítios, exigindo múltiplas referências:
+
+-   Texturas para Paracou (Van Langenhove et al. ([2021](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-vanlangenhove2021)): Tabela 1, solos SLD de encosta, 0–30 cm e Gourlet-Fleury et al. (2004): Tabela 3, solos ferralíticos profundos, 0–40 cm) e Tapajós (Silver et al. ([2000](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-silver2000)): Tabela 5, posição topográfica 350).
+-   COT para Paracou (Van Langenhove et al. ([2021](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-vanlangenhove2021)): média dos valores do solo SLD de encosta (0–30 cm) nas Tabelas 2–3, média das estações seca e úmida) e Tapajós (Quesada et al. ([2010](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-quesada2010)): Tabela S2, 0–30 cm).
+-   DBD para Paracou (Van Langenhove et al. ([2021](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-vanlangenhove2021)): média para 0–30 cm de profundidade nos solos de encosta com drenagem lateral superficial (SLD)) e Tapajós (Silver et al. ([2000](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-silver2000)): média para solos argilosos (0–10 cm) da Tabela 1, posições topográficas 350 e 400).
+-   pH para Paracou (Van Langenhove et al. ([2021](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-vanlangenhove2021)): média dos valores do solo SLD de encosta 0–30 cm na Tabela 1) e Tapajós (Quesada et al. ([2010](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-quesada2010)): Tabela S2, 0–30 cm).
+-   CEC para Paracou (Sabatier et al. ([1997](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-sabatier1997)): Tabela 2, solos SLD, 0–30 cm) e Tapajós (Quesada et al. ([2010](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-quesada2010)): Tabela S2, 0–30 cm).
+-   Profundidade do solo em metros ([Nepstad et al. 2002](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-nepstad2002)) para o Tapajós.
+
+# Simulação LIDAR
+
+> O TROLL 3.8 introduz a simulação de lidar, ampliando o conjunto de saídas e comparações disponíveis. <https://sylvainschmitt.github.io/rcontroll/articles/lidar.html>
+
+## Parâmetros do módulo LIDAR {.smaller}
+
+```{r}
+#| ecaho: false
+generate_lidar(mean_beam_pc = 10, iter_pointcloud_generation = 11) %>% 
+  knitr::kable()
+```
+
+## Uso do módulo LIDAR
+
+```{r}
+sim <- troll(
+  name = "test",
+  global = update_parameters(TROLLv3_output, nbiter = 12 * 1),
+  species = TROLLv3_output@inputs$species,
+  climate = TROLLv3_output@inputs$climate,
+  daily = TROLLv3_output@inputs$daily,
+  forest = get_forest(TROLLv3_output),
+  lidar = generate_lidar(mean_beam_pc = 10, iter_pointcloud_generation = 11),
+  verbose = TRUE
+)
+```
+
+## Uso do módulo LIDAR
+
+```{r}
+sim
+```
+
+## Saída do módulo LIDAR
+
+```{r}
+sim@las
+```
+
+## Visualização LIDAR
+
+```{r}
+#| eval: false
+lidR::plot(sim@las[[1]])
+```
+
+## Modelo de altura do dossel
+
+```{r}
+get_chm(sim)
+```
+
+## Visualização da altura do dossel
+
+```{r}
+rcontroll::autoplot(sim, what = "lidar")
+```
+
+# Avaliação do modelo
+
+> O uso típico de qualquer novo sítio, versão, desenvolvimento ou processo implica a avaliação do modelo (não validação).
+
+## Dados reais
+
+Utilizaremos os dados da Parcela 6 de Paracou de 2016, disponíveis gratuitamente no `LoggingLab` [@badouard2024]:
+
+```{r}
+load("data/day3/Paracou6_2016.rda")
+Paracou6_2016
+```
+
+## Estrutura florestal - real
+
+```{r}
+dist_par <- Paracou6_2016 %>% 
+  mutate(dbh = CircCorr/pi) %>% 
+  mutate(dbh_class = cut(dbh, 
+                         breaks = c(seq(10, 155, by = 5)), 
+                         labels = c(seq(10, 150, by = 5)))) %>% 
+  group_by(dbh_class) %>% 
+  summarise(abundance = n()/6.25) %>% 
+  mutate(dbh_class = as.numeric(as.character(dbh_class)))
+```
+
+## Estrutura florestal - real
+
+```{r}
+ggplot(dist_par, aes(dbh_class, abundance)) + geom_line() + theme_bw()
+```
+
+## Estrutura florestal - virtual
+
+```{r}
+dist_troll <- TROLLv3_output@forest %>% 
+  mutate(dbh = dbh*100) %>% 
+  mutate(dbh_class = cut(dbh, 
+                         breaks = c(seq(10, 155, by = 5)), 
+                         labels = c(seq(10, 150, by = 5)))) %>% 
+  group_by(dbh_class) %>% 
+  summarise(abundance = n()/1) %>% 
+  mutate(dbh_class = as.numeric(as.character(dbh_class))) %>% 
+  na.omit()
+```
+
+## Estrutura florestal - virtual
+
+```{r}
+ggplot(dist_par, aes(dbh_class, abundance)) + geom_line() + theme_bw() +
+  geom_line(data = dist_troll, col = "lightblue")
+```
+
+## Estrutura florestal - comparação
+
+```{r}
+dist_par %>% rename(abundance_par = abundance) %>% left_join(dist_troll) %>% 
+  ggplot(aes(abundance, abundance_par, col = dbh_class)) + geom_abline() +
+  geom_point() + theme_bw() + scale_color_viridis_c()
+```
+
+## Estrutura florestal - tempo de simulação
+
+```{r}
+rcontroll::autoplot(TROLLv3_output)
+```
+
+## Estrutura florestal - simulação mais longa {.smaller}
+
+⚠️ Demorado!
+
+```{r}
+sim <- troll(
+  name = "test",
+  global = generate_parameters(
+    cols = 100, rows = 100, nbiter = 12 * 600
+  ),
+  species = TROLLv3_species,
+  climate = TROLLv3_climatedaytime12,
+  daily = TROLLv3_daytimevar
+)
+dist_troll <- sim@forest %>% 
+  mutate(dbh = dbh*100) %>% 
+  mutate(dbh_class = cut(dbh, 
+                         breaks = c(seq(10, 155, by = 5)), 
+                         labels = c(seq(10, 150, by = 5)))) %>% 
+  group_by(dbh_class) %>% 
+  summarise(abundance = n()/1) %>% 
+  mutate(dbh_class = as.numeric(as.character(dbh_class))) %>% 
+  na.omit()
+```
+
+## Estrutura florestal - virtual
+
+```{r}
+ggplot(dist_par, aes(dbh_class, abundance)) + geom_line() + theme_bw() +
+  geom_line(data = dist_troll, col = "lightblue")
+```
+
+## Estrutura florestal - comparação
+
+```{r}
+dist_par %>% rename(abundance_par = abundance) %>% left_join(dist_troll) %>% 
+  ggplot(aes(abundance, abundance_par, col = dbh_class)) + geom_abline() +
+  geom_point() + theme_bw() + scale_color_viridis_c()
+```
+
+# Análise de sensibilidade
+
+> Para compreender melhor o comportamento do modelo ou os parâmetros a serem calibrados, são necessárias análises de sensibilidade. ⚠️ *O custo computacional será maior.*
+
+## Parâmetro de interesse
+
+Por exemplo:
+
+> m Taxa mínima de mortalidade
+
+Com forte impacto na dinâmica e na estrutura florestal.
+
+## Plano de simulação
+
+```{r}
+m <- c(0.003, 0.008, 0.013, 0.018, 0.023)
+names(m) <- paste0("m=", m)
+stack_pars <- lapply(m, function(m)
+  generate_parameters(cols = 100, rows = 100, nbiter = 12 * 600, m = m, m1 = m)) %>% 
+  bind_rows(.id = "simulation")
+```
+
+## Plano de simulação
+
+```{r}
+filter(stack_pars, param == "m") 
+```
+
+## Simulações
+
+> ⚠️ Demorado e pesado!!
+
+```{r}
+stack <- stack(
+  name = "test",
+  simulations = names(m),
+  global = stack_pars,
+  species = TROLLv3_species,
+  climate = TROLLv3_climatedaytime12,
+  daily = TROLLv3_daytimevar,
+  verbose = FALSE
+) 
+```
+
+## Simulações
+
+```{r}
+stack 
+```
+
+## Simulações
+
+```{r}
+rcontroll::autoplot(stack, what = "temporal", var = "agb") 
+```
+
+## Teste de sensibilidade
+
+```{r}
+agb <- stack@forest %>% group_by(simulation) %>% summarise(agb = sum(AGB))
+sensitivity::pcc(data.frame(m = unname(m), intercept = 0), agb$agb) 
+```
+
+## Pontos de atenção
+
+-   Equifinalidade
+
+-   Vínculos entre parâmetros
+
+# Análise de calibração
+
+> Alguns parâmetros não podem ser facilmente informados por fatores físicos ou ecológicos e requerem calibração. ⚠️ *O custo computacional será maior.*
+
+## Parâmetro de interesse
+
+Por exemplo:
+
+> m Taxa mínima de mortalidade
+
+Com forte impacto na dinâmica e na estrutura florestal.
+
+## Expectativa
+
+Em Paracou, a biomassa viva acima do solo foi de 197,5–221,5 Mg C/ha em 2007 ([Rutishauser et al. 2010](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-rutishauser2010)).
+
+## Simulações
+
+```{r}
+rcontroll::autoplot(stack, what = "temporal", var = "agb") + 
+  geom_hline(yintercept = 2*c(197.5, 221.5)*10^3, col = "red", linetype = "dashed") 
+```
+
+## Pontos de atenção
+
+-   Equifinalidade
+
+-   Vínculos entre parâmetros
+
+-   Exploração do espaço de parâmetros (grade, ABC, ...)
+
+# Schmitt et al. 2020
+
+> Vamos tentar reproduzir uma versão reduzida de um exemplo do "mundo real" com @schmitt2020.
+
+## Aviso
+
+⚠️ *O custo computacional será maior e o tempo de execução muito longo. Pode ser limitado para o workshop.*
+
+## Link
+
+[PDF](https://github.com/sylvainschmitt/rcontroll_tp/blob/master/inpa_2026/data/day3/SI4_disturbance.docx.pdf)
+
+# Referências
