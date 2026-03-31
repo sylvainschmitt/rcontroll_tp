@@ -28,12 +28,9 @@ execute:
   cache: true
 ---
 
-## Menu
+## 
 
-```{r}
-#| echo: false
-knitr::include_graphics("figs/troll_model_cheatsheet.svg")
-```
+![](figs/troll_model_cheatsheet.svg){.r-stretch}
 
 # Introdução
 
@@ -41,11 +38,11 @@ knitr::include_graphics("figs/troll_model_cheatsheet.svg")
 
 ## Ambiente R
 
-Durante esta sessão prática, utilizaremos o modelo TROLL [@Marechaux2017] com o pacote rcontroll [@schmitt2023]. Também usaremos os pacotes tidyverse para manipulação de tabelas e criação de gráficos. Faça o download deles (pré-requisito!):
+Durante esta sessão prática, utilizaremos o modelo TROLL [@Marechaux2017] com o pacote `rcontroll` [@schmitt2023]. Também usaremos os pacotes `tidyverse` para manipulação de tabelas e criação de gráficos. Faça o download deles (pré-requisito!):
 
 ```{r dl_pkg}
 #| eval: false
-install.packages("tidyverse", "rcontroll")
+install.packages(c("tidyverse", "rcontroll"))
 ```
 
 Carregue-os com:

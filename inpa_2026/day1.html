@@ -433,33 +433,24 @@ Sylvain Schmitt
 
   <p class="date">Apr 6, 2026</p>
 </section>
-<section id="menu" class="slide level2">
-<h2>Menu</h2>
-
-<img data-src="figs/troll_model_cheatsheet.svg" class="r-stretch"></section>
+<section id="section" class="slide level2">
+<h2></h2>
+<img data-src="figs/troll_model_cheatsheet.svg" class="r-stretch">
+</section>
 <section>
 <section id="introduction" class="title-slide slide level1 center">
 <h1>Introduction</h1>
-<p>Today we will explore the use of forest simulators in ecology, specifically through an agent-based model:</p>
+<p>Today we will explore the use of forest simulators in ecology, specifically through an <strong>agent-based model</strong>:</p>
 <blockquote>
-<p>a model that simulates the actions and interactions of autonomous agents in order to understand the behaviour of a system and the factors that determine its outcomes.</p>
+<p>a model that simulates the actions and interactions of <strong>autonomous agents</strong> in order to understand the <strong>behaviour of a system</strong> and the <strong>factors that determine its outcomes</strong>.</p>
 </blockquote>
 </section>
-<section id="the-game-of-life-j.-conway-1970" class="slide level2 smaller">
-<h2>The Game of Life (J. Conway, 1970)</h2>
-<ul>
-<li>Each cell can only be in one of two states: on (alive) or off (dead)</li>
-<li>An on cell remains on only if 2 or 3 of its 8 neighbours are on</li>
-<li>An off cell turns on only if 3 of its 8 neighbours are on</li>
-</ul>
-
-<img data-src="https://user-images.githubusercontent.com/9169414/36646548-4ac65af8-1a79-11e8-811d-da84549f7af3.gif" class="r-stretch"></section>
 <section id="boids-c.-w.-reynolds-1986" class="slide level2 smaller">
 <h2>Boids (C. W. Reynolds, 1986)</h2>
 <ul>
-<li>Cohesion: the boids move closer to one another</li>
-<li>Separation: two boids cannot be in the same place at the same time</li>
-<li>Alignment: the boids follow their neighbours</li>
+<li><strong>Cohesion</strong>: the boids move closer to one another</li>
+<li><strong>Separation</strong>: two boids cannot be in the same place at the same time</li>
+<li><strong>Alignment</strong>: the boids follow their neighbours</li>
 </ul>
 
 <img data-src="https://gameidea.org/wp-content/uploads/2024/03/2D-boids-simulation.gif" class="r-stretch"></section>
@@ -470,13 +461,13 @@ Sylvain Schmitt
 </blockquote>
 <div class="columns">
 <div class="column">
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-4_8e6bf469814f4263e644c9ee72b9bc99">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-2_7b1258c11fb5b30a7fc7b9f0f46579e2">
 <div class="cell-output-display">
 <p><img data-src="https://www.pnas.org/cms/10.1073/pnas.1813211116/asset/7a01f42c-5dc2-44fc-a6ed-43658e9d145b/assets/graphic/pnas.1813211116fig01.jpeg"></p>
 </div>
 </div>
 </div><div class="column">
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-5_23de30ce256739b390a49b4ccfb86b5d">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-3_89b40a8f3159a8bcb5b36adcc85ba309">
 <div class="cell-output-display">
 <p><img data-src="https://www.pnas.org/cms/10.1073/pnas.1813211116/asset/69fe93cd-bdb3-4bb9-b666-b42834acabf9/assets/graphic/pnas.1813211116fig02.jpeg"></p>
 </div>
@@ -493,7 +484,7 @@ Sylvain Schmitt
 </section>
 <section id="what-is-it" class="slide level2">
 <h2>What is it?</h2>
-<p>TROLL models each tree individually within a spatially explicit environment. The TROLL model can therefore be defined as an individual, centred and spatially explicit forest growth model. It simulates the life cycle of trees, from recruitment at a diameter at breast height (dbh) of 1 cm, through to death. Trees grow in a light environment where values are calculated within <span class="math inline">\(1 m^3\)</span> voxels.</p>
+<p>TROLL models each tree <strong>individually</strong> within a spatially explicit environment. The TROLL model can therefore be defined as an <strong>individual</strong> <strong>centred</strong> and <strong>spatially explicit</strong> forest growth model. It simulates the life cycle of trees, from <strong>recruitment</strong> at a diameter at breast height (dbh) of 1 cm, through <strong>growth</strong> to <strong>death</strong>. Trees grow in a <strong>light environment</strong> where values are calculated within <span class="math inline">\(1 m^3\)</span> <strong>voxels</strong>.</p>
 </section>
 <section id="scheme" class="slide level2">
 <h2>Scheme</h2>
@@ -509,15 +500,19 @@ Sylvain Schmitt
 <img data-src="https://raw.githubusercontent.com/sylvainschmitt/rcontroll/main/inst/figures/troll.gif" class="r-stretch"></section>
 <section id="how-it-works" class="slide level2 smaller">
 <h2>How it works</h2>
-<p>Each tree is defined by its age, diameter at breast height (DBH), height (H), crown radius (CR), crown depth (CD) and leaf area (LA). The tree’s geometry is calculated using allometric equations, and the leaf area varies dynamically within each crown depending on carbon allocation. A tree can occupy a maximum of one 1 m by 1 m pixel. Each tree belongs to a species inherited from its parent tree. For each species, a number of parameters are known: the trait values for that species, which have been collected in the field. Carbon assimilation is calculated over a 30-minute period. Allocation is then calculated to simulate tree growth. The environment is updated monthly. Juveniles (trees with a diameter at breast height of less than 1 cm) are not simulated explicitly, but as a group. Furthermore, underground processes, herbaceous plants, epiphytes and lianas are not taken into account in TROLL.</p>
+<p>Each tree is defined by its <strong>age</strong>, diameter at breast height (<strong>DBH</strong>), height (<strong>H</strong>), crown radius (<strong>CR</strong>), crown depth (<strong>CD</strong>) and leaf area (<strong>LA</strong>). The tree’s geometry is calculated using allometric equations, and the leaf area varies dynamically within each crown depending on carbon allocation. A tree can occupy a maximum of one 1 m by 1 m pixel. Each tree belongs to a <strong>species</strong> inherited from its parent tree. For each species, a number of parameters are known: the <strong>trait values for that species</strong>, which have been collected in the field. <strong>Carbon assimilation</strong> is calculated over a 30-minute period. Allocation is then calculated to simulate tree growth. The environment is updated monthly. Juveniles (trees with a diameter at breast height of less than 1 cm) are not simulated explicitly, but as a group. Furthermore, underground processes, herbaceous plants, epiphytes and lianas are not taken into account in TROLL.</p>
 </section>
+<section id="how-it-works-1" class="slide level2 smaller">
+<h2>How it works</h2>
+
+<img data-src="figs/TROLL_fig_IM.png" width="2688" class="r-stretch"></section>
 <section id="r-environment" class="slide level2">
 <h2>R Environment</h2>
-<p>During this practical session, we will use the TROLL model <span class="citation" data-cites="Marechaux2017">(<a href="#/references" role="doc-biblioref" onclick="">Maréchaux and Chave 2017</a>)</span> with the rcontrol package <span class="citation" data-cites="schmitt2023">(<a href="#/references" role="doc-biblioref" onclick="">Schmitt et al. 2023</a>)</span>. We will also use the tidyverse packages for table manipulation and graph creation. Download them (prerequisite!):</p>
-<div class="cell" data-hash="day1_cache/revealjs/dl_pkg_dd1e754730fa163c41894bc03891199f">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">install.packages</span>(<span class="st">"tidyverse"</span>, <span class="st">"rcontroll"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>During this practical session, we will use the TROLL model <span class="citation" data-cites="Marechaux2017">(<a href="#/references" role="doc-biblioref" onclick="">Maréchaux and Chave 2017</a>)</span> with the <code>rcontroll</code> package <span class="citation" data-cites="schmitt2023">(<a href="#/references" role="doc-biblioref" onclick="">Schmitt et al. 2023</a>)</span>. We will also use the <code>tidyverse</code> packages for table manipulation and graph creation. Download them (prerequisite!):</p>
+<div class="cell" data-hash="day1_cache/revealjs/dl_pkg_1337e7de7b20f2ca79071b12e68035a4">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"tidyverse"</span>, <span class="st">"rcontroll"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/dl_pkg_dd1e754730fa163c41894bc03891199f">
+<div class="cell fragment" data-hash="day1_cache/revealjs/dl_pkg_1337e7de7b20f2ca79071b12e68035a4">
 
 </div>
 <p>Load them with:</p>
@@ -533,22 +528,22 @@ Sylvain Schmitt
 <section id="inputs---species" class="title-slide slide level1 center">
 <h1>Inputs - Species</h1>
 <blockquote>
-<p>The behaviour of species in TROLL is determined by their functional traits and scaling parameters.</p>
+<p>The behaviour of species in TROLL is determined by their <strong>functional traits</strong> and <strong>scaling parameters</strong>.</p>
 </blockquote>
 </section>
 <section id="functional-traits" class="slide level2">
 <h2>Functional traits</h2>
 <p>TROLL 3 relies on the following functional traits:</p>
 <ul>
-<li>LMA: leaf mass per area (LMA, g m−2)</li>
-<li>N: leaf nitrogen content per dry mass (N, g g−1)</li>
-<li>P: leaf phosphorus content per dry mass (P, g g−1)</li>
-<li>WSG: wood specific gravity (wsg, g cm−3)</li>
+<li><code>LMA</code>: leaf mass per area (LMA, g m−2)</li>
+<li><code>N</code>: leaf nitrogen content per dry mass (N, g g−1)</li>
+<li><code>P</code>: leaf phosphorus content per dry mass (P, g g−1)</li>
+<li><code>WSG</code>: wood specific gravity (wsg, g cm−3)</li>
 </ul>
 </section>
 <section id="relation-example" class="slide level2">
 <h2>Relation example</h2>
-<p>For instance, maximum potential electron transport rate Jmax varies across species in TROLL with the following equation according to <span class="citation" data-cites="domingues2010">DOMINGUES et al. (<a href="#/references" role="doc-biblioref" onclick="">2010</a>)</span>:</p>
+<p>For instance, maximum potential electron transport rate <code>Jmax</code> varies across species in TROLL with the following equation according to <span class="citation" data-cites="domingues2010">DOMINGUES et al. (<a href="#/references" role="doc-biblioref" onclick="">2010</a>)</span>:</p>
 <p><span class="math display">\[
 J_{max}  = min\begin{cases}
 -1.50+0.41 \times log_{10}(N)+0.45 \times log_{10}(SLA) \\
@@ -560,23 +555,23 @@ J_{max}  = min\begin{cases}
 <h2>Allometric parameters</h2>
 <p>TROLL relies on 3 scaling parameters to represent tree size across species:</p>
 <ul>
-<li>dbh_thres: species maximum diameter at breast height (cm)</li>
-<li>h_lim: asymptotic height (m)</li>
-<li>a_h: scaling parameter between diameter and height</li>
+<li><code>dbh_thres</code>: species maximum diameter at breast height (cm)</li>
+<li><code>h_lim</code>: asymptotic height (m)</li>
+<li><code>a_h</code>: scaling parameter between diameter and height</li>
 </ul>
 </section>
 <section id="michaelis-menten" class="slide level2">
 <h2>Michaelis Menten</h2>
-<p>h_lim and a_h define the growth in height trajectory for every species according to its diameter as <span class="math inline">\(h = \frac{h_{lim} \times dbh}{a_h+dbh}\)</span>.</p>
+<p><code>h_lim</code> and <code>a_h</code> define the growth in height trajectory for every species according to its diameter as <span class="math inline">\(h = \frac{h_{lim} \times dbh}{a_h+dbh}\)</span>.</p>
 
-<img data-src="day1_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section>
+<img data-src="day1_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"></section>
 <section id="species-in-rcontroll" class="slide level2">
 <h2>Species in <code>rcontroll</code></h2>
 <p><code>rcontroll</code> include data for 45 species from French Guiana</p>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-9_a18c0305d5831f2c1cd1cc2b64281a5a">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-8_af65816f0315d277dbb7e39ec517137c">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">head</span>(TROLLv3_species)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-9_a18c0305d5831f2c1cd1cc2b64281a5a">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-8_af65816f0315d277dbb7e39ec517137c">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 12
   s_name            s_LMA s_Nmass s_Pmass s_wsg s_dbhmax s_hmax  s_ah s_seedmass
@@ -594,7 +589,7 @@ J_{max}  = min\begin{cases}
 <section id="species-in-rcontroll-1" class="slide level2 smaller">
 <h2>Species in <code>rcontroll</code></h2>
 <p>For instance for height trajectories:</p>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-10_9323c37cc5433a129af558db42461cea">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-9_9b82cf52eaa1c9870df02798bfde5aae">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">head</span>(TROLLv3_species) <span class="sc">%&gt;%</span> </span>
 <span id="cb5-2"><a href="#cb5-2"></a>  <span class="fu">mutate</span>(<span class="at">dbh =</span> <span class="fu">list</span>((<span class="dv">1</span><span class="sc">:</span><span class="dv">200</span>)<span class="sc">/</span><span class="dv">100</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb5-3"><a href="#cb5-3"></a>  <span class="fu">unnest</span>(dbh) <span class="sc">%&gt;%</span> </span>
@@ -603,9 +598,9 @@ J_{max}  = min\begin{cases}
 <span id="cb5-6"><a href="#cb5-6"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
 <span id="cb5-7"><a href="#cb5-7"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-10_9323c37cc5433a129af558db42461cea">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-9_9b82cf52eaa1c9870df02798bfde5aae">
 <div class="cell-output-display">
-<p><img data-src="day1_files/figure-revealjs/unnamed-chunk-10-1.png" width="960"></p>
+<p><img data-src="day1_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
 </div>
 </div>
 </section></section>
@@ -613,7 +608,7 @@ J_{max}  = min\begin{cases}
 <section id="inputs---climate" class="title-slide slide level1 center">
 <h1>Inputs - Climate</h1>
 <blockquote>
-<p>TROLL 3 uses a representative day per month, incorporating diurnal half-hourly variation.</p>
+<p>TROLL 3 uses a representative <strong>day per month</strong>, incorporating <strong>diurnal half-hourly variation</strong>.</p>
 </blockquote>
 </section>
 <section id="monthly-climate" class="slide level2">
@@ -631,43 +626,43 @@ J_{max}  = min\begin{cases}
 <h2>Monthly climate (1/2)</h2>
 <p>From them 12 variables are derived:</p>
 <ul>
-<li>Temperature: monthly average of temperature (degree C)</li>
-<li>DaytimeMeanTemperature: the monthly average of daytime temperature (degree C, 7am-7pm)</li>
-<li>NightTemperature: the monthly average of temperature at night (degree C, 8pm-6am)</li>
+<li><code>Temperature</code>: monthly average of temperature (degree C)</li>
+<li><code>DaytimeMeanTemperature</code>: the monthly average of daytime temperature (degree C, 7am-7pm)</li>
+<li><code>NightTemperature</code>: the monthly average of temperature at night (degree C, 8pm-6am)</li>
 <li>Rainfall: monthly average of cumulative rainfall (cm)</li>
-<li>WindSpeed: monthly average of wind speed (m/s)</li>
-<li>DaytimeMeanIrradiance: monthly average of cumulative solar irradiance averaged over one day (W/m2, 7am-7pm)</li>
-<li>MeanIrradiance: monthly average of cumulative solar irradiance over 24 hours (W/m2)</li>
+<li><code>WindSpeed</code>: monthly average of wind speed (m/s)</li>
+<li><code>DaytimeMeanIrradiance</code>: monthly average of cumulative solar irradiance averaged over one day (W/m2, 7am-7pm)</li>
+<li><code>MeanIrradiance</code>: monthly average of cumulative solar irradiance over 24 hours (W/m2)</li>
 </ul>
 </section>
 <section id="monthly-climate-22" class="slide level2 smaller">
 <h2>Monthly climate (2/2)</h2>
 <p>From them 12 variables are derived:</p>
 <ul>
-<li>SaturatedVapourPressure: monthly average of saturation vapour pressure (hPa)</li>
-<li>VapourPressure: monthly average of vapour pressur (hPa)</li>
-<li>VaporPressureDeficit: monthly average of vapour pressure deficit (VPD, hPa)</li>
-<li>DayTimeVapourPressureDeficitVPDbasic: monthly average of daytime vapour pressure deficit (7am-7pm) according to basic formula (hPa)</li>
-<li>DaytimeMeanVapourPressureDeficit: monthly average of daytime vapour pressure deficit (7am-7pm) according to advanced formula (hPa)</li>
+<li><code>SaturatedVapourPressure</code>: monthly average of saturation vapour pressure (hPa)</li>
+<li><code>VapourPressure</code>: monthly average of vapour pressur (hPa)</li>
+<li><code>VaporPressureDeficit</code>: monthly average of vapour pressure deficit (VPD, hPa)</li>
+<li><code>DayTimeVapourPressureDeficitVPDbasic</code>: monthly average of daytime vapour pressure deficit (7am-7pm) according to basic formula (hPa)</li>
+<li><code>DaytimeMeanVapourPressureDeficit</code>: monthly average of daytime vapour pressure deficit (7am-7pm) according to advanced formula (hPa)</li>
 </ul>
 </section>
 <section id="monthly-climate-1" class="slide level2">
 <h2>Monthly climate</h2>
 <blockquote>
-<p>NB : In TROLL 4, climate input have been simplified to 5 (day 2 session).</p>
+<p><em>NB : In TROLL 4, climate input have been simplified to 5 (day 2 session).</em></p>
 </blockquote>
 <blockquote>
-<p>NB : rcontroll include a function to help prepare climate data (day 3 session).</p>
+<p><em>NB : rcontroll include a function to help prepare climate data (day 3 session).</em></p>
 </blockquote>
 </section>
 <section id="monthly-climate-in-rcontroll" class="slide level2">
 <h2>Monthly climate in <code>rcontroll</code></h2>
 <p><code>rcontroll</code> include data for 1 year (12 month) of climate variation in Paracou from ERA5-Land <span class="citation" data-cites="muñoz-sabater2021">(<a href="#/references" role="doc-biblioref" onclick="">Muñoz-Sabater et al. 2021</a>)</span>:</p>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-11_c27ae992d7a11a93eb3b46cfad57a803">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-10_49767e046c8a35865db280cf5b23b4b8">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>TROLLv3_climatedaytime12 <span class="sc">%&gt;%</span> </span>
 <span id="cb6-2"><a href="#cb6-2"></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-11_c27ae992d7a11a93eb3b46cfad57a803">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-10_49767e046c8a35865db280cf5b23b4b8">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 12
   Temperature DaytimeMeanTemperature NightTemperature Rainfall WindSpeed
@@ -688,7 +683,7 @@ J_{max}  = min\begin{cases}
 <section id="monthly-climate-in-rcontroll-1" class="slide level2 smaller">
 <h2>Monthly climate in <code>rcontroll</code></h2>
 <p><code>rcontroll</code> include data for 1 year (12 month) of climate variation in Paracou from ERA5-Land <span class="citation" data-cites="muñoz-sabater2021">(<a href="#/references" role="doc-biblioref" onclick="">Muñoz-Sabater et al. 2021</a>)</span>:</p>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-12_f4c3923edb3b8b81d3d15e025d00d2ac">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-11_14b247ae7d0eed6bb01dc3e15c0487a8">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>TROLLv3_climatedaytime12 <span class="sc">%&gt;%</span> </span>
 <span id="cb8-2"><a href="#cb8-2"></a>  <span class="fu">mutate</span>(<span class="at">month =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb8-3"><a href="#cb8-3"></a>  <span class="fu">gather</span>(variable, value, <span class="sc">-</span>month) <span class="sc">%&gt;%</span> </span>
@@ -697,9 +692,9 @@ J_{max}  = min\begin{cases}
 <span id="cb8-6"><a href="#cb8-6"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> variable, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
 <span id="cb8-7"><a href="#cb8-7"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">""</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-12_f4c3923edb3b8b81d3d15e025d00d2ac">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-11_14b247ae7d0eed6bb01dc3e15c0487a8">
 <div class="cell-output-display">
-<p><img data-src="day1_files/figure-revealjs/unnamed-chunk-12-1.png" width="960"></p>
+<p><img data-src="day1_files/figure-revealjs/unnamed-chunk-11-1.png" width="960"></p>
 </div>
 </div>
 </section>
@@ -707,22 +702,22 @@ J_{max}  = min\begin{cases}
 <h2>Half-hourly variation</h2>
 <p>The carbon assimilated by a tree in one day is the sum of the leaf-level carbon fluxes across the 24 half-hour periods of daylight:</p>
 <ul>
-<li>vardaytime_light: daily variation in irradiance relative to the mean value of the day</li>
-<li>vardaytime_vpd: daily variation in vapour pressure deficit relative to the mean value of the day</li>
-<li>vardaytime_T: daily variation in temperature relative to the mean value of the day</li>
+<li><code>vardaytime_light</code>: daily variation in irradiance relative to the mean value of the day</li>
+<li><code>vardaytime_vpd</code>: daily variation in vapour pressure deficit relative to the mean value of the day</li>
+<li><code>vardaytime_T</code>: daily variation in temperature relative to the mean value of the day</li>
 </ul>
 <blockquote>
-<p>NB : rcontroll include a function to help prepare half-hourly variation data (day 3 session).</p>
+<p><em>NB : rcontroll include a function to help prepare half-hourly variation data (day 3 session).</em></p>
 </blockquote>
 </section>
 <section id="half-hourly-variation-in-rcontroll" class="slide level2">
 <h2>Half-hourly variation in <code>rcontroll</code></h2>
 <p><code>rcontroll</code> include data for half-hourly variation in Paracou from ERA5-Land <span class="citation" data-cites="muñoz-sabater2021">(<a href="#/references" role="doc-biblioref" onclick="">Muñoz-Sabater et al. 2021</a>)</span>:</p>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-13_e10a56d6364e15e16e6f9b4ec1b46d6f">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-12_206d8b3a9ed579e81a536c9615279162">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>TROLLv3_daytimevar <span class="sc">%&gt;%</span> </span>
 <span id="cb9-2"><a href="#cb9-2"></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-13_e10a56d6364e15e16e6f9b4ec1b46d6f">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-12_206d8b3a9ed579e81a536c9615279162">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 5
   starttime endtime vardaytime_light vardaytime_vpd vardaytime_T
@@ -739,7 +734,7 @@ J_{max}  = min\begin{cases}
 <section id="half-hourly-variation-in-rcontroll-1" class="slide level2 smaller">
 <h2>Half-hourly variation in <code>rcontroll</code></h2>
 <p><code>rcontroll</code> include data for half-hourly variation in Paracou from ERA5-Land <span class="citation" data-cites="muñoz-sabater2021">(<a href="#/references" role="doc-biblioref" onclick="">Muñoz-Sabater et al. 2021</a>)</span>:</p>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-14_775f76341ea63a3c2be7edf8d12cc513">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-13_1319cdb71d1bdc9d73204682d47f88aa">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>TROLLv3_daytimevar <span class="sc">%&gt;%</span> </span>
 <span id="cb11-2"><a href="#cb11-2"></a>  <span class="fu">gather</span>(variable, value, <span class="sc">-</span>starttime, <span class="sc">-</span>endtime) <span class="sc">%&gt;%</span> </span>
 <span id="cb11-3"><a href="#cb11-3"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(starttime, value)) <span class="sc">+</span></span>
@@ -747,9 +742,9 @@ J_{max}  = min\begin{cases}
 <span id="cb11-5"><a href="#cb11-5"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> variable, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
 <span id="cb11-6"><a href="#cb11-6"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">""</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-14_775f76341ea63a3c2be7edf8d12cc513">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-13_1319cdb71d1bdc9d73204682d47f88aa">
 <div class="cell-output-display">
-<p><img data-src="day1_files/figure-revealjs/unnamed-chunk-14-1.png" width="960"></p>
+<p><img data-src="day1_files/figure-revealjs/unnamed-chunk-13-1.png" width="960"></p>
 </div>
 </div>
 </section></section>
@@ -764,11 +759,11 @@ J_{max}  = min\begin{cases}
 <h2>Parameters types</h2>
 <p>TROLL includes numerous parameters (see <a href="https://sylvainschmitt.github.io/rcontroll/reference/generate_parameters.html">rcontroll documentation</a> or the <a href="https://gmd.copernicus.org/articles/18/5205/2025/#section6&amp;gid=1&amp;pid=1">GMD paper appendix</a>). They might be regrouped in several types:</p>
 <ul>
-<li>Simulation parameters: definition of simulation characteristic (size, duration, …)</li>
-<li>Physical parameters: definition of physical environment behaviour</li>
-<li>Ecosystem parameters: definition of tree behaviour at the community level</li>
-<li>Intraspecific parameters: definition of tree trait variation within species</li>
-<li>Model macros: definition of model behaviour and processes</li>
+<li><code>Simulation parameters</code>: definition of simulation characteristic (size, duration, …)</li>
+<li><code>Physical parameters</code>: definition of physical environment behaviour</li>
+<li><code>Ecosystem parameters</code>: definition of tree behaviour at the community level</li>
+<li><code>Intraspecific parameters</code>: definition of tree trait variation within species</li>
+<li><code>Model macros</code>: definition of model behaviour and processes</li>
 </ul>
 </section>
 <section id="simulation-parameters" class="slide level2">
@@ -777,23 +772,23 @@ J_{max}  = min\begin{cases}
 <p>Definition of simulation characteristic (size, duration, …)</p>
 </blockquote>
 <ul>
-<li>cols: Number of columns (m)</li>
-<li>rows: Number of rows (m)</li>
-<li>HEIGHT: Vertical extent of simulation (m)</li>
-<li>nbiter: Total number of timesteps (months)</li>
+<li><code>cols</code>: Number of columns (m)</li>
+<li><code>rows</code>: Number of rows (m)</li>
+<li><code>HEIGHT</code>: Vertical extent of simulation (m)</li>
+<li><code>nbiter</code>: Total number of timesteps (months)</li>
 </ul>
 </section>
 <section id="simulation---example" class="slide level2">
 <h2>Simulation - example</h2>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-15_9dfde2346369af9292a1e0d60057231f">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-14_eee34d5578ba7d86293afbc97b3dccd1">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">expand_grid</span>(<span class="at">col =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="at">row =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb12-2"><a href="#cb12-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(col, row)) <span class="sc">+</span></span>
 <span id="cb12-3"><a href="#cb12-3"></a>  <span class="fu">geom_tile</span>(<span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">colour =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
 <span id="cb12-4"><a href="#cb12-4"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">coord_equal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-15_9dfde2346369af9292a1e0d60057231f">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-14_eee34d5578ba7d86293afbc97b3dccd1">
 <div class="cell-output-display">
-<p><img data-src="day1_files/figure-revealjs/unnamed-chunk-15-1.png" width="960"></p>
+<p><img data-src="day1_files/figure-revealjs/unnamed-chunk-14-1.png" width="960"></p>
 </div>
 </div>
 </section>
@@ -803,20 +798,20 @@ J_{max}  = min\begin{cases}
 <p>definition of physical environment behaviour</p>
 </blockquote>
 <ul>
-<li>SWtoPPFD: Convert shortwave irradiance to PAR photons</li>
-<li>p_nonvert: Light incidence parameter (difference through turbid medium)</li>
-<li>klight: Light attenuation in the canopy following a Beer-Lambert law</li>
-<li>phi: Quantum yield (in micromol C/micromol photon)</li>
-<li>absorptance_leaves: Absorptance of individual leaves</li>
+<li><code>SWtoPPFD</code>: Convert shortwave irradiance to PAR photons</li>
+<li><code>p_nonvert</code>: Light incidence parameter (difference through turbid medium)</li>
+<li><code>klight</code>: Light attenuation in the canopy following a Beer-Lambert law</li>
+<li><code>phi</code>: Quantum yield (in micromol C/micromol photon)</li>
+<li><code>absorptance_leaves</code>: Absorptance of individual leaves</li>
 </ul>
 </section>
 <section id="physical-example" class="slide level2">
 <h2>Physical example</h2>
 <blockquote>
-<p>klight: Light attenuation in the canopy following a Beer-Lambert law</p>
+<p><code>klight</code>: Light attenuation in the canopy following a Beer-Lambert law</p>
 </blockquote>
 <p><span class="math display">\[PPFD = PPFD \times exp(-k_{light}\times LAI)\]</span></p>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-16_c87bc0534c6502ad53c2fc48474cbddc">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-15_5ea7db32ed8e68a64f5f86a7ec10dc0a">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>g <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">"data/day1/R1_0_LAI.txt"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb13-2"><a href="#cb13-2"></a>  <span class="fu">group_by</span>(h) <span class="sc">%&gt;%</span> </span>
 <span id="cb13-3"><a href="#cb13-3"></a>  <span class="fu">summarise</span>(<span class="at">lai =</span> <span class="fu">mean</span>(LAI3D)) <span class="sc">%&gt;%</span> </span>
@@ -827,18 +822,18 @@ J_{max}  = min\begin{cases}
 <span id="cb13-8"><a href="#cb13-8"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
 <span id="cb13-9"><a href="#cb13-9"></a>  <span class="fu">coord_flip</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-16_c87bc0534c6502ad53c2fc48474cbddc">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-15_5ea7db32ed8e68a64f5f86a7ec10dc0a">
 
 </div>
 </section>
 <section id="physical-example-1" class="slide level2">
 <h2>Physical example</h2>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-17_5545a1e06fa21a4f8502f136a8d02060">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-16_e1fe248b37247341c0c978a24851fb6d">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>g</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-17_5545a1e06fa21a4f8502f136a8d02060">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-16_e1fe248b37247341c0c978a24851fb6d">
 <div class="cell-output-display">
-<p><img data-src="day1_files/figure-revealjs/unnamed-chunk-17-1.png" width="960"></p>
+<p><img data-src="day1_files/figure-revealjs/unnamed-chunk-16-1.png" width="960"></p>
 </div>
 </div>
 </section>
@@ -848,45 +843,45 @@ J_{max}  = min\begin{cases}
 <p>definition of tree behaviour at the community level</p>
 </blockquote>
 <ul>
-<li>theta: Parameter of the Farquhar model</li>
-<li>g1: Parameter g1 of Medlyn et al stomatal conductance model</li>
-<li>vC: Variance of the flexion moment</li>
-<li>CR_a: Crown radius log intercept or Michaelis Menten initial growth</li>
-<li>CR_b: Crown radius log slope or Michaelis Menten asymptotic CR</li>
-<li>CD_a: Crown depth intercept (absolute value)</li>
-<li>CD_b: Crown depth slope (as fraction of tree height)</li>
-<li>shape_crown: Crown shape parameter</li>
+<li><code>theta</code>: Parameter of the Farquhar model</li>
+<li><code>g1</code>: Parameter g1 of Medlyn et al stomatal conductance model</li>
+<li><code>vC</code>: Variance of the flexion moment</li>
+<li><code>CR_a</code>: Crown radius log intercept or Michaelis Menten initial growth</li>
+<li><code>CR_b</code>: Crown radius log slope or Michaelis Menten asymptotic CR</li>
+<li><code>CD_a</code>: Crown depth intercept (absolute value)</li>
+<li><code>CD_b</code>: Crown depth slope (as fraction of tree height)</li>
+<li><code>shape_crown</code>: Crown shape parameter</li>
 </ul>
 </section>
 <section id="ecosystem-parameters-22" class="slide level2 smaller">
 <h2>Ecosystem parameters (2/2)</h2>
 <ul>
-<li>fallocwood: Fraction of biomass allocated to above ground wood (branch turnover+stem)</li>
-<li>falloccanopy: Fraction of biomass allocated to canopy (leaves + reproductive organs + twigs)</li>
-<li>Cseedrain: Constant used to scale total seed rain per hectare across species</li>
-<li>nbs0: Number of seeds produced and dispersed by each mature tree</li>
-<li>leafdem_resolution: Resolution of leaf demography model</li>
-<li>p_tfsecondary: Probability of secondary treefall</li>
-<li>hurt_decay: Parameter determining how tree damages are repaired</li>
-<li>crown_gap_fraction: Fraction of gaps in the crown</li>
-<li>m: Minimal death rate</li>
+<li><code>fallocwood</code>: Fraction of biomass allocated to above ground wood (branch turnover+stem)</li>
+<li><code>falloccanopy</code>: Fraction of biomass allocated to canopy (leaves + reproductive organs + twigs)</li>
+<li><code>Cseedrain</code>: Constant used to scale total seed rain per hectare across species</li>
+<li><code>nbs0</code>: Number of seeds produced and dispersed by each mature tree</li>
+<li><code>leafdem_resolution</code>: Resolution of leaf demography model</li>
+<li><code>p_tfsecondary</code>: Probability of secondary treefall</li>
+<li><code>hurt_decay</code>: Parameter determining how tree damages are repaired</li>
+<li><code>crown_gap_fraction</code>: Fraction of gaps in the crown</li>
+<li><code>m</code>: Minimal death rate</li>
 </ul>
 </section>
 <section id="ecosystem-example" class="slide level2 smaller">
 <h2>Ecosystem example</h2>
 <blockquote>
-<p>CR_a and CR_b: Crown radius log intercept and slope with <span class="math inline">\(CR = CR_a\times dbh^{CR_b}\)</span></p>
+<p><code>CR_a</code> and <code>CR_b</code>: Crown radius log intercept and slope with <span class="math inline">\(CR = CR_a\times dbh^{CR_b}\)</span></p>
 </blockquote>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-18_4a4f55a8d02a8e094280ca8f67cd5798">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-17_7b86c66dde3f58560a3ef05f565bc577">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">tibble</span>(<span class="at">dbh =</span> (<span class="dv">1</span><span class="sc">:</span><span class="dv">200</span>)<span class="sc">/</span><span class="dv">100</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb15-2"><a href="#cb15-2"></a>  <span class="fu">mutate</span>(<span class="at">cr =</span> <span class="fl">2.13</span><span class="sc">*</span>dbh<span class="sc">^</span><span class="fl">0.63</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb15-3"><a href="#cb15-3"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(dbh, cr)) <span class="sc">+</span></span>
 <span id="cb15-4"><a href="#cb15-4"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
 <span id="cb15-5"><a href="#cb15-5"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-18_4a4f55a8d02a8e094280ca8f67cd5798">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-17_7b86c66dde3f58560a3ef05f565bc577">
 <div class="cell-output-display">
-<p><img data-src="day1_files/figure-revealjs/unnamed-chunk-18-1.png" width="960"></p>
+<p><img data-src="day1_files/figure-revealjs/unnamed-chunk-17-1.png" width="960"></p>
 </div>
 </div>
 </section>
@@ -896,14 +891,14 @@ J_{max}  = min\begin{cases}
 <p>definition of tree trait variation within species</p>
 </blockquote>
 <ul>
-<li>sigma_height: Intraspecific variation in tree height (lognormal)</li>
-<li>sigma_CR: Intraspecific variation in crown radius (lognormal)</li>
-<li>sigma_CD: Intraspecific variation in crown depth (lognormal)</li>
-<li>sigma_P: Intraspecific variation in leaf phosphorus (lognormal)</li>
-<li>sigma_N: Intraspecific variation in leaf nitrogen (lognormal)</li>
-<li>sigma_LMA: Intraspecific variation in leaf mass per area (lognormal)</li>
-<li>sigma_wsg: Intraspecific variation in wood specific gravity</li>
-<li>sigma_dbhmax: Intraspecific variation in maximum diameter</li>
+<li><code>sigma_height</code>: Intraspecific variation in tree height (lognormal)</li>
+<li><code>sigma_CR</code>: Intraspecific variation in crown radius (lognormal)</li>
+<li><code>sigma_CD</code>: Intraspecific variation in crown depth (lognormal)</li>
+<li><code>sigma_P</code>: Intraspecific variation in leaf phosphorus (lognormal)</li>
+<li><code>sigma_N</code>: Intraspecific variation in leaf nitrogen (lognormal)</li>
+<li><code>sigma_LMA</code>: Intraspecific variation in leaf mass per area (lognormal)</li>
+<li><code>sigma_wsg</code>: Intraspecific variation in wood specific gravity</li>
+<li><code>sigma_dbhmax</code>: Intraspecific variation in maximum diameter</li>
 </ul>
 </section>
 <section id="intraspecific-parameters-12-1" class="slide level2">
@@ -912,24 +907,24 @@ J_{max}  = min\begin{cases}
 <p>definition of tree trait variation within species</p>
 </blockquote>
 <ul>
-<li>corr_CR_height: Correlation coefficient between crown radius and tree height</li>
-<li>corr_N_P: correlation coefficient between leaf nitrogen and leaf phosphorus</li>
-<li>corr_N_LMA: Correlation coefficient between leaf nitrogen and leaf mass per area</li>
-<li>corr_P_LMA: Correlation coefficient between leaf phosphorus and leaf mass per area</li>
+<li><code>corr_CR_height</code>: Correlation coefficient between crown radius and tree height</li>
+<li><code>corr_N_P</code>: correlation coefficient between leaf nitrogen and leaf phosphorus</li>
+<li><code>corr_N_LMA</code>: Correlation coefficient between leaf nitrogen and leaf mass per area</li>
+<li><code>corr_P_LMA</code>: Correlation coefficient between leaf phosphorus and leaf mass per area</li>
 </ul>
 </section>
 <section id="intraspecific-example" class="slide level2">
 <h2>Intraspecific example</h2>
 <blockquote>
-<p>sigma_wsg: Intraspecific variation in wood specific gravity</p>
+<p><code>sigma_wsg</code>: Intraspecific variation in wood specific gravity</p>
 </blockquote>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-19_025bdeac7e4dba4d865d3a91b63afb2c">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-18_5059446a2804a82bb0e04987cae1652d">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">tibble</span>(<span class="at">wsg =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, TROLLv3_species<span class="sc">$</span>s_wsg[<span class="dv">1</span>], <span class="fl">0.06</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb16-2"><a href="#cb16-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(wsg)) <span class="sc">+</span> <span class="fu">geom_histogram</span>() <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-19_025bdeac7e4dba4d865d3a91b63afb2c">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-18_5059446a2804a82bb0e04987cae1652d">
 <div class="cell-output-display">
-<p><img data-src="day1_files/figure-revealjs/unnamed-chunk-19-1.png" width="960"></p>
+<p><img data-src="day1_files/figure-revealjs/unnamed-chunk-18-1.png" width="960"></p>
 </div>
 </div>
 </section>
@@ -939,25 +934,25 @@ J_{max}  = min\begin{cases}
 <p>definition of model behaviour and processes</p>
 </blockquote>
 <ul>
-<li>LL_parameterization: leaf lifespan parameterizations: Reich empirical, Kikuzawa model, and Kikuzawa model with leaf plasticity</li>
-<li>LA_regulation: dynamic LA regulation</li>
-<li>sapwood: sapwood parameterizations: constant thickness (0.04), Fyllas percentage, Fyllas lower limit</li>
-<li>seedsadditional: excess biomass into seeds after maturation (0,1).</li>
-<li>NONRANDOM: simulation are random or not</li>
-<li>GPPcrown: option to compute only GPP from the topmost value of PPFD and GPP</li>
-<li>BASICTREEFALL: treefall is a source of tree death</li>
-<li>SEEDTRADEOFF: the number of seeds produced is determined by NPP allocated to reproduction and seed mass, otherwise the number of seeds is fixed</li>
-<li>CROWN_MM: Michaelis Menten allometry for crowns instead of power law</li>
+<li><code>LL_parameterization</code>: leaf lifespan parameterizations: Reich empirical, Kikuzawa model, and Kikuzawa model with leaf plasticity</li>
+<li><code>LA_regulation</code>: dynamic LA regulation</li>
+<li><code>sapwood</code>: sapwood parameterizations: constant thickness (0.04), Fyllas percentage, Fyllas lower limit</li>
+<li><code>seedsadditional</code>: excess biomass into seeds after maturation (0,1).</li>
+<li><code>NONRANDOM</code>: simulation are random or not</li>
+<li><code>GPPcrown</code>: option to compute only GPP from the topmost value of PPFD and GPP</li>
+<li><code>BASICTREEFALL</code>: treefall is a source of tree death</li>
+<li><code>SEEDTRADEOFF</code>: the number of seeds produced is determined by NPP allocated to reproduction and seed mass, otherwise the number of seeds is fixed</li>
+<li><code>CROWN_MM</code>: Michaelis Menten allometry for crowns instead of power law</li>
 </ul>
 </section>
 <section id="parameters-in-rcontroll" class="slide level2">
 <h2>Parameters in <code>rcontroll</code></h2>
 <p>A single function to generate them all:</p>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-20_6fbeeba1bcd69b069ea350695a37ab12">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-19_e648207dbe0aa438fdd4eaced8b20439">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">generate_parameters</span>(<span class="at">cols =</span> <span class="dv">100</span>, <span class="at">rows =</span> <span class="dv">100</span>, <span class="at">nbiter =</span> <span class="dv">12</span> <span class="sc">*</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb17-2"><a href="#cb17-2"></a>  <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-20_6fbeeba1bcd69b069ea350695a37ab12">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-19_e648207dbe0aa438fdd4eaced8b20439">
 <div class="cell-output cell-output-stdout">
 <pre><code>          param value                             description
 1          cols   100                     /* nb of columns */
@@ -983,19 +978,19 @@ J_{max}  = min\begin{cases}
 <section id="prepare-inputs" class="slide level2">
 <h2>Prepare inputs</h2>
 <p>We prepare global parameters, species data, climate data, and daily variation.</p>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-21_7ac05be0300ce92dea9430b53349af8f">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-20_c3360d759c9699763fe883a2622b3b02">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>global  <span class="ot">&lt;-</span> <span class="fu">generate_parameters</span>(<span class="at">cols =</span> <span class="dv">100</span>, <span class="at">rows =</span> <span class="dv">100</span>, <span class="at">nbiter =</span> <span class="dv">12</span><span class="sc">*</span><span class="dv">100</span>)</span>
 <span id="cb19-2"><a href="#cb19-2"></a>species <span class="ot">&lt;-</span> TROLLv3_species</span>
 <span id="cb19-3"><a href="#cb19-3"></a>climate <span class="ot">&lt;-</span> TROLLv3_climatedaytime12</span>
 <span id="cb19-4"><a href="#cb19-4"></a>daily <span class="ot">&lt;-</span> TROLLv3_daytimevar</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-21_7ac05be0300ce92dea9430b53349af8f">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-20_c3360d759c9699763fe883a2622b3b02">
 
 </div>
 </section>
 <section id="run" class="slide level2">
 <h2>Run</h2>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-22_23616dea89dc8a6b0338d9fe6ba724fc">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-21_9de602758a4800018a3039ca2db2bef6">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>sim <span class="ot">&lt;-</span> <span class="fu">troll</span>(</span>
 <span id="cb20-2"><a href="#cb20-2"></a>  <span class="at">name =</span> <span class="st">"test1"</span>,</span>
 <span id="cb20-3"><a href="#cb20-3"></a>  <span class="at">global =</span> global,</span>
@@ -1006,23 +1001,23 @@ J_{max}  = min\begin{cases}
 <span id="cb20-8"><a href="#cb20-8"></a>  <span class="at">path =</span> <span class="st">"day1_out/"</span></span>
 <span id="cb20-9"><a href="#cb20-9"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-22_23616dea89dc8a6b0338d9fe6ba724fc">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-21_9de602758a4800018a3039ca2db2bef6">
 
 </div>
 <blockquote>
-<p>You can run a simulation in memory without the path option, but I advise on using the path to write files and have acces to your simulations outputs later on.</p>
+<p>You can run a simulation in memory without the <code>path</code> option, but I advise on using the path to write files and have acces to your simulations outputs later on.</p>
 </blockquote>
 </section>
 <section id="simulation" class="slide level2">
 <h2>Simulation</h2>
 <p>Resulting simulation:</p>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-23_639fdee208138ad711feff0a18746b45">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-22_76595052fc45f5f39726a52b18059f58">
 
 </div>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-24_661867ee91cc8b39215c2195804606d5">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-23_7453071e4c6f5cad07c24e367041935a">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>sim</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-24_661867ee91cc8b39215c2195804606d5">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-23_7453071e4c6f5cad07c24e367041935a">
 <div class="cell-output cell-output-stdout">
 <pre><code>Object of class : trollsim 
 Name : test1 
@@ -1043,11 +1038,11 @@ Number of Species    :  45 </code></pre>
 </section>
 <section id="open-from-files" class="slide level2">
 <h2>Open from files</h2>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-25_2b6560cf5d76b5a4db2034eb634e443d">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-24_fffa9b8b844fb9ae038b02e2e3d0cad5">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>sim <span class="ot">&lt;-</span> <span class="fu">load_output</span>(<span class="st">"test1"</span>, <span class="st">"day1_out/test1"</span>)</span>
 <span id="cb23-2"><a href="#cb23-2"></a>sim</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-25_2b6560cf5d76b5a4db2034eb634e443d">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-24_fffa9b8b844fb9ae038b02e2e3d0cad5">
 <div class="cell-output cell-output-stdout">
 <pre><code>Object of class : trollsim 
 Name : test1 
@@ -1075,10 +1070,10 @@ Number of Species    :  45 </code></pre>
 </section>
 <section id="trollsim" class="slide level2">
 <h2><code>TROLLsim()</code></h2>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-26_fa3e9faa5d8c8c4ef8d67316661904ac">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-25_ca9d2a5d6a3400620f695f1467d57581">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">lapply</span>(<span class="fu">attributes</span>(sim), class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-26_fa3e9faa5d8c8c4ef8d67316661904ac">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-25_ca9d2a5d6a3400620f695f1467d57581">
 <div class="cell-output cell-output-stdout">
 <pre><code>$name
 [1] "character"
@@ -1117,10 +1112,10 @@ $class
 </section>
 <section id="ecosytem-trajectory" class="slide level2">
 <h2>Ecosytem trajectory</h2>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-27_4b7f8ba4fdc68a2e39b84341d36243a1">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-26_a07922872615a5f01b9bf70410d9c650">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>sim<span class="sc">@</span>ecosystem</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-27_4b7f8ba4fdc68a2e39b84341d36243a1">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-26_a07922872615a5f01b9bf70410d9c650">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1,200 × 13
     iter  sum1 sum10 sum30    ba  ba10   agb   gpp   npp   rday rnight    rstem
@@ -1142,10 +1137,10 @@ $class
 </section>
 <section id="species-trajectory" class="slide level2">
 <h2>Species trajectory</h2>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-28_ec606b0a5702d7a761a617e8fd3a5a51">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-27_f15d7d674f345f924c7962218f2a7e80">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>sim<span class="sc">@</span>species</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-28_ec606b0a5702d7a761a617e8fd3a5a51">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-27_f15d7d674f345f924c7962218f2a7e80">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 54,000 × 14
     iter species      sum1 sum10 sum30     ba  ba10   agb    gpp     npp    rday
@@ -1167,10 +1162,10 @@ $class
 </section>
 <section id="forest-final-state" class="slide level2">
 <h2>Forest final state</h2>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-29_28786c27042b2c3ae6da5e27dc57a29e">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-28_1f15ac37b824f614099a070448be789f">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>sim<span class="sc">@</span>forest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-29_28786c27042b2c3ae6da5e27dc57a29e">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-28_1f15ac37b824f614099a070448be789f">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2,262 × 59
     iter   col   row from_Data sp_lab  site CrownDisplacement    Pmass  Nmass
@@ -1197,10 +1192,10 @@ $class
 </section>
 <section id="log" class="slide level2 smaller">
 <h2>Log</h2>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-30_b2b97daba69182d9ff93ccb39ca551f9">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-29_b69889657d0b8a019554e76a3483efeb">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="fu">cat</span>(sim<span class="sc">@</span>log)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-30_b2b97daba69182d9ff93ccb39ca551f9">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-29_b69889657d0b8a019554e76a3483efeb">
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Reading in file: /home/sschmitt/Documents/rcontroll_tp/inpa_2026/day1_out/test1/test1_input_global.txt
@@ -2713,10 +2708,10 @@ End of simulation.</code></pre>
 </section>
 <section id="files" class="slide level2">
 <h2>Files</h2>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-31_202f7ee9b69f781b3067531654398909">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-30_4025d78a64ae9b25fe723726b6481a3e">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="fu">list.files</span>(<span class="st">"day1_out/test1/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-31_202f7ee9b69f781b3067531654398909">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-30_4025d78a64ae9b25fe723726b6481a3e">
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "test1_0_death_snapshots.txt"  "test1_0_death.txt"           
  [3] "test1_0_deathrate.txt"        "test1_0_final_pattern.txt"   
@@ -2729,10 +2724,10 @@ End of simulation.</code></pre>
 </section>
 <section id="files-1" class="slide level2">
 <h2>Files</h2>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-32_c8610426a9c9bc85922245875e1e12b1">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-31_cc92eaa5777bfeb61c91f269bf030672">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="fu">read_tsv</span>(<span class="st">"day1_out/test1/test1_0_sumstats.txt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-32_c8610426a9c9bc85922245875e1e12b1">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-31_cc92eaa5777bfeb61c91f269bf030672">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1,200 × 13
     iter  sum1 sum10 sum30    ba  ba10   agb   gpp   npp   rday rnight    rstem
@@ -2761,48 +2756,48 @@ End of simulation.</code></pre>
 </section>
 <section id="temporal" class="slide level2">
 <h2>Temporal</h2>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-33_806fc349eb32ff5c668e501bf2691db2">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-32_d4cfda53543af9c8f3260d3133c6bc9a">
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a>rcontroll<span class="sc">::</span><span class="fu">autoplot</span>(sim, <span class="at">what =</span> <span class="st">"temporal"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-33_806fc349eb32ff5c668e501bf2691db2">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-32_d4cfda53543af9c8f3260d3133c6bc9a">
 <div class="cell-output-display">
-<p><img data-src="day1_files/figure-revealjs/unnamed-chunk-33-1.png" width="960"></p>
+<p><img data-src="day1_files/figure-revealjs/unnamed-chunk-32-1.png" width="960"></p>
 </div>
 </div>
 </section>
 <section id="temporal-1" class="slide level2">
 <h2>Temporal</h2>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-34_0143f714d86fe2d8c14104d69b978b5a">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-33_44e854b321f6fed782bc43dafaec47c4">
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a>rcontroll<span class="sc">::</span><span class="fu">autoplot</span>(</span>
 <span id="cb40-2"><a href="#cb40-2"></a>  sim, <span class="at">what =</span> <span class="st">"temporal"</span>, </span>
 <span id="cb40-3"><a href="#cb40-3"></a>  <span class="at">species =</span> <span class="fu">c</span>(<span class="st">"Dicorynia_guianensis"</span>, <span class="st">"Eperua_grandiflora"</span>)</span>
 <span id="cb40-4"><a href="#cb40-4"></a>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-34_0143f714d86fe2d8c14104d69b978b5a">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-33_44e854b321f6fed782bc43dafaec47c4">
 <div class="cell-output-display">
-<p><img data-src="day1_files/figure-revealjs/unnamed-chunk-34-1.png" width="960"></p>
+<p><img data-src="day1_files/figure-revealjs/unnamed-chunk-33-1.png" width="960"></p>
 </div>
 </div>
 </section>
 <section id="spatial" class="slide level2">
 <h2>Spatial</h2>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-35_1c7a5f3787d750c8e61f06a996a99dbd">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-34_1bb3fcabe18b36f539ca361b25f2086c">
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1"></a>rcontroll<span class="sc">::</span><span class="fu">autoplot</span>(sim, <span class="at">what =</span> <span class="st">"spatial"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-35_1c7a5f3787d750c8e61f06a996a99dbd">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-34_1bb3fcabe18b36f539ca361b25f2086c">
 <div class="cell-output-display">
-<p><img data-src="day1_files/figure-revealjs/unnamed-chunk-35-1.png" width="960"></p>
+<p><img data-src="day1_files/figure-revealjs/unnamed-chunk-34-1.png" width="960"></p>
 </div>
 </div>
 </section>
 <section id="distribution" class="slide level2">
 <h2>Distribution</h2>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-36_2960d9df3f6e2bcf21c9415a2a2902e1">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-35_c5b60b76c6405d272842d625d8d95e79">
 <div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a>rcontroll<span class="sc">::</span><span class="fu">autoplot</span>(sim, <span class="at">what =</span> <span class="st">"distribution"</span>, <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"dbh"</span>, <span class="st">"height"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-36_2960d9df3f6e2bcf21c9415a2a2902e1">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-35_c5b60b76c6405d272842d625d8d95e79">
 <div class="cell-output-display">
-<p><img data-src="day1_files/figure-revealjs/unnamed-chunk-36-1.png" width="960"></p>
+<p><img data-src="day1_files/figure-revealjs/unnamed-chunk-35-1.png" width="960"></p>
 </div>
 </div>
 </section></section>
@@ -2815,7 +2810,7 @@ End of simulation.</code></pre>
 </section>
 <section id="prepare-input" class="slide level2">
 <h2>Prepare input</h2>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-37_abb44b93d5c6d8cb7fb1addce9c16619">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-36_25a97110a399f2abff73748792a17c73">
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a>stack_parameters <span class="ot">&lt;-</span> <span class="fu">generate_parameters</span>(</span>
 <span id="cb43-2"><a href="#cb43-2"></a>  <span class="at">cols =</span> <span class="dv">100</span>, <span class="at">rows =</span> <span class="dv">100</span>,</span>
 <span id="cb43-3"><a href="#cb43-3"></a>  <span class="at">iterperyear =</span> <span class="dv">12</span>, <span class="at">nbiter =</span> <span class="dv">12</span> <span class="sc">*</span> <span class="dv">1</span></span>
@@ -2824,16 +2819,16 @@ End of simulation.</code></pre>
 <span id="cb43-6"><a href="#cb43-6"></a>  <span class="fu">unnest</span>(simulation)</span>
 <span id="cb43-7"><a href="#cb43-7"></a>stack_parameters[<span class="dv">62</span>, <span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="dv">500</span> <span class="co"># Cseedrain</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-37_abb44b93d5c6d8cb7fb1addce9c16619">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-36_25a97110a399f2abff73748792a17c73">
 
 </div>
 </section>
 <section id="prepare-input-1" class="slide level2">
 <h2>Prepare input</h2>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-38_a3239d5e4b0a5674e4b154783674eb0e">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-37_cfc918387ab677f23fee1de2725fbe9d">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1"></a>stack_parameters</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-38_a3239d5e4b0a5674e4b154783674eb0e">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-37_cfc918387ab677f23fee1de2725fbe9d">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 126 × 4
    param        value description                         simulation
@@ -2854,7 +2849,7 @@ End of simulation.</code></pre>
 </section>
 <section id="run-stack" class="slide level2">
 <h2>Run stack</h2>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-39_b1359af853a0cf16329edd1e607b05f0">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-38_6c9233c93e88c187d195941bc66e412e">
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1"></a>sim_stack <span class="ot">&lt;-</span> <span class="fu">stack</span>(</span>
 <span id="cb46-2"><a href="#cb46-2"></a>  <span class="at">name =</span> <span class="st">"teststack"</span>,</span>
 <span id="cb46-3"><a href="#cb46-3"></a>  <span class="at">simulations =</span> <span class="fu">c</span>(<span class="st">"seed50000"</span>, <span class="st">"seed500"</span>),</span>
@@ -2866,7 +2861,7 @@ End of simulation.</code></pre>
 <span id="cb46-9"><a href="#cb46-9"></a>  <span class="at">cores =</span> <span class="dv">2</span></span>
 <span id="cb46-10"><a href="#cb46-10"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-39_b1359af853a0cf16329edd1e607b05f0">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-38_6c9233c93e88c187d195941bc66e412e">
 <div class="cell-output cell-output-stdout">
 <pre><code>
   |                                                                            
@@ -2878,10 +2873,10 @@ End of simulation.</code></pre>
 </section>
 <section id="output-stack" class="slide level2">
 <h2>Output stack</h2>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-40_52668fd2343cf911cc69d94e585b1d44">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-39_9e4adedf86c751b6f87c7864153406fc">
 <div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1"></a>sim_stack</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-40_52668fd2343cf911cc69d94e585b1d44">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-39_9e4adedf86c751b6f87c7864153406fc">
 <div class="cell-output cell-output-stdout">
 <pre><code>Object of class : trollstack 
 Name : teststack 
@@ -2903,12 +2898,12 @@ Number of Species    :  45 </code></pre>
 </section>
 <section id="output-stack-1" class="slide level2">
 <h2>Output stack</h2>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-41_48ba02bffa8cde29d5244d7a69c4c01b">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-40_7205878829e20ac80e238fea6c78e2ea">
 <div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1"></a>rcontroll<span class="sc">::</span><span class="fu">autoplot</span>(sim_stack, <span class="at">what =</span> <span class="st">"temporal"</span>, <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">"ba"</span>, <span class="st">"agb"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-41_48ba02bffa8cde29d5244d7a69c4c01b">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-40_7205878829e20ac80e238fea6c78e2ea">
 <div class="cell-output-display">
-<p><img data-src="day1_files/figure-revealjs/unnamed-chunk-41-1.png" width="960"></p>
+<p><img data-src="day1_files/figure-revealjs/unnamed-chunk-40-1.png" width="960"></p>
 </div>
 </div>
 </section></section>
@@ -2921,11 +2916,11 @@ Number of Species    :  45 </code></pre>
 </section>
 <section id="extract-forest" class="slide level2">
 <h2>Extract forest</h2>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-42_d621ab607a7f1a8dbeaf668507447f87">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-41_e31e0729246830cba084ce72b88331cc">
 <div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1"></a>forest <span class="ot">&lt;-</span> <span class="fu">get_forest</span>(sim)</span>
 <span id="cb51-2"><a href="#cb51-2"></a>forest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-42_d621ab607a7f1a8dbeaf668507447f87">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-41_e31e0729246830cba084ce72b88331cc">
 <div class="cell-output cell-output-stdout">
 <pre><code>     col row CrownDisplacement     Pmass  Nmass     LMA   wsg   Rdark  Vcmax
 1      0   0                 0 0.0004366 0.0206 102.520 0.766 0.93925 35.168
@@ -18029,7 +18024,7 @@ Number of Species    :  45 </code></pre>
 </section>
 <section id="restart-simulation" class="slide level2">
 <h2>Restart simulation</h2>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-43_f8411fc8bf9c9cff7116b812ea6f91e4">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-42_f864b599c58152195cf64a3fb7401d3e">
 <div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1"></a>sim2 <span class="ot">&lt;-</span> <span class="fu">troll</span>(</span>
 <span id="cb53-2"><a href="#cb53-2"></a>  <span class="at">name =</span> <span class="st">"test"</span>,</span>
 <span id="cb53-3"><a href="#cb53-3"></a>  <span class="at">global =</span> <span class="fu">update_parameters</span>(sim, <span class="at">nbiter =</span> <span class="dv">12</span> <span class="sc">*</span> <span class="dv">10</span>),</span>
@@ -18040,16 +18035,16 @@ Number of Species    :  45 </code></pre>
 <span id="cb53-8"><a href="#cb53-8"></a>  <span class="at">verbose =</span> <span class="cn">FALSE</span></span>
 <span id="cb53-9"><a href="#cb53-9"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-43_f8411fc8bf9c9cff7116b812ea6f91e4">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-42_f864b599c58152195cf64a3fb7401d3e">
 
 </div>
 </section>
 <section id="output" class="slide level2">
 <h2>Output</h2>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-44_d93d942d3ab12d4a35fc5d8336a0dd18">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-43_4b2290ab4b1062d3aeaccae216f1a6ac">
 <div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1"></a>sim2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-44_d93d942d3ab12d4a35fc5d8336a0dd18">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-43_4b2290ab4b1062d3aeaccae216f1a6ac">
 <div class="cell-output cell-output-stdout">
 <pre><code>Object of class : trollsim 
 Name : test 
@@ -18070,12 +18065,12 @@ Number of Species    :  45 </code></pre>
 </section>
 <section id="output-1" class="slide level2">
 <h2>Output</h2>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-45_eb337344bd894565a73bef38e82e88f4">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-44_6059c5d7de82f4303241315646bfeecb">
 <div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1"></a>rcontroll<span class="sc">::</span><span class="fu">autoplot</span>(sim2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-45_eb337344bd894565a73bef38e82e88f4">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-44_6059c5d7de82f4303241315646bfeecb">
 <div class="cell-output-display">
-<p><img data-src="day1_files/figure-revealjs/unnamed-chunk-45-1.png" width="960"></p>
+<p><img data-src="day1_files/figure-revealjs/unnamed-chunk-44-1.png" width="960"></p>
 </div>
 </div>
 </section></section>
@@ -18088,7 +18083,7 @@ Number of Species    :  45 </code></pre>
 </section>
 <section id="make-gif" class="slide level2">
 <h2>Make gif</h2>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-46_6736167b8f981903cf961f5a6418ecb9">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-45_ca932950ac3c35270142211ea5d435a3">
 <div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1"></a>gifs <span class="ot">&lt;-</span> <span class="fu">autogif</span>(</span>
 <span id="cb57-2"><a href="#cb57-2"></a>  <span class="at">name =</span> <span class="st">"dynamic"</span>,</span>
 <span id="cb57-3"><a href="#cb57-3"></a>  <span class="at">variables =</span> <span class="st">"height_ct"</span>,</span>
@@ -18101,16 +18096,16 @@ Number of Species    :  45 </code></pre>
 <span id="cb57-10"><a href="#cb57-10"></a>)</span>
 <span id="cb57-11"><a href="#cb57-11"></a>gifs<span class="sc">$</span>height_ct</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-46_6736167b8f981903cf961f5a6418ecb9">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-45_ca932950ac3c35270142211ea5d435a3">
 
 </div>
 </section>
 <section id="result" class="slide level2">
 <h2>Result</h2>
-<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-47_1728a4ae01d4331dbcb351346bc49e59">
+<div class="cell" data-hash="day1_cache/revealjs/unnamed-chunk-46_9533fae3a432608d0b4c447477609ef3">
 <div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"https://raw.githubusercontent.com/sylvainschmitt/rcontroll/main/inst/figures/troll.gif"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-47_1728a4ae01d4331dbcb351346bc49e59">
+<div class="cell fragment" data-hash="day1_cache/revealjs/unnamed-chunk-46_9533fae3a432608d0b4c447477609ef3">
 <div class="cell-output-display">
 <p><img data-src="https://raw.githubusercontent.com/sylvainschmitt/rcontroll/main/inst/figures/troll.gif"></p>
 </div>

@@ -36,35 +36,21 @@ knitr::opts_chunk$set(echo = TRUE)
 set.seed(42)
 ```
 
-## Menu
+## 
 
-```{r}
-#| echo: false
-knitr::include_graphics("figs/troll_model_cheatsheet.svg")
-```
+![](figs/troll_model_cheatsheet.svg){.r-stretch}
 
 # Introduction
 
-Today we will explore the use of forest simulators in ecology, specifically through an agent-based model:
+Today we will explore the use of forest simulators in ecology, specifically through an **agent-based model**:
 
-> a model that simulates the actions and interactions of autonomous agents in order to understand the behaviour of a system and the factors that determine its outcomes.
-
-## The Game of Life (J. Conway, 1970) {.smaller}
-
--   Each cell can only be in one of two states: on (alive) or off (dead)
--   An on cell remains on only if 2 or 3 of its 8 neighbours are on
--   An off cell turns on only if 3 of its 8 neighbours are on
-
-```{r}
-#| echo: false
-knitr::include_graphics("https://user-images.githubusercontent.com/9169414/36646548-4ac65af8-1a79-11e8-811d-da84549f7af3.gif")
-```
+> a model that simulates the actions and interactions of **autonomous agents** in order to understand the **behaviour of a system** and the **factors that determine its outcomes**.
 
 ## Boids (C. W. Reynolds, 1986) {.smaller}
 
--   Cohesion: the boids move closer to one another
--   Separation: two boids cannot be in the same place at the same time
--   Alignment: the boids follow their neighbours
+-   **Cohesion**: the boids move closer to one another
+-   **Separation**: two boids cannot be in the same place at the same time
+-   **Alignment**: the boids follow their neighbours
 
 ```{r}
 #| echo: false
@@ -97,7 +83,7 @@ knitr::include_graphics("https://www.pnas.org/cms/10.1073/pnas.1813211116/asset/
 
 ## What is it?
 
-TROLL models each tree individually within a spatially explicit environment. The TROLL model can therefore be defined as an individual, centred and spatially explicit forest growth model. It simulates the life cycle of trees, from recruitment at a diameter at breast height (dbh) of 1 cm, through to death. Trees grow in a light environment where values are calculated within $1 m^3$ voxels.
+TROLL models each tree **individually** within a spatially explicit environment. The TROLL model can therefore be defined as an **individual** **centred** and **spatially explicit** forest growth model. It simulates the life cycle of trees, from **recruitment** at a diameter at breast height (dbh) of 1 cm, through **growth** to **death**. Trees grow in a **light environment** where values are calculated within $1 m^3$ **voxels**.
 
 ## Scheme
 
@@ -119,15 +105,22 @@ knitr::include_graphics("https://besjournals.onlinelibrary.wiley.com/cms/asset/c
 
 ## How it works {.smaller}
 
-Each tree is defined by its age, diameter at breast height (DBH), height (H), crown radius (CR), crown depth (CD) and leaf area (LA). The tree’s geometry is calculated using allometric equations, and the leaf area varies dynamically within each crown depending on carbon allocation. A tree can occupy a maximum of one 1 m by 1 m pixel. Each tree belongs to a species inherited from its parent tree. For each species, a number of parameters are known: the trait values for that species, which have been collected in the field. Carbon assimilation is calculated over a 30-minute period. Allocation is then calculated to simulate tree growth. The environment is updated monthly. Juveniles (trees with a diameter at breast height of less than 1 cm) are not simulated explicitly, but as a group. Furthermore, underground processes, herbaceous plants, epiphytes and lianas are not taken into account in TROLL.
+Each tree is defined by its **age**, diameter at breast height (**DBH**), height (**H**), crown radius (**CR**), crown depth (**CD**) and leaf area (**LA**). The tree’s geometry is calculated using allometric equations, and the leaf area varies dynamically within each crown depending on carbon allocation. A tree can occupy a maximum of one 1 m by 1 m pixel. Each tree belongs to a **species** inherited from its parent tree. For each species, a number of parameters are known: the **trait values for that species**, which have been collected in the field. **Carbon assimilation** is calculated over a 30-minute period. Allocation is then calculated to simulate tree growth. The environment is updated monthly. Juveniles (trees with a diameter at breast height of less than 1 cm) are not simulated explicitly, but as a group. Furthermore, underground processes, herbaceous plants, epiphytes and lianas are not taken into account in TROLL.
+
+## How it works {.smaller}
+
+```{r }
+#| echo: false
+knitr::include_graphics("figs/TROLL_fig_IM.png")
+```
 
 ## R Environment
 
-During this practical session, we will use the TROLL model [@Marechaux2017] with the rcontrol package [@schmitt2023]. We will also use the tidyverse packages for table manipulation and graph creation. Download them (prerequisite!):
+During this practical session, we will use the TROLL model [@Marechaux2017] with the `rcontroll` package [@schmitt2023]. We will also use the `tidyverse` packages for table manipulation and graph creation. Download them (prerequisite!):
 
 ```{r dl_pkg}
 #| eval: false
-install.packages("tidyverse", "rcontroll")
+install.packages(c("tidyverse", "rcontroll"))
 ```
 
 Load them with:
@@ -140,20 +133,20 @@ library(rcontroll)
 
 # Inputs - Species
 
-> The behaviour of species in TROLL is determined by their functional traits and scaling parameters.
+> The behaviour of species in TROLL is determined by their **functional traits** and **scaling parameters**.
 
 ## Functional traits
 
 TROLL 3 relies on the following functional traits:
 
--   LMA: leaf mass per area (LMA, g m−2)
--   N: leaf nitrogen content per dry mass (N, g g−1)
--   P: leaf phosphorus content per dry mass (P, g g−1)
--   WSG: wood specific gravity (wsg, g cm−3)
+-   `LMA`: leaf mass per area (LMA, g m−2)
+-   `N`: leaf nitrogen content per dry mass (N, g g−1)
+-   `P`: leaf phosphorus content per dry mass (P, g g−1)
+-   `WSG`: wood specific gravity (wsg, g cm−3)
 
 ## Relation example
 
-For instance, maximum potential electron transport rate Jmax varies across species in TROLL with the following equation according to @domingues2010:
+For instance, maximum potential electron transport rate `Jmax` varies across species in TROLL with the following equation according to @domingues2010:
 
 $$
 J_{max}  = min\begin{cases}
@@ -166,20 +159,20 @@ $$
 
 TROLL relies on 3 scaling parameters to represent tree size across species:
 
--   dbh_thres: species maximum diameter at breast height (cm)
--   h_lim: asymptotic height (m)
--   a_h: scaling parameter between diameter and height
+-   `dbh_thres`: species maximum diameter at breast height (cm)
+-   `h_lim`: asymptotic height (m)
+-   `a_h`: scaling parameter between diameter and height
 
 ## Michaelis Menten
 
-h_lim and a_h define the growth in height trajectory for every species according to its diameter as $h = \frac{h_{lim} \times dbh}{a_h+dbh}$.
+`h_lim` and `a_h` define the growth in height trajectory for every species according to its diameter as $h = \frac{h_{lim} \times dbh}{a_h+dbh}$.
 
 ```{r}
 #| echo: false
 tibble(dbh = 1:200) %>% 
   mutate(h = (30*dbh)/(30+dbh)) %>% 
   ggplot(aes(dbh, h)) +
-  annotate("text", 5, 29, label = "hlim") +
+  annotate("text", 5, 29, label = "h_lim") +
   annotate("text", 35, 1, label = "a_h") +
   geom_hline(yintercept = 30, linetype = "dashed") +
   geom_vline(xintercept = 30, linetype = "dashed") +
@@ -212,7 +205,7 @@ head(TROLLv3_species) %>%
 
 # Inputs - Climate
 
-> TROLL 3 uses a representative day per month, incorporating diurnal half-hourly variation.
+> TROLL 3 uses a representative **day per month**, incorporating **diurnal half-hourly variation**.
 
 ## Monthly climate
 
@@ -228,29 +221,29 @@ TROLL 3 uses a lot of variables all derived from 5 climate variables:
 
 From them 12 variables are derived:
 
--   Temperature: monthly average of temperature (degree C)
--   DaytimeMeanTemperature: the monthly average of daytime temperature (degree C, 7am-7pm)
--   NightTemperature: the monthly average of temperature at night (degree C, 8pm-6am)
+-   `Temperature`: monthly average of temperature (degree C)
+-   `DaytimeMeanTemperature`: the monthly average of daytime temperature (degree C, 7am-7pm)
+-   `NightTemperature`: the monthly average of temperature at night (degree C, 8pm-6am)
 -   Rainfall: monthly average of cumulative rainfall (cm)
--   WindSpeed: monthly average of wind speed (m/s)
--   DaytimeMeanIrradiance: monthly average of cumulative solar irradiance averaged over one day (W/m2, 7am-7pm)
--   MeanIrradiance: monthly average of cumulative solar irradiance over 24 hours (W/m2)
+-   `WindSpeed`: monthly average of wind speed (m/s)
+-   `DaytimeMeanIrradiance`: monthly average of cumulative solar irradiance averaged over one day (W/m2, 7am-7pm)
+-   `MeanIrradiance`: monthly average of cumulative solar irradiance over 24 hours (W/m2)
 
 ## Monthly climate (2/2) {.smaller}
 
 From them 12 variables are derived:
 
--   SaturatedVapourPressure: monthly average of saturation vapour pressure (hPa)
--   VapourPressure: monthly average of vapour pressur (hPa)
--   VaporPressureDeficit: monthly average of vapour pressure deficit (VPD, hPa)
--   DayTimeVapourPressureDeficitVPDbasic: monthly average of daytime vapour pressure deficit (7am-7pm) according to basic formula (hPa)
--   DaytimeMeanVapourPressureDeficit: monthly average of daytime vapour pressure deficit (7am-7pm) according to advanced formula (hPa)
+-   `SaturatedVapourPressure`: monthly average of saturation vapour pressure (hPa)
+-   `VapourPressure`: monthly average of vapour pressur (hPa)
+-   `VaporPressureDeficit`: monthly average of vapour pressure deficit (VPD, hPa)
+-   `DayTimeVapourPressureDeficitVPDbasic`: monthly average of daytime vapour pressure deficit (7am-7pm) according to basic formula (hPa)
+-   `DaytimeMeanVapourPressureDeficit`: monthly average of daytime vapour pressure deficit (7am-7pm) according to advanced formula (hPa)
 
 ## Monthly climate
 
-> NB : In TROLL 4, climate input have been simplified to 5 (day 2 session).
+> *NB : In TROLL 4, climate input have been simplified to 5 (day 2 session).*
 
-> NB : rcontroll include a function to help prepare climate data (day 3 session).
+> *NB : rcontroll include a function to help prepare climate data (day 3 session).*
 
 ## Monthly climate in `rcontroll`
 
@@ -278,13 +271,13 @@ TROLLv3_climatedaytime12 %>%
 
 ## Half-hourly variation {.smaller}
 
-The carbon assimilated by a tree in one day is the sum of the leaf-level carbon fluxes across the 24 half-hour periods of daylight: 
+The carbon assimilated by a tree in one day is the sum of the leaf-level carbon fluxes across the 24 half-hour periods of daylight:
 
-* vardaytime_light: daily variation in irradiance relative to the mean value of the day
-* vardaytime_vpd: daily variation in vapour pressure deficit relative to the mean value of the day
-* vardaytime_T: daily variation in temperature relative to the mean value of the day
+-   `vardaytime_light`: daily variation in irradiance relative to the mean value of the day
+-   `vardaytime_vpd`: daily variation in vapour pressure deficit relative to the mean value of the day
+-   `vardaytime_T`: daily variation in temperature relative to the mean value of the day
 
-> NB : rcontroll include a function to help prepare half-hourly variation data (day 3 session).
+> *NB : rcontroll include a function to help prepare half-hourly variation data (day 3 session).*
 
 ## Half-hourly variation in `rcontroll`
 
@@ -317,20 +310,20 @@ TROLLv3_daytimevar %>%
 
 TROLL includes numerous parameters (see [rcontroll documentation](https://sylvainschmitt.github.io/rcontroll/reference/generate_parameters.html) or the [GMD paper appendix](https://gmd.copernicus.org/articles/18/5205/2025/#section6&gid=1&pid=1)). They might be regrouped in several types:
 
-* Simulation parameters: definition of simulation characteristic (size, duration, ...)
-* Physical parameters: definition of physical environment behaviour 
-* Ecosystem parameters: definition of tree behaviour at the community level
-* Intraspecific parameters: definition of tree trait variation within species
-* Model macros: definition of model behaviour and processes
+-   `Simulation parameters`: definition of simulation characteristic (size, duration, ...)
+-   `Physical parameters`: definition of physical environment behaviour
+-   `Ecosystem parameters`: definition of tree behaviour at the community level
+-   `Intraspecific parameters`: definition of tree trait variation within species
+-   `Model macros`: definition of model behaviour and processes
 
 ## Simulation parameters
 
 > Definition of simulation characteristic (size, duration, ...)
 
-* cols: Number of columns (m)
-* rows: Number of rows (m)
-* HEIGHT: Vertical extent of simulation (m)
-* nbiter: Total number of timesteps (months)
+-   `cols`: Number of columns (m)
+-   `rows`: Number of rows (m)
+-   `HEIGHT`: Vertical extent of simulation (m)
+-   `nbiter`: Total number of timesteps (months)
 
 ## Simulation - example
 
@@ -345,15 +338,15 @@ expand_grid(col = 1:100, row = 1:100) %>%
 
 > definition of physical environment behaviour
 
-* SWtoPPFD: Convert shortwave irradiance to PAR photons
-* p_nonvert: Light incidence parameter (difference through turbid medium)
-* klight: Light attenuation in the canopy following a Beer-Lambert law
-* phi: Quantum yield (in micromol C/micromol photon)
-* absorptance_leaves: Absorptance of individual leaves
+-   `SWtoPPFD`: Convert shortwave irradiance to PAR photons
+-   `p_nonvert`: Light incidence parameter (difference through turbid medium)
+-   `klight`: Light attenuation in the canopy following a Beer-Lambert law
+-   `phi`: Quantum yield (in micromol C/micromol photon)
+-   `absorptance_leaves`: Absorptance of individual leaves
 
 ## Physical example
 
-> klight: Light attenuation in the canopy following a Beer-Lambert law
+> `klight`: Light attenuation in the canopy following a Beer-Lambert law
 
 $$PPFD = PPFD \times exp(-k_{light}\times LAI)$$
 
@@ -379,30 +372,30 @@ g
 
 > definition of tree behaviour at the community level
 
-* theta: Parameter of the Farquhar model
-* g1: Parameter g1 of Medlyn et al stomatal conductance model
-* vC: Variance of the flexion moment
-* CR_a: Crown radius log intercept or Michaelis Menten initial growth
-* CR_b: Crown radius log slope or Michaelis Menten asymptotic CR
-* CD_a: Crown depth intercept (absolute value)
-* CD_b: Crown depth slope (as fraction of tree height)
-* shape_crown: Crown shape parameter
+-   `theta`: Parameter of the Farquhar model
+-   `g1`: Parameter g1 of Medlyn et al stomatal conductance model
+-   `vC`: Variance of the flexion moment
+-   `CR_a`: Crown radius log intercept or Michaelis Menten initial growth
+-   `CR_b`: Crown radius log slope or Michaelis Menten asymptotic CR
+-   `CD_a`: Crown depth intercept (absolute value)
+-   `CD_b`: Crown depth slope (as fraction of tree height)
+-   `shape_crown`: Crown shape parameter
 
 ## Ecosystem parameters (2/2) {.smaller}
 
-* fallocwood: Fraction of biomass allocated to above ground wood (branch turnover+stem)
-* falloccanopy: Fraction of biomass allocated to canopy (leaves + reproductive organs + twigs)
-* Cseedrain: Constant used to scale total seed rain per hectare across species
-* nbs0:  Number of seeds produced and dispersed by each mature tree 
-* leafdem_resolution: Resolution of leaf demography model
-* p_tfsecondary: Probability of secondary treefall
-* hurt_decay: Parameter determining how tree damages are repaired
-* crown_gap_fraction: Fraction of gaps in the crown
-* m: Minimal death rate
+-   `fallocwood`: Fraction of biomass allocated to above ground wood (branch turnover+stem)
+-   `falloccanopy`: Fraction of biomass allocated to canopy (leaves + reproductive organs + twigs)
+-   `Cseedrain`: Constant used to scale total seed rain per hectare across species
+-   `nbs0`: Number of seeds produced and dispersed by each mature tree
+-   `leafdem_resolution`: Resolution of leaf demography model
+-   `p_tfsecondary`: Probability of secondary treefall
+-   `hurt_decay`: Parameter determining how tree damages are repaired
+-   `crown_gap_fraction`: Fraction of gaps in the crown
+-   `m`: Minimal death rate
 
 ## Ecosystem example {.smaller}
 
-> CR_a and CR_b: Crown radius log intercept and slope with $CR = CR_a\times dbh^{CR_b}$
+> `CR_a` and `CR_b`: Crown radius log intercept and slope with $CR = CR_a\times dbh^{CR_b}$
 
 ```{r}
 #| fig-height: 4
@@ -413,32 +406,31 @@ tibble(dbh = (1:200)/100) %>%
   theme_bw()
 ```
 
-    
 ## Intraspecific parameters (1/2) {.smaller}
 
 > definition of tree trait variation within species
 
-* sigma_height: Intraspecific variation in tree height (lognormal)
-* sigma_CR: Intraspecific variation in crown radius (lognormal)
-* sigma_CD: Intraspecific variation in crown depth (lognormal)
-* sigma_P: Intraspecific variation in leaf phosphorus (lognormal)
-* sigma_N: Intraspecific variation in leaf nitrogen (lognormal)
-* sigma_LMA: Intraspecific variation in leaf mass per area (lognormal)
-* sigma_wsg: Intraspecific variation in wood specific gravity
-* sigma_dbhmax: Intraspecific variation in maximum diameter
+-   `sigma_height`: Intraspecific variation in tree height (lognormal)
+-   `sigma_CR`: Intraspecific variation in crown radius (lognormal)
+-   `sigma_CD`: Intraspecific variation in crown depth (lognormal)
+-   `sigma_P`: Intraspecific variation in leaf phosphorus (lognormal)
+-   `sigma_N`: Intraspecific variation in leaf nitrogen (lognormal)
+-   `sigma_LMA`: Intraspecific variation in leaf mass per area (lognormal)
+-   `sigma_wsg`: Intraspecific variation in wood specific gravity
+-   `sigma_dbhmax`: Intraspecific variation in maximum diameter
 
 ## Intraspecific parameters (1/2)
 
 > definition of tree trait variation within species
 
-* corr_CR_height: Correlation coefficient between crown radius and tree height
-* corr_N_P: correlation coefficient between leaf nitrogen and leaf phosphorus
-* corr_N_LMA: Correlation coefficient between leaf nitrogen and leaf mass per area
-* corr_P_LMA: Correlation coefficient between leaf phosphorus and leaf mass per area
+-   `corr_CR_height`: Correlation coefficient between crown radius and tree height
+-   `corr_N_P`: correlation coefficient between leaf nitrogen and leaf phosphorus
+-   `corr_N_LMA`: Correlation coefficient between leaf nitrogen and leaf mass per area
+-   `corr_P_LMA`: Correlation coefficient between leaf phosphorus and leaf mass per area
 
 ## Intraspecific example
 
-> sigma_wsg: Intraspecific variation in wood specific gravity
+> `sigma_wsg`: Intraspecific variation in wood specific gravity
 
 ```{r}
 #| fig-height: 4
@@ -450,15 +442,15 @@ tibble(wsg = rnorm(100, TROLLv3_species$s_wsg[1], 0.06)) %>%
 
 > definition of model behaviour and processes
 
-* LL_parameterization: leaf lifespan parameterizations: Reich empirical, Kikuzawa model, and Kikuzawa model with leaf plasticity
-* LA_regulation: dynamic LA regulation
-* sapwood: sapwood parameterizations: constant thickness (0.04), Fyllas percentage, Fyllas lower limit
-* seedsadditional: excess biomass into seeds after maturation (0,1).
-* NONRANDOM: simulation are random or not
-* GPPcrown: option to compute only GPP from the topmost value of PPFD and GPP
-* BASICTREEFALL: treefall is a source of tree death
-* SEEDTRADEOFF: the number of seeds produced is determined by NPP allocated to reproduction and seed mass, otherwise the number of seeds is fixed
-* CROWN_MM: Michaelis Menten allometry for crowns instead of power law
+-   `LL_parameterization`: leaf lifespan parameterizations: Reich empirical, Kikuzawa model, and Kikuzawa model with leaf plasticity
+-   `LA_regulation`: dynamic LA regulation
+-   `sapwood`: sapwood parameterizations: constant thickness (0.04), Fyllas percentage, Fyllas lower limit
+-   `seedsadditional`: excess biomass into seeds after maturation (0,1).
+-   `NONRANDOM`: simulation are random or not
+-   `GPPcrown`: option to compute only GPP from the topmost value of PPFD and GPP
+-   `BASICTREEFALL`: treefall is a source of tree death
+-   `SEEDTRADEOFF`: the number of seeds produced is determined by NPP allocated to reproduction and seed mass, otherwise the number of seeds is fixed
+-   `CROWN_MM`: Michaelis Menten allometry for crowns instead of power law
 
 ## Parameters in `rcontroll`
 
@@ -499,7 +491,7 @@ sim <- troll(
 )
 ```
 
-> You can run a simulation in memory without the path option, but I advise on using the path to write files and have acces to your simulations outputs later on.
+> You can run a simulation in memory without the `path` option, but I advise on using the path to write files and have acces to your simulations outputs later on.
 
 ## Simulation
 
@@ -613,7 +605,6 @@ stack_parameters <- generate_parameters(
   unnest(simulation)
 stack_parameters[62, 2] <- 500 # Cseedrain
 ```
-
 
 ## Prepare input
 

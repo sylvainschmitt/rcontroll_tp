@@ -28,24 +28,21 @@ execute:
   cache: true
 ---
 
-## Menu
+## 
 
-```{r}
-#| echo: false
-knitr::include_graphics("figs/troll_model_cheatsheet.svg")
-```
+![](figs/troll_model_cheatsheet.svg){.r-stretch}
 
 # Introduction
 
-> Typically, running TROLL simulations starts well before TROLL or rcontroll is opened, involving numerous stages of data gathering and preparation, and continues far beyond a single model run. It may also include evaluation, sensitivity analysis, calibration, or complex virtual experimental simulation schemes.
+> Typically, running TROLL simulations starts well before TROLL or rcontroll is opened, involving numerous stages of `data gathering and preparation`, and continues far beyond a single model run. It may also include `evaluation`, `sensitivity` analysis, `calibration`, or complex `virtual experimental simulation schemes`.
 
 ## R Environment
 
-During this practical session, we will use the TROLL model [@Marechaux2017] with the rcontrol package [@schmitt2023]. We will also use the tidyverse packages for table manipulation and graph creation. Download them (prerequisite!):
+During this practical session, we will use the TROLL model [@Marechaux2017] with the `rcontroll` package [@schmitt2023]. We will also use the `tidyverse` packages for table manipulation and graph creation. Download them (prerequisite!):
 
 ```{r dl_pkg}
 #| eval: false
-install.packages("tidyverse", "rcontroll")
+install.packages(c("tidyverse", "rcontroll"))
 ```
 
 Load them with:
@@ -164,7 +161,7 @@ fit <- brm(bf(log(h) ~ log(hmax * (d/ (ah + d))),
 
 ## Imputation
 
-Often, some species data are missing. TROLL doesn't support it, which requires species removal or data imputation. I suggest striking a balance between keeping species diversity and a diversity of functional strategies represented (e.g. including pioneers), while trying to limit the amount of "false data" imputed. Technically, we can use extra information from other correlated traits or phylogenetic distances if we expect phylogenetic conservatism. In terms of methods and tools, I used to rely on multivariate imputation by chained equations from the R `mice` package. However, I now rely on machine learning with random forest for imputation using `missForest`.
+Often, some species data are `missing`. TROLL doesn't support it, which requires species `removal` or data `imputation`. I suggest `striking a balance` between keeping species diversity and a diversity of functional strategies represented (e.g. including pioneers), while trying to limit the amount of "false data" imputed. Technically, we can use extra information from other correlated traits or phylogenetic distances if we expect phylogenetic conservatism. In terms of methods and tools, I used to rely on multivariate imputation by chained equations from the R `mice` package. However, I now rely on machine learning with random forest for imputation using `missForest`.
 
 # Prepare Climate
 
@@ -174,12 +171,12 @@ Often, some species data are missing. TROLL doesn't support it, which requires s
 
 We need half-hourly variations and thus require data with high temporal resolution. Possible sources includes:
 
--   local weather station and or flux tower (but beware as not mandatorily standard)
+-   local weather station and or flux tower (*but beware as not mandatorily standard*)
 -   nearby weather station and or flux tower
 -   global datasets, e.g. FLUXNET2015 [@pastorello2020]
 -   global reanalyses, as ERA5-Land [@muñoz-sabater2021]
 
-> Our better a combination for evaluation and debiasing of global high resolution products against local data.
+> *Our better a combination for `evaluation` and `debiasing` of global high resolution products against local data.*
 
 ## Sources {.smaller}
 
@@ -187,7 +184,7 @@ We need half-hourly variations and thus require data with high temporal resoluti
 -   Global datasets and reanalyses can be accessed online through Google Earth Engine or the Climate Data Store
 -   `rcontroll` includes a vignette and functions to get data from ERA5-Land and format them for usage in TROLL: <https://sylvainschmitt.github.io/rcontroll/articles/climate.html>
 
-> For ERA5-Land both for TROLL 3 or TROLL 4, I developed a python script for efficient data gathering on a given area <https://github.com/sylvainschmitt/troll_fg/blob/main/data/raw_data/era/get_era_ee.py>
+> *For ERA5-Land both for TROLL 3 or TROLL 4, I developed a python script for efficient data gathering on a given area <https://github.com/sylvainschmitt/troll_fg/blob/main/data/raw_data/era/get_era_ee.py>*
 
 ## Example ERA5-Land
 
@@ -237,18 +234,18 @@ We need at least textures, and if possible SOC, DBD, CEC, pH:
 -   local or nearby soil analyses
 -   global datasets, e.g. SoilGrids [@poggio2021]
 
-> Depending on the area I'm really not confident on SoilGrids, e.g. in French Guiana with only a few swamp samples over-extrapolated.
+> *Depending on the area I'm really not confident on SoilGrids, e.g. in French Guiana with only a few swamp samples over-extrapolated.*
 
 ## Example [@schmitt2025] {.smaller}
 
 Gathered by J. Lischtein for two sites required multiple references:
 
--   Textures for Paracou (Van Langenhove et al. ([2021](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-vanlangenhove2021)): Table 1, slope SLD soils, 0-30 cm and Gourlet-Fleury et al. (2004): Table 3, deep ferralitic soils, 0-40 cm) and Tapajos (Silver et al. ([2000](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-silver2000)): Table 5, gradient position 350).
--   SOC for Paracou (Van Langenhove et al. ([2021](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-vanlangenhove2021)): mean of slope SLD soil values (0-30 cm depth) in Tables 2-3, dry and wet seasons averaged) and Tapajos (Quesada et al. ([2010](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-quesada2010)): Table S2, 0-30 cm depth).
--   DBD for Paracou (Van Langenhove et al. ([2021](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-vanlangenhove2021)): mean over 0-30 cm depth for superficial lateral drainage (SLD) slope soils) and Tapajos (Silver et al. ([2000](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-silver2000)): mean for clay soils (0-10 cm depth) from Table 1, gradient positions 350 and 400).
--   pH for Paracou (Van Langenhove et al. ([2021](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-vanlangenhove2021)): mean of slope SLD soil values 0-30 cm depth in Table 1) and Tapajos (Quesada et al. ([2010](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-quesada2010)): Table S2, 0-30 cm).
--   CEC for Paracou (Sabatier et al. ([1997](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-sabatier1997)): Table 2, SLD soils, 0-30 cm) and Tapajos (Quesada et al. ([2010](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-quesada2010)): Table S2, 0-30 cm depth).
--   Soil depth in metre ([Nepstad et al. 2002](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-nepstad2002)) for Tapajos.
+-   `Textures` for Paracou (Van Langenhove et al. ([2021](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-vanlangenhove2021)): Table 1, slope SLD soils, 0-30 cm and Gourlet-Fleury et al. (2004): Table 3, deep ferralitic soils, 0-40 cm) and Tapajos (Silver et al. ([2000](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-silver2000)): Table 5, gradient position 350).
+-   `SOC` for Paracou (Van Langenhove et al. ([2021](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-vanlangenhove2021)): mean of slope SLD soil values (0-30 cm depth) in Tables 2-3, dry and wet seasons averaged) and Tapajos (Quesada et al. ([2010](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-quesada2010)): Table S2, 0-30 cm depth).
+-   `DBD` for Paracou (Van Langenhove et al. ([2021](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-vanlangenhove2021)): mean over 0-30 cm depth for superficial lateral drainage (SLD) slope soils) and Tapajos (Silver et al. ([2000](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-silver2000)): mean for clay soils (0-10 cm depth) from Table 1, gradient positions 350 and 400).
+-   `pH` for Paracou (Van Langenhove et al. ([2021](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-vanlangenhove2021)): mean of slope SLD soil values 0-30 cm depth in Table 1) and Tapajos (Quesada et al. ([2010](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-quesada2010)): Table S2, 0-30 cm).
+-   `CEC` for Paracou (Sabatier et al. ([1997](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-sabatier1997)): Table 2, SLD soils, 0-30 cm) and Tapajos (Quesada et al. ([2010](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-quesada2010)): Table S2, 0-30 cm depth).
+-   Soil `depth` in metre ([Nepstad et al. 2002](https://sylvainschmitt.github.io/troll_eval/99_references.html#ref-nepstad2002)) for Tapajos.
 
 # LIDAR simulation
 
@@ -423,7 +420,7 @@ dist_par %>% rename(abundance_par = abundance) %>% left_join(dist_troll) %>%
 
 For instance:
 
-> m Minimal death rate
+> `m` Minimal death rate
 
 As a strong impact on dynamic and structure.
 
@@ -492,7 +489,7 @@ sensitivity::pcc(data.frame(m = unname(m), intercept = 0), agb$agb)
 
 For instance:
 
-> m Minimal death rate
+> `m` Minimal death rate
 
 As a strong impact on dynamic and structure.
 

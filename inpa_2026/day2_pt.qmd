@@ -28,12 +28,9 @@ execute:
   cache: true
 ---
 
-## Menu
+##
 
-```{r}
-#| echo: false
-knitr::include_graphics("figs/troll_model_cheatsheet.svg")
-```
+![](figs/troll_model_cheatsheet.svg){.r-stretch}
 
 # Introdução
 
@@ -326,10 +323,11 @@ g <- read_tsv("data/day2/R1_0_water_balance.txt") %>%
   gather(component, value, -date) %>% 
   mutate(value = value*1000) %>% 
   filter(value >= 1) %>% 
-  ggplot(aes(date, value, col = component)) +
-  geom_line() +
+  ggplot(aes(date, value, fill = component)) +
+  geom_col() +
   theme_bw() +
-  scale_y_log10() + xlab("") + ylab("[mm]")
+  scale_y_log10() + xlab("") + ylab("[mm]") + 
+  facet_wrap(~ component) + scale_fill_discrete(guide = "none")
 ```
 
 ## Balanço hídrico
@@ -350,7 +348,7 @@ g <- read_tsv("data/day2/R1_0_water_balance.txt") %>%
   select(date, transpiration, "soil evaporation", "canopy evaporation") %>% 
   gather(component, value, -date) %>% 
   ggplot(aes(date, value)) +
-  geom_line() +
+  geom_col() +
   facet_wrap(~ component, nrow = 3) +
   theme_bw() + xlab("") + ylab("[mm]")
 ```
@@ -358,7 +356,7 @@ g <- read_tsv("data/day2/R1_0_water_balance.txt") %>%
 ## Balanço hídrico
 
 ```{r}
-g
+g 
 ```
 
 ## ET: Evapotranspiração

@@ -433,10 +433,10 @@ Sylvain Schmitt
 
   <p class="date">Apr 8, 2026</p>
 </section>
-<section id="menu" class="slide level2">
-<h2>Menu</h2>
-
-<img data-src="figs/troll_model_cheatsheet.svg" class="r-stretch"></section>
+<section id="section" class="slide level2">
+<h2></h2>
+<img data-src="figs/troll_model_cheatsheet.svg" class="r-stretch">
+</section>
 <section>
 <section id="introdução" class="title-slide slide level1 center">
 <h1>Introdução</h1>
@@ -446,11 +446,11 @@ Sylvain Schmitt
 </section>
 <section id="ambiente-r" class="slide level2">
 <h2>Ambiente R</h2>
-<p>Durante esta sessão prática, utilizaremos o modelo TROLL <span class="citation" data-cites="Marechaux2017">(<a href="#/referências" role="doc-biblioref" onclick="">Maréchaux and Chave 2017</a>)</span> com o pacote rcontroll <span class="citation" data-cites="schmitt2023">(<a href="#/referências" role="doc-biblioref" onclick="">Schmitt et al. 2023</a>)</span>. Também usaremos os pacotes tidyverse para manipulação de tabelas e criação de gráficos. Faça o download deles (pré-requisito!):</p>
-<div class="cell" data-hash="day3_pt_cache/revealjs/dl_pkg_5cfde48d145da47d0a92c360e45539bf">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">install.packages</span>(<span class="st">"tidyverse"</span>, <span class="st">"rcontroll"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Durante esta sessão prática, utilizaremos o modelo TROLL <span class="citation" data-cites="Marechaux2017">(<a href="#/referências" role="doc-biblioref" onclick="">Maréchaux and Chave 2017</a>)</span> com o pacote <code>rcontroll</code> <span class="citation" data-cites="schmitt2023">(<a href="#/referências" role="doc-biblioref" onclick="">Schmitt et al. 2023</a>)</span>. Também usaremos os pacotes <code>tidyverse</code> para manipulação de tabelas e criação de gráficos. Faça o download deles (pré-requisito!):</p>
+<div class="cell" data-hash="day3_pt_cache/revealjs/dl_pkg_7f36c8c31b26772f8d44978729ca8ba5">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"tidyverse"</span>, <span class="st">"rcontroll"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/dl_pkg_5cfde48d145da47d0a92c360e45539bf">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/dl_pkg_7f36c8c31b26772f8d44978729ca8ba5">
 
 </div>
 <p>Carregue-os com:</p>
@@ -483,7 +483,7 @@ Sylvain Schmitt
 </section>
 <section id="exemplo-vleminckx2021" class="slide level2">
 <h2>Exemplo <span class="citation" data-cites="vleminckx2021">(<a href="#/referências" role="doc-biblioref" onclick="">Vleminckx et al. 2021</a>)</span></h2>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-2_78f262fc44fd9cf16a6327a56fbc4dd5">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-1_b1690c7b63e163a8c4dd6da912af307a">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>ft <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(<span class="st">"data/day3/oik13191-sup-0002-appendixs2.xlsx"</span>,</span>
 <span id="cb3-2"><a href="#cb3-2"></a>                        <span class="st">"App.S6-ok"</span>, <span class="at">skip =</span> <span class="dv">3</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb3-3"><a href="#cb3-3"></a>  <span class="fu">rename</span>(<span class="at">s_name =</span> Species, <span class="at">s_wsg =</span> WSG) <span class="sc">%&gt;%</span> </span>
@@ -491,22 +491,22 @@ Sylvain Schmitt
 <span id="cb3-5"><a href="#cb3-5"></a>  <span class="fu">filter</span>(s_LMA <span class="sc">&lt;</span> <span class="dv">200</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb3-6"><a href="#cb3-6"></a>  <span class="fu">select</span>(s_name, s_LMA, s_Nmass, s_Pmass, s_wsg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-2_78f262fc44fd9cf16a6327a56fbc4dd5">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-1_b1690c7b63e163a8c4dd6da912af307a">
 
 </div>
 </section>
 <section id="exemplo-vleminckx2021-1" class="slide level2">
 <h2>Exemplo <span class="citation" data-cites="vleminckx2021">(<a href="#/referências" role="doc-biblioref" onclick="">Vleminckx et al. 2021</a>)</span></h2>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-3_1fcd69935910cecb31ef458a613307a8">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-2_25eae39a4e34a00e2f75455d71e7b64b">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">autoplot</span>(<span class="fu">princomp</span>(<span class="fu">select</span>(ft, <span class="sc">-</span>s_name), <span class="at">cor =</span> <span class="cn">TRUE</span>),</span>
 <span id="cb4-2"><a href="#cb4-2"></a>         <span class="at">alpha =</span> <span class="fl">0.25</span>, <span class="at">col =</span> <span class="st">"lightgrey"</span>, <span class="at">loadings.label.size =</span> <span class="dv">6</span>,</span>
 <span id="cb4-3"><a href="#cb4-3"></a>         <span class="at">loadings.label.colour =</span> <span class="st">'red'</span>, <span class="at">loadings.label.vjust =</span> <span class="fl">1.1</span>,</span>
 <span id="cb4-4"><a href="#cb4-4"></a>         <span class="at">loadings.label.repel   =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb4-5"><a href="#cb4-5"></a>         <span class="at">loadings =</span> T, <span class="at">loadings.label =</span> T, <span class="at">loadings.colour =</span> <span class="st">'red'</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-3_1fcd69935910cecb31ef458a613307a8">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-2_25eae39a4e34a00e2f75455d71e7b64b">
 <div class="cell-output-display">
-<p><img data-src="day3_pt_files/figure-revealjs/unnamed-chunk-3-1.png" width="960"></p>
+<p><img data-src="day3_pt_files/figure-revealjs/unnamed-chunk-2-1.png" width="960"></p>
 </div>
 </div>
 </section>
@@ -523,22 +523,22 @@ Sylvain Schmitt
 </section>
 <section id="exemplo-jucker2022" class="slide level2">
 <h2>Exemplo <span class="citation" data-cites="jucker2022">(<a href="#/referências" role="doc-biblioref" onclick="">Jucker et al. 2022</a>)</span></h2>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-4_78f0b7d86cf848281df3a8e022e5e075">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-3_bea54800287e2a8684f76cf8bff57b21">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>tallo <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">'data/day3/tallo_amazonia.tsv'</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb5-2"><a href="#cb5-2"></a>  <span class="fu">filter</span>(longitude <span class="sc">&lt;=</span> <span class="sc">-</span><span class="dv">39</span> <span class="sc">&amp;</span> longitude <span class="sc">&gt;=</span> <span class="sc">-</span><span class="dv">79</span> <span class="sc">&amp;</span> latitude <span class="sc">&gt;=</span> <span class="sc">-</span><span class="dv">18</span> <span class="sc">&amp;</span> latitude <span class="sc">&lt;=</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb5-3"><a href="#cb5-3"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(species)) <span class="sc">%&gt;%</span> </span>
 <span id="cb5-4"><a href="#cb5-4"></a>  <span class="fu">select</span>(species, stem_diameter_cm, height_m)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-4_78f0b7d86cf848281df3a8e022e5e075">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-3_bea54800287e2a8684f76cf8bff57b21">
 
 </div>
 </section>
 <section id="exemplo-jucker2022-1" class="slide level2">
 <h2>Exemplo <span class="citation" data-cites="jucker2022">(<a href="#/referências" role="doc-biblioref" onclick="">Jucker et al. 2022</a>)</span></h2>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-5_5a3c65d967f836ca99f25fbaac7c30f1">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-4_dcc1b4a657debbac9a2048c00e98316b">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>tallo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-5_5a3c65d967f836ca99f25fbaac7c30f1">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-4_dcc1b4a657debbac9a2048c00e98316b">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 8,363 × 3
    species                stem_diameter_cm height_m
@@ -559,27 +559,27 @@ Sylvain Schmitt
 </section>
 <section id="exemplo-jucker2022-2" class="slide level2">
 <h2>Exemplo <span class="citation" data-cites="jucker2022">(<a href="#/referências" role="doc-biblioref" onclick="">Jucker et al. 2022</a>)</span></h2>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-6_f7a58d9f2ad5a0334665237882e15ae9">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-5_8443b54537f1c6994380733b149536ac">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>tallo <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(species) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">n</span>() <span class="sc">&gt;</span> <span class="dv">30</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb8-2"><a href="#cb8-2"></a>  <span class="fu">summarise</span>(<span class="at">s_dbhmax =</span> <span class="fu">quantile</span>(stem_diameter_cm, .<span class="dv">95</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb8-3"><a href="#cb8-3"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(s_dbhmax)) <span class="sc">+</span> <span class="fu">geom_histogram</span>() <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-6_f7a58d9f2ad5a0334665237882e15ae9">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-5_8443b54537f1c6994380733b149536ac">
 <div class="cell-output-display">
-<p><img data-src="day3_pt_files/figure-revealjs/unnamed-chunk-6-1.png" width="960"></p>
+<p><img data-src="day3_pt_files/figure-revealjs/unnamed-chunk-5-1.png" width="960"></p>
 </div>
 </div>
 </section>
 <section id="exemplo-jucker2022-3" class="slide level2">
 <h2>Exemplo <span class="citation" data-cites="jucker2022">(<a href="#/referências" role="doc-biblioref" onclick="">Jucker et al. 2022</a>)</span></h2>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-7_94bdf0ee57c17f4c4cb41d5e64fac178">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-6_63735a3bf5817d360e8c0c7d7f439c01">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">ggplot</span>(tallo, <span class="fu">aes</span>(stem_diameter_cm, height_m)) <span class="sc">+</span></span>
 <span id="cb9-2"><a href="#cb9-2"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">col =</span> species), <span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
 <span id="cb9-3"><a href="#cb9-3"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">geom_smooth</span>() <span class="sc">+</span> <span class="fu">scale_color_discrete</span>(<span class="at">guide =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-7_94bdf0ee57c17f4c4cb41d5e64fac178">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-6_63735a3bf5817d360e8c0c7d7f439c01">
 <div class="cell-output-display">
-<p><img data-src="day3_pt_files/figure-revealjs/unnamed-chunk-7-1.png" width="960"></p>
+<p><img data-src="day3_pt_files/figure-revealjs/unnamed-chunk-6-1.png" width="960"></p>
 </div>
 </div>
 </section>
@@ -597,7 +597,7 @@ a_{h,s} \sim N (a_{h}, \sigma_a^2)
 <section id="exemplo-jucker2022-5" class="slide level2">
 <h2>Exemplo <span class="citation" data-cites="jucker2022">(<a href="#/referências" role="doc-biblioref" onclick="">Jucker et al. 2022</a>)</span></h2>
 <p>Por exemplo, usando <code>brms</code>:</p>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-8_ec065186b55c79a47ee4e61b7ec76b02">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-7_be6533c6ae309027c4c226001460d094">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">brm</span>(<span class="fu">bf</span>(<span class="fu">log</span>(h) <span class="sc">~</span> <span class="fu">log</span>(hmax <span class="sc">*</span> (d<span class="sc">/</span> (ah <span class="sc">+</span> d))), </span>
 <span id="cb10-2"><a href="#cb10-2"></a>              hmax <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span><span class="sc">|</span>species,</span>
 <span id="cb10-3"><a href="#cb10-3"></a>              ah <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span><span class="sc">|</span>species,</span>
@@ -608,7 +608,7 @@ a_{h,s} \sim N (a_{h}, \sigma_a^2)
 <span id="cb10-8"><a href="#cb10-8"></a>             ),</span>
 <span id="cb10-9"><a href="#cb10-9"></a>           <span class="at">data =</span> mdata, <span class="at">chains =</span> <span class="dv">2</span>, <span class="at">cores =</span> <span class="dv">2</span>, <span class="at">threads =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-8_ec065186b55c79a47ee4e61b7ec76b02">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-7_be6533c6ae309027c4c226001460d094">
 
 </div>
 </section>
@@ -649,13 +649,13 @@ a_{h,s} \sim N (a_{h}, \sigma_a^2)
 </section>
 <section id="exemplo-era5-land" class="slide level2">
 <h2>Exemplo ERA5-Land</h2>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-9_b838803fa5e65f5639205fdf432cc4dc">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-8_421e57dd9b15ca47679ec06c830ba166">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">system.file</span>(<span class="st">"extdata"</span>,</span>
 <span id="cb11-2"><a href="#cb11-2"></a>    <span class="st">"ERA5land_mth_Nouragues_2021_2022.nc"</span>,</span>
 <span id="cb11-3"><a href="#cb11-3"></a>    <span class="at">package =</span> <span class="st">"rcontroll"</span></span>
 <span id="cb11-4"><a href="#cb11-4"></a>) <span class="sc">%&gt;%</span> terra<span class="sc">::</span><span class="fu">rast</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-9_b838803fa5e65f5639205fdf432cc4dc">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-8_421e57dd9b15ca47679ec06c830ba166">
 <div class="cell-output cell-output-stdout">
 <pre><code>class       : SpatRaster 
 size        : 3, 3, 336  (nrow, ncol, nlyr)
@@ -679,7 +679,7 @@ time        : 2021-01-01 to 2022-12-01 UTC (24 steps) </code></pre>
 </section>
 <section id="exemplo-era5-land-1" class="slide level2">
 <h2>Exemplo ERA5-Land</h2>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-10_48a93d6a8f157ff46575a74417402311">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-9_e14af8a7dd3cfe4fd734f4c0ded5e4c5">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>climate <span class="ot">&lt;-</span> <span class="fu">generate_climate</span>(</span>
 <span id="cb13-2"><a href="#cb13-2"></a>  <span class="at">x =</span> <span class="sc">-</span><span class="fl">52.75468</span>,</span>
 <span id="cb13-3"><a href="#cb13-3"></a>  <span class="at">y =</span> <span class="fl">4.060414</span>,</span>
@@ -692,16 +692,16 @@ time        : 2021-01-01 to 2022-12-01 UTC (24 steps) </code></pre>
 <span id="cb13-10"><a href="#cb13-10"></a>  )</span>
 <span id="cb13-11"><a href="#cb13-11"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-10_48a93d6a8f157ff46575a74417402311">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-9_e14af8a7dd3cfe4fd734f4c0ded5e4c5">
 
 </div>
 </section>
 <section id="exemplo-era5-land-2" class="slide level2">
 <h2>Exemplo ERA5-Land</h2>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-11_f6fdea4647d6b066d881241286059240">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-10_a8bb85a370a6620476a74f4bfea64e8d">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>climate<span class="sc">$</span>climatedaytime12</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-11_f6fdea4647d6b066d881241286059240">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-10_a8bb85a370a6620476a74f4bfea64e8d">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 12 × 12
    Temperature DaytimeMeanTemperature NightTemperature Rainfall WindSpeed
@@ -727,10 +727,10 @@ time        : 2021-01-01 to 2022-12-01 UTC (24 steps) </code></pre>
 </section>
 <section id="exemplo-era5-land-3" class="slide level2">
 <h2>Exemplo ERA5-Land</h2>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-12_6b37314e59671679d53dfdb0203bb31a">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-11_253c1d3e5c1abb24788b5a3a67946130">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>climate<span class="sc">$</span>daytimevar</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-12_6b37314e59671679d53dfdb0203bb31a">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-11_253c1d3e5c1abb24788b5a3a67946130">
 <div class="cell-output cell-output-stdout">
 <pre><code>   starttime endtime vardaytime_light vardaytime_vpd vardaytime_T
 1        6.5     7.0       0.14139434     0.06585713    0.8487613
@@ -799,11 +799,11 @@ time        : 2021-01-01 to 2022-12-01 UTC (24 steps) </code></pre>
 </section>
 <section id="parâmetros-do-módulo-lidar" class="slide level2 smaller">
 <h2>Parâmetros do módulo LIDAR</h2>
-<div class="cell" data-ecaho="false" data-hash="day3_pt_cache/revealjs/unnamed-chunk-13_0073eccbda26304d21c2dc1a038c8cc9">
+<div class="cell" data-ecaho="false" data-hash="day3_pt_cache/revealjs/unnamed-chunk-12_f3c2c9c404bed979759fc724986e298a">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">generate_lidar</span>(<span class="at">mean_beam_pc =</span> <span class="dv">10</span>, <span class="at">iter_pointcloud_generation =</span> <span class="dv">11</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb18-2"><a href="#cb18-2"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-ecaho="false" data-hash="day3_pt_cache/revealjs/unnamed-chunk-13_0073eccbda26304d21c2dc1a038c8cc9">
+<div class="cell fragment" data-ecaho="false" data-hash="day3_pt_cache/revealjs/unnamed-chunk-12_f3c2c9c404bed979759fc724986e298a">
 <div class="cell-output-display">
 <table>
 <colgroup>
@@ -851,7 +851,7 @@ time        : 2021-01-01 to 2022-12-01 UTC (24 steps) </code></pre>
 </section>
 <section id="uso-do-módulo-lidar" class="slide level2">
 <h2>Uso do módulo LIDAR</h2>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-14_a56f357c0ae3e64d7b064850606bca87">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-13_cc56d2299e3ba71721f45b62a52eee0a">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>sim <span class="ot">&lt;-</span> <span class="fu">troll</span>(</span>
 <span id="cb19-2"><a href="#cb19-2"></a>  <span class="at">name =</span> <span class="st">"test"</span>,</span>
 <span id="cb19-3"><a href="#cb19-3"></a>  <span class="at">global =</span> <span class="fu">update_parameters</span>(TROLLv3_output, <span class="at">nbiter =</span> <span class="dv">12</span> <span class="sc">*</span> <span class="dv">1</span>),</span>
@@ -863,16 +863,16 @@ time        : 2021-01-01 to 2022-12-01 UTC (24 steps) </code></pre>
 <span id="cb19-9"><a href="#cb19-9"></a>  <span class="at">verbose =</span> <span class="cn">TRUE</span></span>
 <span id="cb19-10"><a href="#cb19-10"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-14_a56f357c0ae3e64d7b064850606bca87">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-13_cc56d2299e3ba71721f45b62a52eee0a">
 
 </div>
 </section>
 <section id="uso-do-módulo-lidar-1" class="slide level2">
 <h2>Uso do módulo LIDAR</h2>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-15_ee32404c5b4417f83b16104235b98d96">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-14_eb0c29febc233d44f7e4b94c4ec2a631">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>sim</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-15_ee32404c5b4417f83b16104235b98d96">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-14_eb0c29febc233d44f7e4b94c4ec2a631">
 <div class="cell-output cell-output-stdout">
 <pre><code>Object of class : trollsim 
 Name : test 
@@ -893,10 +893,10 @@ Number of Species    :  45 </code></pre>
 </section>
 <section id="saída-do-módulo-lidar" class="slide level2">
 <h2>Saída do módulo LIDAR</h2>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-16_b363b40e96b74fe308c7968141a44b30">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-15_8637e32b055a8aef7793f3ea9bb09278">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>sim<span class="sc">@</span>las</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-16_b363b40e96b74fe308c7968141a44b30">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-15_8637e32b055a8aef7793f3ea9bb09278">
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
 class        : LAS (v1.2 format 0)
@@ -912,19 +912,19 @@ density      : 9.58 pulses/units²</code></pre>
 </section>
 <section id="visualização-lidar" class="slide level2">
 <h2>Visualização LIDAR</h2>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-17_0688cc3c2b32d8e7f03ee1e7886e12d6">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-16_1160fefc893a3b1ce6cd3aa6600be498">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>lidR<span class="sc">::</span><span class="fu">plot</span>(sim<span class="sc">@</span>las[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-17_0688cc3c2b32d8e7f03ee1e7886e12d6">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-16_1160fefc893a3b1ce6cd3aa6600be498">
 
 </div>
 </section>
 <section id="modelo-de-altura-do-dossel" class="slide level2">
 <h2>Modelo de altura do dossel</h2>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-18_2bd8daf0ab6ec919865af4b5d1852e24">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-17_39a2a7eca9361965f07e313005b1df09">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">get_chm</span>(sim)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-18_2bd8daf0ab6ec919865af4b5d1852e24">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-17_39a2a7eca9361965f07e313005b1df09">
 <div class="cell-output cell-output-stdout">
 <pre><code>$test
 class       : SpatRaster 
@@ -941,12 +941,12 @@ max value   :      34.00222 </code></pre>
 </section>
 <section id="visualização-da-altura-do-dossel" class="slide level2">
 <h2>Visualização da altura do dossel</h2>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-19_133f9eaaeff19e941c0051e30170b73e">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-18_4686a173421341bcd20f034f6193b260">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>rcontroll<span class="sc">::</span><span class="fu">autoplot</span>(sim, <span class="at">what =</span> <span class="st">"lidar"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-19_133f9eaaeff19e941c0051e30170b73e">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-18_4686a173421341bcd20f034f6193b260">
 <div class="cell-output-display">
-<p><img data-src="day3_pt_files/figure-revealjs/unnamed-chunk-19-1.png" width="960"></p>
+<p><img data-src="day3_pt_files/figure-revealjs/unnamed-chunk-18-1.png" width="960"></p>
 </div>
 </div>
 </section></section>
@@ -960,11 +960,11 @@ max value   :      34.00222 </code></pre>
 <section id="dados-reais" class="slide level2">
 <h2>Dados reais</h2>
 <p>Utilizaremos os dados da Parcela 6 de Paracou de 2016, disponíveis gratuitamente no <code>LoggingLab</code> <span class="citation" data-cites="badouard2024">(<a href="#/referências" role="doc-biblioref" onclick="">Badouard et al. 2024</a>)</span>:</p>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-20_bb863b710fcb6c74a8fbd725d9704882">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-19_425238544e96df4352ad68a86acf1acd">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="fu">load</span>(<span class="st">"data/day3/Paracou6_2016.rda"</span>)</span>
 <span id="cb28-2"><a href="#cb28-2"></a>Paracou6_2016</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-20_bb863b710fcb6c74a8fbd725d9704882">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-19_425238544e96df4352ad68a86acf1acd">
 <div class="cell-output cell-output-stdout">
 <pre><code>      Forest Plot PlotArea SubPlot idTree Protocole Xfield Yfield     Xutm
 1    Paracou    6     6.25       1 100726   Guyafor   13.5  201.0 286420.1
@@ -15455,7 +15455,7 @@ max value   :      34.00222 </code></pre>
 </section>
 <section id="estrutura-florestal---real" class="slide level2">
 <h2>Estrutura florestal - real</h2>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-21_b63734bd6dcd348d52dafca553a41558">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-20_0617c58a503bdcb9debe971ba83762c9">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>dist_par <span class="ot">&lt;-</span> Paracou6_2016 <span class="sc">%&gt;%</span> </span>
 <span id="cb30-2"><a href="#cb30-2"></a>  <span class="fu">mutate</span>(<span class="at">dbh =</span> CircCorr<span class="sc">/</span>pi) <span class="sc">%&gt;%</span> </span>
 <span id="cb30-3"><a href="#cb30-3"></a>  <span class="fu">mutate</span>(<span class="at">dbh_class =</span> <span class="fu">cut</span>(dbh, </span>
@@ -15465,24 +15465,24 @@ max value   :      34.00222 </code></pre>
 <span id="cb30-7"><a href="#cb30-7"></a>  <span class="fu">summarise</span>(<span class="at">abundance =</span> <span class="fu">n</span>()<span class="sc">/</span><span class="fl">6.25</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb30-8"><a href="#cb30-8"></a>  <span class="fu">mutate</span>(<span class="at">dbh_class =</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(dbh_class)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-21_b63734bd6dcd348d52dafca553a41558">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-20_0617c58a503bdcb9debe971ba83762c9">
 
 </div>
 </section>
 <section id="estrutura-florestal---real-1" class="slide level2">
 <h2>Estrutura florestal - real</h2>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-22_4cdcaa0096d732933777455b73e1a045">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-21_23a0a8b2ac5a417f3196e05b109d59ae">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="fu">ggplot</span>(dist_par, <span class="fu">aes</span>(dbh_class, abundance)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-22_4cdcaa0096d732933777455b73e1a045">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-21_23a0a8b2ac5a417f3196e05b109d59ae">
 <div class="cell-output-display">
-<p><img data-src="day3_pt_files/figure-revealjs/unnamed-chunk-22-1.png" width="960"></p>
+<p><img data-src="day3_pt_files/figure-revealjs/unnamed-chunk-21-1.png" width="960"></p>
 </div>
 </div>
 </section>
 <section id="estrutura-florestal---virtual" class="slide level2">
 <h2>Estrutura florestal - virtual</h2>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-23_1385b632800b28159e701d5b8bcfb9dc">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-22_e982392d6f0ca758a0e87416727a2435">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>dist_troll <span class="ot">&lt;-</span> TROLLv3_output<span class="sc">@</span>forest <span class="sc">%&gt;%</span> </span>
 <span id="cb32-2"><a href="#cb32-2"></a>  <span class="fu">mutate</span>(<span class="at">dbh =</span> dbh<span class="sc">*</span><span class="dv">100</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb32-3"><a href="#cb32-3"></a>  <span class="fu">mutate</span>(<span class="at">dbh_class =</span> <span class="fu">cut</span>(dbh, </span>
@@ -15493,50 +15493,50 @@ max value   :      34.00222 </code></pre>
 <span id="cb32-8"><a href="#cb32-8"></a>  <span class="fu">mutate</span>(<span class="at">dbh_class =</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(dbh_class))) <span class="sc">%&gt;%</span> </span>
 <span id="cb32-9"><a href="#cb32-9"></a>  <span class="fu">na.omit</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-23_1385b632800b28159e701d5b8bcfb9dc">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-22_e982392d6f0ca758a0e87416727a2435">
 
 </div>
 </section>
 <section id="estrutura-florestal---virtual-1" class="slide level2">
 <h2>Estrutura florestal - virtual</h2>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-24_e4f9f6f854d04aa94228c0dfd3ee59f8">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-23_378786239a11e517bcfa6e347e11f604">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="fu">ggplot</span>(dist_par, <span class="fu">aes</span>(dbh_class, abundance)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
 <span id="cb33-2"><a href="#cb33-2"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> dist_troll, <span class="at">col =</span> <span class="st">"lightblue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-24_e4f9f6f854d04aa94228c0dfd3ee59f8">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-23_378786239a11e517bcfa6e347e11f604">
 <div class="cell-output-display">
-<p><img data-src="day3_pt_files/figure-revealjs/unnamed-chunk-24-1.png" width="960"></p>
+<p><img data-src="day3_pt_files/figure-revealjs/unnamed-chunk-23-1.png" width="960"></p>
 </div>
 </div>
 </section>
 <section id="estrutura-florestal---comparação" class="slide level2">
 <h2>Estrutura florestal - comparação</h2>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-25_2fab74ff5a31328c7fc06ad10a7f3a0a">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-24_2459004d0c03c56da32e37cc927acc2c">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>dist_par <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">abundance_par =</span> abundance) <span class="sc">%&gt;%</span> <span class="fu">left_join</span>(dist_troll) <span class="sc">%&gt;%</span> </span>
 <span id="cb34-2"><a href="#cb34-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(abundance, abundance_par, <span class="at">col =</span> dbh_class)) <span class="sc">+</span> <span class="fu">geom_abline</span>() <span class="sc">+</span></span>
 <span id="cb34-3"><a href="#cb34-3"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">scale_color_viridis_c</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-25_2fab74ff5a31328c7fc06ad10a7f3a0a">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-24_2459004d0c03c56da32e37cc927acc2c">
 <div class="cell-output-display">
-<p><img data-src="day3_pt_files/figure-revealjs/unnamed-chunk-25-1.png" width="960"></p>
+<p><img data-src="day3_pt_files/figure-revealjs/unnamed-chunk-24-1.png" width="960"></p>
 </div>
 </div>
 </section>
 <section id="estrutura-florestal---tempo-de-simulação" class="slide level2">
 <h2>Estrutura florestal - tempo de simulação</h2>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-26_b201831d99e3f9b3396723e02e93b2a5">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-25_f7a8a7a1a0b516021c4694ecb217e1b5">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a>rcontroll<span class="sc">::</span><span class="fu">autoplot</span>(TROLLv3_output)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-26_b201831d99e3f9b3396723e02e93b2a5">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-25_f7a8a7a1a0b516021c4694ecb217e1b5">
 <div class="cell-output-display">
-<p><img data-src="day3_pt_files/figure-revealjs/unnamed-chunk-26-1.png" width="960"></p>
+<p><img data-src="day3_pt_files/figure-revealjs/unnamed-chunk-25-1.png" width="960"></p>
 </div>
 </div>
 </section>
 <section id="estrutura-florestal---simulação-mais-longa" class="slide level2 smaller">
 <h2>Estrutura florestal - simulação mais longa</h2>
 <p>⚠️ Demorado!</p>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-27_cffdde4a043fa3ca418cf6300587dd47">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-26_684530eee067e2bc54dcd743545d7f03">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a>sim <span class="ot">&lt;-</span> <span class="fu">troll</span>(</span>
 <span id="cb36-2"><a href="#cb36-2"></a>  <span class="at">name =</span> <span class="st">"test"</span>,</span>
 <span id="cb36-3"><a href="#cb36-3"></a>  <span class="at">global =</span> <span class="fu">generate_parameters</span>(</span>
@@ -15556,32 +15556,32 @@ max value   :      34.00222 </code></pre>
 <span id="cb36-17"><a href="#cb36-17"></a>  <span class="fu">mutate</span>(<span class="at">dbh_class =</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(dbh_class))) <span class="sc">%&gt;%</span> </span>
 <span id="cb36-18"><a href="#cb36-18"></a>  <span class="fu">na.omit</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-27_cffdde4a043fa3ca418cf6300587dd47">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-26_684530eee067e2bc54dcd743545d7f03">
 
 </div>
 </section>
 <section id="estrutura-florestal---virtual-2" class="slide level2">
 <h2>Estrutura florestal - virtual</h2>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-28_ea17c887774365a1487b822b07140e8d">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-27_c142a85ef61961718cc91fc8b5d0d793">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="fu">ggplot</span>(dist_par, <span class="fu">aes</span>(dbh_class, abundance)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
 <span id="cb37-2"><a href="#cb37-2"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> dist_troll, <span class="at">col =</span> <span class="st">"lightblue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-28_ea17c887774365a1487b822b07140e8d">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-27_c142a85ef61961718cc91fc8b5d0d793">
 <div class="cell-output-display">
-<p><img data-src="day3_pt_files/figure-revealjs/unnamed-chunk-28-1.png" width="960"></p>
+<p><img data-src="day3_pt_files/figure-revealjs/unnamed-chunk-27-1.png" width="960"></p>
 </div>
 </div>
 </section>
 <section id="estrutura-florestal---comparação-1" class="slide level2">
 <h2>Estrutura florestal - comparação</h2>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-29_e796f30acc87cbae67d326822ca16472">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-28_1eec6f528caad17e979124e7005598a5">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a>dist_par <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">abundance_par =</span> abundance) <span class="sc">%&gt;%</span> <span class="fu">left_join</span>(dist_troll) <span class="sc">%&gt;%</span> </span>
 <span id="cb38-2"><a href="#cb38-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(abundance, abundance_par, <span class="at">col =</span> dbh_class)) <span class="sc">+</span> <span class="fu">geom_abline</span>() <span class="sc">+</span></span>
 <span id="cb38-3"><a href="#cb38-3"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">scale_color_viridis_c</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-29_e796f30acc87cbae67d326822ca16472">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-28_1eec6f528caad17e979124e7005598a5">
 <div class="cell-output-display">
-<p><img data-src="day3_pt_files/figure-revealjs/unnamed-chunk-29-1.png" width="960"></p>
+<p><img data-src="day3_pt_files/figure-revealjs/unnamed-chunk-28-1.png" width="960"></p>
 </div>
 </div>
 </section></section>
@@ -15602,23 +15602,23 @@ max value   :      34.00222 </code></pre>
 </section>
 <section id="plano-de-simulação" class="slide level2">
 <h2>Plano de simulação</h2>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-30_4ee5ac66474b84d4e21cbf18a1102090">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-29_20579b254f6488a5eb5b23932dfdf3c9">
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a>m <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.003</span>, <span class="fl">0.008</span>, <span class="fl">0.013</span>, <span class="fl">0.018</span>, <span class="fl">0.023</span>)</span>
 <span id="cb39-2"><a href="#cb39-2"></a><span class="fu">names</span>(m) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"m="</span>, m)</span>
 <span id="cb39-3"><a href="#cb39-3"></a>stack_pars <span class="ot">&lt;-</span> <span class="fu">lapply</span>(m, <span class="cf">function</span>(m)</span>
 <span id="cb39-4"><a href="#cb39-4"></a>  <span class="fu">generate_parameters</span>(<span class="at">cols =</span> <span class="dv">100</span>, <span class="at">rows =</span> <span class="dv">100</span>, <span class="at">nbiter =</span> <span class="dv">12</span> <span class="sc">*</span> <span class="dv">600</span>, <span class="at">m =</span> m, <span class="at">m1 =</span> m)) <span class="sc">%&gt;%</span> </span>
 <span id="cb39-5"><a href="#cb39-5"></a>  <span class="fu">bind_rows</span>(<span class="at">.id =</span> <span class="st">"simulation"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-30_4ee5ac66474b84d4e21cbf18a1102090">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-29_20579b254f6488a5eb5b23932dfdf3c9">
 
 </div>
 </section>
 <section id="plano-de-simulação-1" class="slide level2">
 <h2>Plano de simulação</h2>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-31_daba006a57463d1856c2ea5aac61b3ba">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-30_83dc64c6b108b80c4d91e280d457450d">
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a><span class="fu">filter</span>(stack_pars, param <span class="sc">==</span> <span class="st">"m"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-31_daba006a57463d1856c2ea5aac61b3ba">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-30_83dc64c6b108b80c4d91e280d457450d">
 <div class="cell-output cell-output-stdout">
 <pre><code>  simulation param value              description
 1    m=0.003     m 0.003 /* minimal death rate */
@@ -15634,7 +15634,7 @@ max value   :      34.00222 </code></pre>
 <blockquote>
 <p>⚠️ Demorado e pesado!!</p>
 </blockquote>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-32_db4e507a7cdfa181e8607548ed4c092f">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-31_6bc53895b548b6edb8e147f1aab044ee">
 <div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a>stack <span class="ot">&lt;-</span> <span class="fu">stack</span>(</span>
 <span id="cb42-2"><a href="#cb42-2"></a>  <span class="at">name =</span> <span class="st">"test"</span>,</span>
 <span id="cb42-3"><a href="#cb42-3"></a>  <span class="at">simulations =</span> <span class="fu">names</span>(m),</span>
@@ -15645,7 +15645,7 @@ max value   :      34.00222 </code></pre>
 <span id="cb42-8"><a href="#cb42-8"></a>  <span class="at">verbose =</span> <span class="cn">FALSE</span></span>
 <span id="cb42-9"><a href="#cb42-9"></a>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-32_db4e507a7cdfa181e8607548ed4c092f">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-31_6bc53895b548b6edb8e147f1aab044ee">
 <div class="cell-output cell-output-stdout">
 <pre><code>
   |                                                                            
@@ -15657,10 +15657,10 @@ max value   :      34.00222 </code></pre>
 </section>
 <section id="simulações-1" class="slide level2">
 <h2>Simulações</h2>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-33_67befbb98d2543bc2ac1bc01e63fe1a1">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-32_6b18b8bb3a7e06f311ab4409d175a4a3">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1"></a>stack </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-33_67befbb98d2543bc2ac1bc01e63fe1a1">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-32_6b18b8bb3a7e06f311ab4409d175a4a3">
 <div class="cell-output cell-output-stdout">
 <pre><code>Object of class : trollstack 
 Name : test 
@@ -15682,22 +15682,22 @@ Number of Species    :  45 </code></pre>
 </section>
 <section id="simulações-2" class="slide level2">
 <h2>Simulações</h2>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-34_626d3b9cce25368b787c3fdf97f7c199">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-33_bd1bf30ce2abd978a00e07ddab3f5f8a">
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1"></a>rcontroll<span class="sc">::</span><span class="fu">autoplot</span>(stack, <span class="at">what =</span> <span class="st">"temporal"</span>, <span class="at">var =</span> <span class="st">"agb"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-34_626d3b9cce25368b787c3fdf97f7c199">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-33_bd1bf30ce2abd978a00e07ddab3f5f8a">
 <div class="cell-output-display">
-<p><img data-src="day3_pt_files/figure-revealjs/unnamed-chunk-34-1.png" width="960"></p>
+<p><img data-src="day3_pt_files/figure-revealjs/unnamed-chunk-33-1.png" width="960"></p>
 </div>
 </div>
 </section>
 <section id="teste-de-sensibilidade" class="slide level2">
 <h2>Teste de sensibilidade</h2>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-35_22ad6be65dd5f05c8d9263a8a8c9fdab">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-34_a5dc4297de9cbbe207b0a6f23b7ed3be">
 <div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a>agb <span class="ot">&lt;-</span> stack<span class="sc">@</span>forest <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(simulation) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">agb =</span> <span class="fu">sum</span>(AGB))</span>
 <span id="cb47-2"><a href="#cb47-2"></a>sensitivity<span class="sc">::</span><span class="fu">pcc</span>(<span class="fu">data.frame</span>(<span class="at">m =</span> <span class="fu">unname</span>(m), <span class="at">intercept =</span> <span class="dv">0</span>), agb<span class="sc">$</span>agb) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-35_22ad6be65dd5f05c8d9263a8a8c9fdab">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-34_a5dc4297de9cbbe207b0a6f23b7ed3be">
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -15738,13 +15738,13 @@ intercept         NA</code></pre>
 </section>
 <section id="simulações-3" class="slide level2">
 <h2>Simulações</h2>
-<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-36_9d40883f7a9447800aafb84f959ddce1">
+<div class="cell" data-hash="day3_pt_cache/revealjs/unnamed-chunk-35_179b641084fcd5519813392ba5900bcc">
 <div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1"></a>rcontroll<span class="sc">::</span><span class="fu">autoplot</span>(stack, <span class="at">what =</span> <span class="st">"temporal"</span>, <span class="at">var =</span> <span class="st">"agb"</span>) <span class="sc">+</span> </span>
 <span id="cb49-2"><a href="#cb49-2"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">c</span>(<span class="fl">197.5</span>, <span class="fl">221.5</span>)<span class="sc">*</span><span class="dv">10</span><span class="sc">^</span><span class="dv">3</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-36_9d40883f7a9447800aafb84f959ddce1">
+<div class="cell fragment" data-hash="day3_pt_cache/revealjs/unnamed-chunk-35_179b641084fcd5519813392ba5900bcc">
 <div class="cell-output-display">
-<p><img data-src="day3_pt_files/figure-revealjs/unnamed-chunk-36-1.png" width="960"></p>
+<p><img data-src="day3_pt_files/figure-revealjs/unnamed-chunk-35-1.png" width="960"></p>
 </div>
 </div>
 </section>

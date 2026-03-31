@@ -36,29 +36,15 @@ knitr::opts_chunk$set(echo = TRUE)
 set.seed(42)
 ```
 
-## Menu
+##
 
-```{r}
-#| echo: false
-knitr::include_graphics("figs/troll_model_cheatsheet.svg")
-```
+![](figs/troll_model_cheatsheet.svg){.r-stretch}
 
 # Introdução
 
 Hoje vamos explorar o uso de simuladores florestais em ecologia, especificamente por meio de um modelo baseado em agentes:
 
 > um modelo que simula as ações e interações de agentes autônomos a fim de compreender o comportamento de um sistema e os fatores que determinam seus resultados.
-
-## O Jogo da Vida (J. Conway, 1970) {.smaller}
-
--   Cada célula pode estar em apenas um de dois estados: ligada (viva) ou desligada (morta)
--   Uma célula ligada permanece ligada somente se 2 ou 3 de seus 8 vizinhos estiverem ligados
--   Uma célula desligada se liga somente se 3 de seus 8 vizinhos estiverem ligados
-
-```{r}
-#| echo: false
-knitr::include_graphics("https://user-images.githubusercontent.com/9169414/36646548-4ac65af8-1a79-11e8-811d-da84549f7af3.gif")
-```
 
 ## Boids (C. W. Reynolds, 1986) {.smaller}
 
@@ -121,13 +107,20 @@ knitr::include_graphics("https://besjournals.onlinelibrary.wiley.com/cms/asset/c
 
 Cada árvore é definida pela sua idade, diâmetro à altura do peito (DAP), altura (H), raio da copa (RC), profundidade da copa (PC) e área foliar (AF). A geometria da árvore é calculada por meio de equações alométricas, e a área foliar varia dinamicamente dentro de cada copa conforme a alocação de carbono. Uma árvore pode ocupar no máximo um pixel de 1 m por 1 m. Cada árvore pertence a uma espécie herdada de sua árvore-mãe. Para cada espécie, uma série de parâmetros é conhecida: os valores de traços funcionais coletados em campo. A assimilação de carbono é calculada em intervalos de 30 minutos. A alocação é então calculada para simular o crescimento da árvore. O ambiente é atualizado mensalmente. Juvenis (árvores com DAP inferior a 1 cm) não são simulados individualmente, mas como grupo. Além disso, processos subterrâneos, plantas herbáceas, epífitas e lianas não são considerados no TROLL.
 
+## Como funciona {.smaller}
+
+```{r }
+#| echo: false
+knitr::include_graphics("figs/TROLL_fig_IM.png")
+```
+
 ## Ambiente R
 
 Durante esta sessão prática, utilizaremos o modelo TROLL [@Marechaux2017] com o pacote rcontroll [@schmitt2023]. Também usaremos os pacotes tidyverse para manipulação de tabelas e criação de gráficos. Faça o download deles (pré-requisito!):
 
 ```{r dl_pkg}
 #| eval: false
-install.packages("tidyverse", "rcontroll")
+install.packages(c("tidyverse", "rcontroll"))
 ```
 
 Carregue-os com:

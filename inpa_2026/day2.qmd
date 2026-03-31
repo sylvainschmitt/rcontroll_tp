@@ -28,12 +28,9 @@ execute:
   cache: true
 ---
 
-## Menu
+## 
 
-```{r}
-#| echo: false
-knitr::include_graphics("figs/troll_model_cheatsheet.svg")
-```
+![](figs/troll_model_cheatsheet.svg){.r-stretch}
 
 # Introduction
 
@@ -41,7 +38,7 @@ knitr::include_graphics("figs/troll_model_cheatsheet.svg")
 
 ## R Environment
 
-During this practical session, we will use the TROLL model 4.0 with raw files from a simulation output. We will also use the tidyverse packages for table manipulation and graph creation. Download them (prerequisite!):
+During this practical session, we will use the TROLL model 4.0 with raw files from a simulation output. We will also use the `tidyverse` packages for table manipulation and graph creation. Download them (prerequisite!):
 
 ```{r dl_pkg}
 #| eval: false
@@ -69,8 +66,8 @@ list.files("data/day2/", pattern = "input")
 
 TROLL 4 relies on two new following functional traits:
 
--   LA: leaf area (cm2)
--   TLP: leaf water potential at turgor loss point (MPa)
+-   `LA`: leaf area (cm2)
+-   `TLP`: leaf water potential at turgor loss point (MPa)
 
 ## Species
 
@@ -92,7 +89,7 @@ TROLL 4 relies now solely on half-hourly values of the 5 climate variables:
 -   VaporPressureDeficit (hPa)
 -   Iradiance (W/m2)
 
-> NB : rcontroll include a function to help prepare climate data (day 3 session).
+> *NB : rcontroll include a function to help prepare climate data (day 3 session).*
 
 ## Climate
 
@@ -121,7 +118,6 @@ g <- read_tsv("data/day2/R1_input_daily.txt") %>%
   theme_bw() + xlab("") + ylab("")
 ```
 
-
 ## Climate
 
 ```{r}
@@ -149,31 +145,29 @@ g
 
 ## Parameters {.smaller}
 
-TROLL 4 includes new ecosystem parameters controlling phenology,
-new intraspecific parameters controlling LA and TLP variations,
-and new macros controlling soil layer weights and water retention curve equations:
+TROLL 4 includes new ecosystem parameters controlling **phenology**, new **intraspecific** parameters controlling LA and TLP variations, and new macros controlling **soil layer weights and water retention curve equations**:
 
-* pheno_a0: threshold for change in old leaf shedding rate, in proportion of TLP
-* pheno_b0: threshold for change in old leaf shedding rate, in proportion of tree height
-* pheno_delta: amplitude of change in old leaf shedding rate
-* sigma_LA: intraspecific variation in LA (lognormal)
-* sigma_TLP: intraspecific variation in TLP (normal)
-* SOIL_LAYER_WEIGHT: soil layer weights: relative biomass, conductance, max transpiration
-* WATER_RETENTION_CURVE: water retention curve (Brooks&Corey or Van Genuchten Mualem)
+-   `pheno_a0`: threshold for change in old leaf shedding rate, in proportion of TLP
+-   `pheno_b0`: threshold for change in old leaf shedding rate, in proportion of tree height
+-   `pheno_delta`: amplitude of change in old leaf shedding rate
+-   `sigma_LA`: intraspecific variation in LA (lognormal)
+-   `sigma_TLP`: intraspecific variation in TLP (normal)
+-   `SOIL_LAYER_WEIGHT`: soil layer weights: relative biomass, conductance, max transpiration
+-   `WATER_RETENTION_CURVE`: water retention curve (Brooks&Corey or Van Genuchten Mualem)
 
 ## Soil {.smaller}
 
 TROLL 4 relies on multiple soil information to parametrize the water retention curves with Brooks&Corey or Van Genuchten Mualem:
 
-* number of layers
-* layer thicness (m)
-* proportion of silt (%)
-* proportion of clay (%)
-* proportion of sand (%)
-* soil organic content (g\kg)
-* dry bulk density (kg\dm3)
-* pH
-* cation exchange capacity (cmolC\kg)
+-   number of layers
+-   layer thicness (m)
+-   `Silt`: proportion of silt (%)
+-   `Clay`: proportion of clay (%)
+-   `Sand`: proportion of sand (%)
+-   `SOC`: soil organic content (g\kg)
+-   `DBD`: dry bulk density (kg\dm3)
+-   `pH`
+-   `CEC`: cation exchange capacity (cmolC\kg)
 
 ## Soil
 
@@ -326,10 +320,11 @@ g <- read_tsv("data/day2/R1_0_water_balance.txt") %>%
   gather(component, value, -date) %>% 
   mutate(value = value*1000) %>% 
   filter(value >= 1) %>% 
-  ggplot(aes(date, value, col = component)) +
-  geom_line() +
+  ggplot(aes(date, value, fill = component)) +
+  geom_col() +
   theme_bw() +
-  scale_y_log10() + xlab("") + ylab("[mm]")
+  scale_y_log10() + xlab("") + ylab("[mm]") + 
+  facet_wrap(~ component) + scale_fill_discrete(guide = "none")
 ```
 
 ## Water balance
@@ -350,7 +345,7 @@ g <- read_tsv("data/day2/R1_0_water_balance.txt") %>%
   select(date, transpiration, "soil evaporation", "canopy evaporation") %>% 
   gather(component, value, -date) %>% 
   ggplot(aes(date, value)) +
-  geom_line() +
+  geom_col() +
   facet_wrap(~ component, nrow = 3) +
   theme_bw() + xlab("") + ylab("[mm]")
 ```
@@ -358,7 +353,7 @@ g <- read_tsv("data/day2/R1_0_water_balance.txt") %>%
 ## Water balance
 
 ```{r}
-g
+g 
 ```
 
 ## ET : Evapotranspiration

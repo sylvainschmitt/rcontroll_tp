@@ -433,10 +433,10 @@ Sylvain Schmitt
 
   <p class="date">Apr 7, 2026</p>
 </section>
-<section id="menu" class="slide level2">
-<h2>Menu</h2>
-
-<img data-src="figs/troll_model_cheatsheet.svg" class="r-stretch"></section>
+<section id="section" class="slide level2">
+<h2></h2>
+<img data-src="figs/troll_model_cheatsheet.svg" class="r-stretch">
+</section>
 <section>
 <section id="introduction" class="title-slide slide level1 center">
 <h1>Introduction</h1>
@@ -446,7 +446,7 @@ Sylvain Schmitt
 </section>
 <section id="r-environment" class="slide level2">
 <h2>R Environment</h2>
-<p>During this practical session, we will use the TROLL model 4.0 with raw files from a simulation output. We will also use the tidyverse packages for table manipulation and graph creation. Download them (prerequisite!):</p>
+<p>During this practical session, we will use the TROLL model 4.0 with raw files from a simulation output. We will also use the <code>tidyverse</code> packages for table manipulation and graph creation. Download them (prerequisite!):</p>
 <div class="cell" data-hash="day2_cache/revealjs/dl_pkg_4d179a72a3130360e1caf92bcd8329dc">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">install.packages</span>(<span class="st">"tidyverse"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -470,13 +470,13 @@ Sylvain Schmitt
 </section>
 <section id="files" class="slide level2">
 <h2>Files</h2>
-<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-2_a2c4dce077c508ba6908e61fdba4a4ce">
+<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-1_31183acbcb8f4219a5239b75f2e9e661">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">list.files</span>(<span class="st">"data/day2/"</span>, <span class="at">pattern =</span> <span class="st">"input"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-2_a2c4dce077c508ba6908e61fdba4a4ce">
+<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-1_31183acbcb8f4219a5239b75f2e9e661">
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "R1_input_climate.txt" "R1_input_daily.txt"   "R1_input_global.txt" 
-[4] "R1_input_species.txt"</code></pre>
+<pre><code>[1] "R1_input_climate.txt"  "R1_input_daily.txt"    "R1_input_global.txt"  
+[4] "R1_input_pedology.txt" "R1_input_species.txt" </code></pre>
 </div>
 </div>
 </section>
@@ -484,22 +484,22 @@ Sylvain Schmitt
 <h2>Species</h2>
 <p>TROLL 4 relies on two new following functional traits:</p>
 <ul>
-<li>LA: leaf area (cm2)</li>
-<li>TLP: leaf water potential at turgor loss point (MPa)</li>
+<li><code>LA</code>: leaf area (cm2)</li>
+<li><code>TLP</code>: leaf water potential at turgor loss point (MPa)</li>
 </ul>
 </section>
 <section id="species-1" class="slide level2">
 <h2>Species</h2>
-<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-3_63c247d27e39fb33142435eb791aaab6">
+<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-2_5640c54be46a4df1592600ffa117320f">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">read_tsv</span>(<span class="st">"data/day2/R1_input_species.txt"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb5-2"><a href="#cb5-2"></a>  <span class="fu">select</span>(s_name, s_leafarea, s_tlp) <span class="sc">%&gt;%</span> </span>
 <span id="cb5-3"><a href="#cb5-3"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(s_leafarea, s_tlp)) <span class="sc">+</span></span>
 <span id="cb5-4"><a href="#cb5-4"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
 <span id="cb5-5"><a href="#cb5-5"></a>  <span class="fu">scale_x_log10</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"LA [cm2]"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"TLP [MPa]"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-3_63c247d27e39fb33142435eb791aaab6">
+<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-2_5640c54be46a4df1592600ffa117320f">
 <div class="cell-output-display">
-<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-3-1.png" width="960"></p>
+<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-2-1.png" width="960"></p>
 </div>
 </div>
 </section>
@@ -514,15 +514,15 @@ Sylvain Schmitt
 <li>Iradiance (W/m2)</li>
 </ul>
 <blockquote>
-<p>NB : rcontroll include a function to help prepare climate data (day 3 session).</p>
+<p><em>NB : rcontroll include a function to help prepare climate data (day 3 session).</em></p>
 </blockquote>
 </section>
 <section id="climate-1" class="slide level2">
 <h2>Climate</h2>
-<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-4_4db73451436afe5f79c9095123d8f567">
+<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-3_467c590a20c7b0a20697851d9a22cab7">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">read_tsv</span>(<span class="st">"data/day2/R1_input_daily.txt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-4_4db73451436afe5f79c9095123d8f567">
+<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-3_467c590a20c7b0a20697851d9a22cab7">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 70,080 × 6
    DayJulian time_numeric  Temp  Snet    VPD    WS
@@ -543,10 +543,10 @@ Sylvain Schmitt
 </section>
 <section id="climate-2" class="slide level2">
 <h2>Climate</h2>
-<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-5_f84084bdb5fc564bc864a94fddca5625">
+<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-4_cf0a84a9c94e27f0178f8294337167ea">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">read_tsv</span>(<span class="st">"data/day2/R1_input_climate.txt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-5_f84084bdb5fc564bc864a94fddca5625">
+<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-4_cf0a84a9c94e27f0178f8294337167ea">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2,920 × 2
    NightTemperature Rainfall
@@ -567,7 +567,7 @@ Sylvain Schmitt
 </section>
 <section id="climate-3" class="slide level2">
 <h2>Climate</h2>
-<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-6_b3048769f9590054ba24099dd21de089">
+<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-5_919690fbefdf6e2d143c40afed585cb3">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>g <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">"data/day2/R1_input_daily.txt"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb10-2"><a href="#cb10-2"></a>  <span class="fu">select</span>(<span class="sc">-</span>time_numeric) <span class="sc">%&gt;%</span> </span>
 <span id="cb10-3"><a href="#cb10-3"></a>  <span class="fu">group_by</span>(DayJulian) <span class="sc">%&gt;%</span> </span>
@@ -579,24 +579,24 @@ Sylvain Schmitt
 <span id="cb10-9"><a href="#cb10-9"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> variable, <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span></span>
 <span id="cb10-10"><a href="#cb10-10"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">""</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-6_b3048769f9590054ba24099dd21de089">
+<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-5_919690fbefdf6e2d143c40afed585cb3">
 
 </div>
 </section>
 <section id="climate-4" class="slide level2">
 <h2>Climate</h2>
-<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-7_3a45eb5e6e08aed9fe7267ffd68125f6">
+<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-6_dca31eb28ab5630fa1e90064cbfe1110">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>g</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-7_3a45eb5e6e08aed9fe7267ffd68125f6">
+<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-6_dca31eb28ab5630fa1e90064cbfe1110">
 <div class="cell-output-display">
-<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-7-1.png" width="960"></p>
+<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-6-1.png" width="960"></p>
 </div>
 </div>
 </section>
 <section id="climate-5" class="slide level2">
 <h2>Climate</h2>
-<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-8_d9b44c453994308a8c9e2bf157e974f3">
+<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-7_716c76dfac0c47517ef30a5deac131a6">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>g <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">"data/day2/R1_input_climate.txt"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb12-2"><a href="#cb12-2"></a>  <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">as_date</span>(<span class="st">"1999-01-01"</span>) <span class="sc">+</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
 <span id="cb12-3"><a href="#cb12-3"></a>  <span class="fu">group_by</span>(<span class="at">pentad =</span> <span class="fu">floor_date</span>(date, <span class="st">"5 days"</span>)) <span class="sc">%&gt;%</span> </span>
@@ -606,32 +606,32 @@ Sylvain Schmitt
 <span id="cb12-7"><a href="#cb12-7"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
 <span id="cb12-8"><a href="#cb12-8"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">""</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"5-days rainfall [mm]"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-8_d9b44c453994308a8c9e2bf157e974f3">
+<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-7_716c76dfac0c47517ef30a5deac131a6">
 
 </div>
 </section>
 <section id="climate-6" class="slide level2">
 <h2>Climate</h2>
-<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-9_1fa642f0d206ee454b13b2a05d43d11e">
+<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-8_ca1d87659f09517b9779169a1e9bfdd7">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>g </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-9_1fa642f0d206ee454b13b2a05d43d11e">
+<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-8_ca1d87659f09517b9779169a1e9bfdd7">
 <div class="cell-output-display">
-<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
+<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-8-1.png" width="960"></p>
 </div>
 </div>
 </section>
 <section id="parameters" class="slide level2 smaller">
 <h2>Parameters</h2>
-<p>TROLL 4 includes new ecosystem parameters controlling phenology, new intraspecific parameters controlling LA and TLP variations, and new macros controlling soil layer weights and water retention curve equations:</p>
+<p>TROLL 4 includes new ecosystem parameters controlling <strong>phenology</strong>, new <strong>intraspecific</strong> parameters controlling LA and TLP variations, and new macros controlling <strong>soil layer weights and water retention curve equations</strong>:</p>
 <ul>
-<li>pheno_a0: threshold for change in old leaf shedding rate, in proportion of TLP</li>
-<li>pheno_b0: threshold for change in old leaf shedding rate, in proportion of tree height</li>
-<li>pheno_delta: amplitude of change in old leaf shedding rate</li>
-<li>sigma_LA: intraspecific variation in LA (lognormal)</li>
-<li>sigma_TLP: intraspecific variation in TLP (normal)</li>
-<li>SOIL_LAYER_WEIGHT: soil layer weights: relative biomass, conductance, max transpiration</li>
-<li>WATER_RETENTION_CURVE: water retention curve (Brooks&amp;Corey or Van Genuchten Mualem)</li>
+<li><code>pheno_a0</code>: threshold for change in old leaf shedding rate, in proportion of TLP</li>
+<li><code>pheno_b0</code>: threshold for change in old leaf shedding rate, in proportion of tree height</li>
+<li><code>pheno_delta</code>: amplitude of change in old leaf shedding rate</li>
+<li><code>sigma_LA</code>: intraspecific variation in LA (lognormal)</li>
+<li><code>sigma_TLP</code>: intraspecific variation in TLP (normal)</li>
+<li><code>SOIL_LAYER_WEIGHT</code>: soil layer weights: relative biomass, conductance, max transpiration</li>
+<li><code>WATER_RETENTION_CURVE</code>: water retention curve (Brooks&amp;Corey or Van Genuchten Mualem)</li>
 </ul>
 </section>
 <section id="soil" class="slide level2 smaller">
@@ -640,21 +640,21 @@ Sylvain Schmitt
 <ul>
 <li>number of layers</li>
 <li>layer thicness (m)</li>
-<li>proportion of silt (%)</li>
-<li>proportion of clay (%)</li>
-<li>proportion of sand (%)</li>
-<li>soil organic content (g)</li>
-<li>dry bulk density (kg)</li>
-<li>pH</li>
-<li>cation exchange capacity (cmolC)</li>
+<li><code>Silt</code>: proportion of silt (%)</li>
+<li><code>Clay</code>: proportion of clay (%)</li>
+<li><code>Sand</code>: proportion of sand (%)</li>
+<li><code>SOC</code>: soil organic content (g)</li>
+<li><code>DBD</code>: dry bulk density (kg)</li>
+<li><code>pH</code></li>
+<li><code>CEC</code>: cation exchange capacity (cmolC)</li>
 </ul>
 </section>
 <section id="soil-1" class="slide level2">
 <h2>Soil</h2>
-<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-10_50752e352ab238c419c312767a164e34">
+<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-9_34020be3f22152b5ffec9168f811d033">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">read_tsv</span>(<span class="st">"data/day2/R1_input_pedology.txt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-10_50752e352ab238c419c312767a164e34">
+<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-9_34020be3f22152b5ffec9168f811d033">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 8
   layer_thickness proportion_Silt proportion_Clay proportion_Sand   SOC   DBD
@@ -670,7 +670,7 @@ Sylvain Schmitt
 </section>
 <section id="soil-2" class="slide level2">
 <h2>Soil</h2>
-<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-11_1d87308e1458486f228044057197dcee">
+<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-10_716046c3fb4a97fbe88753aafe22c0eb">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">read_tsv</span>(<span class="st">"data/day2/R1_input_pedology.txt"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb16-2"><a href="#cb16-2"></a>  <span class="fu">mutate</span>(<span class="at">depth =</span> <span class="fu">cumsum</span>(layer_thickness)) <span class="sc">%&gt;%</span> </span>
 <span id="cb16-3"><a href="#cb16-3"></a>  <span class="fu">gather</span>(variable, value, <span class="sc">-</span>depth) <span class="sc">%&gt;%</span> </span>
@@ -678,9 +678,9 @@ Sylvain Schmitt
 <span id="cb16-5"><a href="#cb16-5"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> variable, <span class="at">scales =</span> <span class="st">"free_x"</span>) <span class="sc">+</span> <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
 <span id="cb16-6"><a href="#cb16-6"></a>  <span class="fu">scale_x_reverse</span>() <span class="sc">+</span> <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">""</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-11_1d87308e1458486f228044057197dcee">
+<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-10_716046c3fb4a97fbe88753aafe22c0eb">
 <div class="cell-output-display">
-<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-11-1.png" width="960"></p>
+<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-10-1.png" width="960"></p>
 </div>
 </div>
 </section></section>
@@ -693,68 +693,68 @@ Sylvain Schmitt
 </section>
 <section id="files-1" class="slide level2">
 <h2>Files</h2>
-<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-12_fad7acf59e63bd039a064409a250741a">
+<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-11_070c94a1f4b472c1f3f31df99758a8e3">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">list.files</span>(<span class="st">"data/day2/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-12_fad7acf59e63bd039a064409a250741a">
+<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-11_070c94a1f4b472c1f3f31df99758a8e3">
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] "R1_0_LAImature.txt"      "R1_0_LAIold.txt"        
- [3] "R1_0_LAIyoung.txt"       "R1_0_soilproperties.txt"
- [5] "R1_0_sumstats.txt"       "R1_0_water_balance.txt" 
- [7] "R1_input_climate.txt"    "R1_input_daily.txt"     
- [9] "R1_input_global.txt"     "R1_input_pedology.txt"  
-[11] "R1_input_species.txt"   </code></pre>
+<pre><code> [1] "R1_0_LAIdynamics.txt"    "R1_0_LAImature.txt"     
+ [3] "R1_0_LAIold.txt"         "R1_0_LAIyoung.txt"      
+ [5] "R1_0_soilproperties.txt" "R1_0_sumstats.txt"      
+ [7] "R1_0_water_balance.txt"  "R1_input_climate.txt"   
+ [9] "R1_input_daily.txt"      "R1_input_global.txt"    
+[11] "R1_input_pedology.txt"   "R1_input_species.txt"   </code></pre>
 </div>
 </div>
 </section>
 <section id="forest-dynamics" class="slide level2">
 <h2>Forest dynamics</h2>
-<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-13_57fcc13ebb4f0cba74d02628b4e85a2a">
+<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-12_57666caaf35b03931faae7957aadaa2c">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">read_tsv</span>(<span class="st">"data/day2/R1_0_sumstats.txt"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb19-2"><a href="#cb19-2"></a>  <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">as_date</span>(<span class="st">"1999-01-01"</span>) <span class="sc">+</span> iter) <span class="sc">%&gt;%</span> </span>
 <span id="cb19-3"><a href="#cb19-3"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(date, agb<span class="sc">/</span><span class="dv">10</span><span class="sc">^</span><span class="dv">3</span>)) <span class="sc">+</span></span>
 <span id="cb19-4"><a href="#cb19-4"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
 <span id="cb19-5"><a href="#cb19-5"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">""</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"AGB [t/ha]"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-13_57fcc13ebb4f0cba74d02628b4e85a2a">
+<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-12_57666caaf35b03931faae7957aadaa2c">
 <div class="cell-output-display">
-<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-13-1.png" width="960"></p>
+<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-12-1.png" width="960"></p>
 </div>
 </div>
 </section>
 <section id="gpp-gross-primary-productivity" class="slide level2">
 <h2>GPP: Gross Primary Productivity</h2>
-<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-14_a3e3132e1e67241a5a1f9f23d3a09248">
+<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-13_1a9c3fe2c247036add1f3086c71dfb90">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">read_tsv</span>(<span class="st">"data/day2/R1_0_sumstats.txt"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb20-2"><a href="#cb20-2"></a>  <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">as_date</span>(<span class="st">"1999-01-01"</span>) <span class="sc">+</span> iter) <span class="sc">%&gt;%</span> </span>
 <span id="cb20-3"><a href="#cb20-3"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(date, gpp<span class="sc">*</span><span class="dv">10</span><span class="sc">^</span><span class="dv">2</span><span class="sc">*</span><span class="dv">365</span><span class="sc">/</span><span class="dv">10</span><span class="sc">^</span><span class="dv">3</span>)) <span class="sc">+</span></span>
 <span id="cb20-4"><a href="#cb20-4"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
 <span id="cb20-5"><a href="#cb20-5"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">""</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"GPP [kgC/m2/yr]"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-14_a3e3132e1e67241a5a1f9f23d3a09248">
+<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-13_1a9c3fe2c247036add1f3086c71dfb90">
 <div class="cell-output-display">
-<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-14-1.png" width="960"></p>
+<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-13-1.png" width="960"></p>
 </div>
 </div>
 </section>
 <section id="gpp---seasonality" class="slide level2">
 <h2>GPP - Seasonality</h2>
-<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-15_2f315c3b3e7eeef93c31ba59a7fcfdbd">
+<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-14_c7c7ca1ac6a0743859eef78fe4e2eec3">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">read_tsv</span>(<span class="st">"data/day2/R1_0_sumstats.txt"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb21-2"><a href="#cb21-2"></a>  <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">as_date</span>(<span class="st">"1999-01-01"</span>) <span class="sc">+</span> iter) <span class="sc">%&gt;%</span> </span>
 <span id="cb21-3"><a href="#cb21-3"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="fu">yday</span>(date), gpp<span class="sc">*</span><span class="dv">10</span><span class="sc">^</span><span class="dv">2</span><span class="sc">*</span><span class="dv">365</span><span class="sc">/</span><span class="dv">10</span><span class="sc">^</span><span class="dv">3</span>)) <span class="sc">+</span></span>
 <span id="cb21-4"><a href="#cb21-4"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">group =</span> <span class="fu">year</span>(date))) <span class="sc">+</span></span>
 <span id="cb21-5"><a href="#cb21-5"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">geom_smooth</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Day"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"GPP [kgC/m2/yr]"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-15_2f315c3b3e7eeef93c31ba59a7fcfdbd">
+<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-14_c7c7ca1ac6a0743859eef78fe4e2eec3">
 <div class="cell-output-display">
-<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-15-1.png" width="960"></p>
+<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-14-1.png" width="960"></p>
 </div>
 </div>
 </section>
 <section id="gpp---drivers" class="slide level2">
 <h2>GPP - Drivers</h2>
-<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-16_d991a95615506af5da47eea7fd4dc870">
+<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-15_0dd1010c854d7f62835fc3aaf83c7c8c">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>par <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">"data/day2/R1_input_daily.txt"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb22-2"><a href="#cb22-2"></a>  <span class="fu">group_by</span>(DayJulian) <span class="sc">%&gt;%</span> </span>
 <span id="cb22-3"><a href="#cb22-3"></a>  <span class="fu">mutate</span>(<span class="at">par =</span> Snet<span class="sc">*</span><span class="fl">2.27</span><span class="sc">*</span><span class="dv">60</span><span class="sc">*</span><span class="dv">30</span><span class="sc">/</span><span class="dv">10</span><span class="sc">^</span><span class="dv">3</span><span class="sc">/</span><span class="dv">10</span><span class="sc">^</span><span class="dv">3</span><span class="sc">/</span><span class="dv">4</span>) <span class="sc">%&gt;%</span> </span>
@@ -767,38 +767,38 @@ Sylvain Schmitt
 <span id="cb22-10"><a href="#cb22-10"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
 <span id="cb22-11"><a href="#cb22-11"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"PAR [mol/m2/day]"</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"GPP [kgC/m2/yr]"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-16_d991a95615506af5da47eea7fd4dc870">
+<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-15_0dd1010c854d7f62835fc3aaf83c7c8c">
 
 </div>
 </section>
 <section id="gpp---drivers-1" class="slide level2">
 <h2>GPP - Drivers</h2>
-<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-17_16cdb8782587d831fa4321f9c21258f8">
+<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-16_d84c7295139bd05a58eb65f0ab6786d3">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>g</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-17_16cdb8782587d831fa4321f9c21258f8">
+<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-16_d84c7295139bd05a58eb65f0ab6786d3">
 <div class="cell-output-display">
-<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-17-1.png" width="960"></p>
+<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-16-1.png" width="960"></p>
 </div>
 </div>
 </section>
 <section id="lai-leaf-area-index" class="slide level2">
 <h2>LAI: Leaf Area Index</h2>
-<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-18_30c12194b104767adf1b3e026ba8b80c">
+<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-17_e6fc1fe6a37c86ffd896b3ba4b6bcd6a">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">read_tsv</span>(<span class="st">"data/day2/R1_0_LAIdynamics.txt"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb24-2"><a href="#cb24-2"></a>  <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">as_date</span>(<span class="st">"1999-01-01"</span>) <span class="sc">+</span> iter) <span class="sc">%&gt;%</span> </span>
 <span id="cb24-3"><a href="#cb24-3"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(date, LAI)) <span class="sc">+</span></span>
 <span id="cb24-4"><a href="#cb24-4"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">""</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"LAI [m2/m2]"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-18_30c12194b104767adf1b3e026ba8b80c">
+<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-17_e6fc1fe6a37c86ffd896b3ba4b6bcd6a">
 <div class="cell-output-display">
-<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-18-1.png" width="960"></p>
+<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-17-1.png" width="960"></p>
 </div>
 </div>
 </section>
 <section id="lai-age" class="slide level2">
 <h2>LAI age</h2>
-<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-19_dfa0bdb78150274fb3f4739dbb68a75d">
+<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-18_090df5cde337329252784ab0fbbd585c">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>g <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
 <span id="cb25-2"><a href="#cb25-2"></a>  <span class="at">young =</span> <span class="fu">read_tsv</span>(<span class="st">"data/day2/R1_0_LAIyoung.txt"</span>, <span class="at">col_types =</span> <span class="st">"d"</span>),</span>
 <span id="cb25-3"><a href="#cb25-3"></a>  <span class="at">mature =</span> <span class="fu">read_tsv</span>(<span class="st">"data/day2/R1_0_LAImature.txt"</span>, <span class="at">col_types =</span> <span class="st">"d"</span>),</span>
@@ -812,33 +812,33 @@ Sylvain Schmitt
 <span id="cb25-11"><a href="#cb25-11"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
 <span id="cb25-12"><a href="#cb25-12"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">""</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"LAI [m2/m2]"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-19_dfa0bdb78150274fb3f4739dbb68a75d">
+<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-18_090df5cde337329252784ab0fbbd585c">
 
 </div>
 </section>
 <section id="lai-age-1" class="slide level2">
 <h2>LAI age</h2>
-<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-20_271de582b3f8c5f1aa12432734325ba9">
+<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-19_c2f7a211cd9a0a02e25164b2e7e74f5a">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>g</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-20_271de582b3f8c5f1aa12432734325ba9">
+<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-19_c2f7a211cd9a0a02e25164b2e7e74f5a">
 <div class="cell-output-display">
-<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-20-1.png" width="960"></p>
+<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-19-1.png" width="960"></p>
 </div>
 </div>
 </section>
 <section id="litterfall" class="slide level2">
 <h2>Litterfall</h2>
-<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-21_70c13eb2deb2b0326dcb03c1f7b09b5c">
+<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-20_04807da224f3ce82db408dc84f3caebe">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">read_tsv</span>(<span class="st">"data/day2/R1_0_sumstats.txt"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb27-2"><a href="#cb27-2"></a>  <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">as_date</span>(<span class="st">"1999-01-01"</span>) <span class="sc">+</span> iter) <span class="sc">%&gt;%</span> </span>
 <span id="cb27-3"><a href="#cb27-3"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(date, litterfall<span class="sc">*</span><span class="dv">365</span>)) <span class="sc">+</span></span>
 <span id="cb27-4"><a href="#cb27-4"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
 <span id="cb27-5"><a href="#cb27-5"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">""</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"Litterfall [MgC/ha/yr]"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-21_70c13eb2deb2b0326dcb03c1f7b09b5c">
+<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-20_04807da224f3ce82db408dc84f3caebe">
 <div class="cell-output-display">
-<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-21-1.png" width="960"></p>
+<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-20-1.png" width="960"></p>
 </div>
 </div>
 </section>
@@ -853,7 +853,7 @@ Sylvain Schmitt
 <img data-src="https://main--altpages.netlify.app/troll_files/figure-html/swc-1.png" class="r-stretch"></section>
 <section id="water-balance-2" class="slide level2">
 <h2>Water balance</h2>
-<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-24_f8f4a50950a0616cddf1c0824fca6df0">
+<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-23_e20640c0566c899878b375be095a5ae6">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>g <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">"data/day2/R1_0_water_balance.txt"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb28-2"><a href="#cb28-2"></a>  <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">as_date</span>(<span class="st">"1999-01-01"</span>) <span class="sc">+</span> iter) <span class="sc">%&gt;%</span></span>
 <span id="cb28-3"><a href="#cb28-3"></a>  <span class="fu">mutate</span>(<span class="at">precipitation =</span> precipitation<span class="sc">/</span><span class="dv">10</span><span class="sc">^</span><span class="dv">3</span>) <span class="sc">%&gt;%</span> </span>
@@ -864,29 +864,30 @@ Sylvain Schmitt
 <span id="cb28-8"><a href="#cb28-8"></a>  <span class="fu">gather</span>(component, value, <span class="sc">-</span>date) <span class="sc">%&gt;%</span> </span>
 <span id="cb28-9"><a href="#cb28-9"></a>  <span class="fu">mutate</span>(<span class="at">value =</span> value<span class="sc">*</span><span class="dv">1000</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb28-10"><a href="#cb28-10"></a>  <span class="fu">filter</span>(value <span class="sc">&gt;=</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb28-11"><a href="#cb28-11"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(date, value, <span class="at">col =</span> component)) <span class="sc">+</span></span>
-<span id="cb28-12"><a href="#cb28-12"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb28-11"><a href="#cb28-11"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(date, value, <span class="at">fill =</span> component)) <span class="sc">+</span></span>
+<span id="cb28-12"><a href="#cb28-12"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
 <span id="cb28-13"><a href="#cb28-13"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb28-14"><a href="#cb28-14"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">""</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"[mm]"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb28-14"><a href="#cb28-14"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">""</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"[mm]"</span>) <span class="sc">+</span> </span>
+<span id="cb28-15"><a href="#cb28-15"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> component) <span class="sc">+</span> <span class="fu">scale_fill_discrete</span>(<span class="at">guide =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-24_f8f4a50950a0616cddf1c0824fca6df0">
+<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-23_e20640c0566c899878b375be095a5ae6">
 
 </div>
 </section>
 <section id="water-balance-3" class="slide level2">
 <h2>Water balance</h2>
-<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-25_f17b49249ab3bc42355f041b26c491fe">
+<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-24_ea36c3024aec289934a12a2dea9c1070">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>g</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-25_f17b49249ab3bc42355f041b26c491fe">
+<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-24_ea36c3024aec289934a12a2dea9c1070">
 <div class="cell-output-display">
-<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-25-1.png" width="960"></p>
+<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-24-1.png" width="960"></p>
 </div>
 </div>
 </section>
 <section id="water-balance-4" class="slide level2">
 <h2>Water balance</h2>
-<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-26_8f56dbc539409c2ff47413cde4efb32d">
+<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-25_a1ceeab36c7f770bf2d0ddb6087c7a3d">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>g <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">"data/day2/R1_0_water_balance.txt"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb30-2"><a href="#cb30-2"></a>  <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">as_date</span>(<span class="st">"1999-01-01"</span>) <span class="sc">+</span> iter) <span class="sc">%&gt;%</span></span>
 <span id="cb30-3"><a href="#cb30-3"></a>  <span class="fu">mutate</span>(<span class="at">transpiration =</span> (transpitation_0 <span class="sc">+</span> transpitation_1 <span class="sc">+</span> transpitation_2 <span class="sc">+</span> </span>
@@ -896,28 +897,28 @@ Sylvain Schmitt
 <span id="cb30-7"><a href="#cb30-7"></a>  <span class="fu">select</span>(date, transpiration, <span class="st">"soil evaporation"</span>, <span class="st">"canopy evaporation"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb30-8"><a href="#cb30-8"></a>  <span class="fu">gather</span>(component, value, <span class="sc">-</span>date) <span class="sc">%&gt;%</span> </span>
 <span id="cb30-9"><a href="#cb30-9"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(date, value)) <span class="sc">+</span></span>
-<span id="cb30-10"><a href="#cb30-10"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb30-10"><a href="#cb30-10"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
 <span id="cb30-11"><a href="#cb30-11"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> component, <span class="at">nrow =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
 <span id="cb30-12"><a href="#cb30-12"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">""</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"[mm]"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-26_8f56dbc539409c2ff47413cde4efb32d">
+<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-25_a1ceeab36c7f770bf2d0ddb6087c7a3d">
 
 </div>
 </section>
 <section id="water-balance-5" class="slide level2">
 <h2>Water balance</h2>
-<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-27_8d35abf22249a56332b77bba73dfaf36">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>g</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-26_e0c7f407991ae425ea8744a4d281c5ba">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>g </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-27_8d35abf22249a56332b77bba73dfaf36">
+<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-26_e0c7f407991ae425ea8744a4d281c5ba">
 <div class="cell-output-display">
-<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-27-1.png" width="960"></p>
+<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-26-1.png" width="960"></p>
 </div>
 </div>
 </section>
 <section id="et-evapotranspiration" class="slide level2">
 <h2>ET : Evapotranspiration</h2>
-<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-28_cd8529cc8d50619c938eb190a931656d">
+<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-27_462dd1d0a0564c276ac327858d2adde2">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="fu">read_tsv</span>(<span class="st">"data/day2/R1_0_water_balance.txt"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb32-2"><a href="#cb32-2"></a>  <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">as_date</span>(<span class="st">"1999-01-01"</span>) <span class="sc">+</span> iter) <span class="sc">%&gt;%</span></span>
 <span id="cb32-3"><a href="#cb32-3"></a>  <span class="fu">mutate</span>(<span class="at">et =</span> (transpitation_0 <span class="sc">+</span> transpitation_1 <span class="sc">+</span> transpitation_2 <span class="sc">+</span> </span>
@@ -926,15 +927,15 @@ Sylvain Schmitt
 <span id="cb32-6"><a href="#cb32-6"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(date, et)) <span class="sc">+</span></span>
 <span id="cb32-7"><a href="#cb32-7"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span>   <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">""</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"ET [mm]"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-28_cd8529cc8d50619c938eb190a931656d">
+<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-27_462dd1d0a0564c276ac327858d2adde2">
 <div class="cell-output-display">
-<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-28-1.png" width="960"></p>
+<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-27-1.png" width="960"></p>
 </div>
 </div>
 </section>
 <section id="swc-soil-water-content" class="slide level2">
 <h2>SWC: Soil Water Content</h2>
-<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-29_f90787a97f3a749231cbbfdf4a89a378">
+<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-28_0c34e011d28b268be572ac1e2eb8d1d4">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="fu">read_tsv</span>(<span class="st">"data/day2/R1_0_water_balance.txt"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb33-2"><a href="#cb33-2"></a>  <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">as_date</span>(<span class="st">"1999-01-01"</span>) <span class="sc">+</span> iter) <span class="sc">%&gt;%</span></span>
 <span id="cb33-3"><a href="#cb33-3"></a>  <span class="fu">select</span>(date, <span class="fu">starts_with</span>(<span class="st">"SWC"</span>)) <span class="sc">%&gt;%</span> </span>
@@ -943,15 +944,15 @@ Sylvain Schmitt
 <span id="cb33-6"><a href="#cb33-6"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(date, swc, <span class="at">col =</span> depth)) <span class="sc">+</span></span>
 <span id="cb33-7"><a href="#cb33-7"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">""</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">"SWC [m3/m3]"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-29_f90787a97f3a749231cbbfdf4a89a378">
+<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-28_0c34e011d28b268be572ac1e2eb8d1d4">
 <div class="cell-output-display">
-<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-29-1.png" width="960"></p>
+<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-28-1.png" width="960"></p>
 </div>
 </div>
 </section>
 <section id="soil-water-content" class="slide level2 smaller">
 <h2>Soil water content</h2>
-<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-30_fcb9956cca985fe780bb06b4abab9dc8">
+<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-29_d083778063b85a0ab26f8fee35ca3a01">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>resolution <span class="ot">&lt;-</span> <span class="fl">0.1</span></span>
 <span id="cb34-2"><a href="#cb34-2"></a>layers_depths <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">1.5</span>, <span class="dv">4</span>, <span class="fl">16.1</span>)</span>
 <span id="cb34-3"><a href="#cb34-3"></a>dry_months <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">:</span><span class="dv">11</span></span>
@@ -977,13 +978,13 @@ Sylvain Schmitt
 <span id="cb34-23"><a href="#cb34-23"></a>                          <span class="at">by =</span> resolution))) <span class="sc">%&gt;%</span> </span>
 <span id="cb34-24"><a href="#cb34-24"></a>  <span class="fu">unnest</span>(depth)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-30_fcb9956cca985fe780bb06b4abab9dc8">
+<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-29_d083778063b85a0ab26f8fee35ca3a01">
 
 </div>
 </section>
 <section id="soil-water-content-1" class="slide level2">
 <h2>Soil water content</h2>
-<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-31_4e94348a8672ceabccb73e1f907eeab9">
+<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-30_641041a1cc3dc4c9c2373823509c715f">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a>raster <span class="sc">%&gt;%</span> </span>
 <span id="cb35-2"><a href="#cb35-2"></a>  <span class="fu">filter</span>(variable <span class="sc">==</span> <span class="st">"SWC"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb35-3"><a href="#cb35-3"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(date, depth, <span class="at">fill =</span> value)) <span class="sc">+</span></span>
@@ -992,15 +993,15 @@ Sylvain Schmitt
 <span id="cb35-6"><a href="#cb35-6"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="fu">expression</span>(<span class="st">"SWC ["</span><span class="sc">~</span>m<span class="sc">^</span><span class="dv">3</span><span class="sc">~</span>m<span class="sc">^</span><span class="dv">3</span><span class="sc">~</span><span class="st">"]"</span>),</span>
 <span id="cb35-7"><a href="#cb35-7"></a>                       <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-31_4e94348a8672ceabccb73e1f907eeab9">
+<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-30_641041a1cc3dc4c9c2373823509c715f">
 <div class="cell-output-display">
-<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-31-1.png" width="960"></p>
+<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-30-1.png" width="960"></p>
 </div>
 </div>
 </section>
 <section id="soil-water-profiles" class="slide level2">
 <h2>Soil water profiles</h2>
-<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-32_8f9f55e1a7236486714d832ba407ec15">
+<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-31_e3c904e7f9cb188290e8dd3d62b5a6bc">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a>g <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> </span>
 <span id="cb36-2"><a href="#cb36-2"></a>  <span class="fu">filter</span>(variable <span class="sc">==</span> <span class="st">"SWC"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb36-3"><a href="#cb36-3"></a>  <span class="fu">filter</span>(<span class="fu">month</span>(date) <span class="sc">%in%</span> <span class="fu">c</span>(dry_months, wet_months)) <span class="sc">%&gt;%</span> </span>
@@ -1019,18 +1020,18 @@ Sylvain Schmitt
 <span id="cb36-16"><a href="#cb36-16"></a>  <span class="fu">scale_x_reverse</span>(<span class="st">"Depth [ m ]"</span>) <span class="sc">+</span></span>
 <span id="cb36-17"><a href="#cb36-17"></a>  <span class="fu">ylab</span>(<span class="fu">expression</span>(<span class="st">"SWC ["</span><span class="sc">~</span>m<span class="sc">^</span><span class="dv">3</span><span class="sc">~</span>m<span class="sc">^</span><span class="dv">3</span><span class="sc">~</span><span class="st">"]"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-32_8f9f55e1a7236486714d832ba407ec15">
+<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-31_e3c904e7f9cb188290e8dd3d62b5a6bc">
 
 </div>
 </section>
 <section id="soil-water-profiles-1" class="slide level2">
 <h2>Soil water profiles</h2>
-<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-33_1e1a32214e0fc52ff2b874aad14d57de">
+<div class="cell" data-hash="day2_cache/revealjs/unnamed-chunk-32_5ce5751fbe84e99360a266ad35b6d99a">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a>g</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-33_1e1a32214e0fc52ff2b874aad14d57de">
+<div class="cell fragment" data-hash="day2_cache/revealjs/unnamed-chunk-32_5ce5751fbe84e99360a266ad35b6d99a">
 <div class="cell-output-display">
-<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-33-1.png" width="960"></p>
+<p><img data-src="day2_files/figure-revealjs/unnamed-chunk-32-1.png" width="960"></p>
 </div>
 </div>
 </section></section>
